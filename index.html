@@ -206,6 +206,17 @@ body{text-wrap:pretty}
 .is-busy{cursor:progress}
 .is-busy .btn{opacity:.6}
 
+/* ===== Коментарі до заявок ===== */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.cmts{display:flex;flex-direction:column;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.cmt{background:var(--bg);border-radius:14px;padding:8px 12px;display:flex;flex-direction:column;gap:2px}
+.cmt.adm{background:var(--yel-bg)}
+.cmt .h{display:flex;gap:8px;align-items:baseline;font-size:12px;font-weight:700;color:var(--muted)}
+.cmt .h b{color:var(--ink)}
+.cmt .x{font-size:14px;white-space:pre-line;overflow-wrap:anywhere}
+.cmt .del{margin-left:auto;border:none;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:600;padding:4px;position:relative}
+.cmt .del::before{content:"";position:absolute;inset:-10px}
+.cmtlink{align-self:flex-start;border:none;background:none;padding:6px 0;color:var(--ink);font:inherit;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
 /* ===== Пальне: адмін ===== */
 [hidden]{display:none!important}
 .tag.bad{background:var(--bad-bg);color:var(--bad)}
@@ -248,7 +259,7 @@ let D = null;
 let route = 'home';
 let stack = [];
 let busy = false;
-const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30, fuelS: '' };
+const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', cmt: {}, cmtOpen: {}, fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30, fuelS: '' };
 try { ui.all = localStorage.getItem('b10_all') === '1'; } catch (e) {}
 
 const ICON = {
@@ -525,8 +536,36 @@ function problemCard(p) {
   if (D.me.isAdmin) {
     html += '<div class="chips">' + ['Нова', 'В роботі', 'Вирішено'].map(s => '<button class="chip' + (p.status === s ? ' on' : '') + '" onclick="setProblem(' + p.id + ',\'' + s + '\')">' + s + '</button>').join('') + '</div>';
   }
-  return html + '</div>';
+  return html + commentsBlock(p) + '</div>';
 }
+function canComment(p) { return D.me.isAdmin || p.own || (isOwner() && !isFamily()); }
+function commentsBlock(p) {
+  const list = p.comments || [], open = !!ui.cmtOpen[p.id], can = canComment(p);
+  if (!list.length && !can) return '';
+  const shown = open ? list : list.slice(-2);
+  let h = '<div class="cmts">';
+  if (list.length > shown.length) h += '<button class="cmtlink" onclick="ui.cmtOpen[' + p.id + ']=true;render()">Показати всі коментарі · ' + list.length + '</button>';
+  h += shown.map(c => '<div class="cmt' + (c.who === 'Адміністратор' ? ' adm' : '') + '"><div class="h"><b>' + esc(c.mine ? 'Ви' : c.who) + '</b>' +
+    (c.apt && D.me.isAdmin && !c.mine ? '<span>кв. ' + esc(c.apt) + '</span>' : '') + '<span>' + ago(c.t) + '</span>' +
+    (c.mine || D.me.isAdmin ? '<button class="del" data-c="' + esc(c.id) + '" onclick="delComment(this.dataset.c)">Видалити</button>' : '') + '</div>' +
+    '<div class="x">' + esc(c.text) + '</div></div>').join('');
+  if (can) {
+    if (open) {
+      h += '<label class="sr-only" for="cmt' + p.id + '">Ваш коментар до заявки № ' + p.id + '</label>' +
+        '<textarea class="input" id="cmt' + p.id + '" style="height:72px" maxlength="500" placeholder="' + (D.me.isAdmin ? 'Відповідь мешканцям…' : 'Ваш коментар…') + '" oninput="ui.cmt[' + p.id + ']=this.value">' + esc(ui.cmt[p.id] || '') + '</textarea>' +
+        '<div class="row"><span class="sub" style="font-weight:500">' + (D.me.isAdmin ? 'Автор заявки отримає сповіщення' : 'Бачать усі мешканці, квартиру — лише адміністратор') + '</span>' +
+        '<button class="btn sm graph" onclick="sendComment(' + p.id + ')">Надіслати</button></div>';
+    } else h += '<button class="cmtlink" onclick="ui.cmtOpen[' + p.id + ']=true;ui.cmt[' + p.id + ']=ui.cmt[' + p.id + ']||\'\';render();setTimeout(function(){var t=document.getElementById(\'cmt' + p.id + '\');if(t)t.focus()},50)">' + (list.length ? 'Відповісти' : 'Коментувати') + '</button>';
+  }
+  return h + '</div>';
+}
+async function sendComment(id) {
+  const t = (ui.cmt[id] || '').trim();
+  if (!t) { toast('Напишіть коментар'); return; }
+  haptic();
+  if (await run('comment', { id: id, text: t }, 'Коментар додано')) { ui.cmt[id] = ''; ui.cmtOpen[id] = true; render(); }
+}
+function delComment(cid) { ask('Видалити коментар?', ok => { if (ok) run('delComment', { cid: cid }, 'Коментар видалено'); }); }
 function confirmCards() {
   return D.problems.filter(p => p.own && p.status === 'Вирішено' && !p.confirm).map(p =>
     '<div class="card" style="gap:10px;border:2px solid var(--ok)"><div style="font-weight:700;font-size:15px">Заявку №\u00a0' + p.id + ' (' + esc(p.category) + ') позначено вирішеною</div>' +
@@ -1135,7 +1174,7 @@ function demoApi(action, d) {
       })), [])),
       light: { sections: { 1: { status: 'on', since: now - 26 * H, at: now - 6 * 60000, by: 'neighbors' }, 2: { status: 'on', since: now - 3 * H, at: now - 4 * 60000, by: 'neighbors' }, 3: { status: 'off', since: now - 2 * H, at: now - 40 * 60000, by: 'neighbors', pending: { dir: 'on', at: now - 3 * 60000 } }, 4: { status: 'unknown', since: 0, at: 0 } }, mine: null },
       problems: [
-        { id: 14, created: now - 2 * H, entrance: 2, category: 'Ліфт', place: 'вантажний', text: 'Зупиняється між 7 і 8 поверхом', status: 'В роботі', count: 8, mine: false, own: false, authorApt: '301', authorRole: 'власник' },
+        { id: 14, comments: [{ id: 'c1', t: now - 90 * 60000, who: 'Власник', text: 'Сьогодні вранці теж застряг на 7 поверсі.', mine: false, apt: '188' }, { id: 'c2', t: now - 40 * 60000, who: 'Адміністратор', text: 'Викликали ліфтову службу, обіцяють до 18:00.', mine: false }], created: now - 2 * H, entrance: 2, category: 'Ліфт', place: 'вантажний', text: 'Зупиняється між 7 і 8 поверхом', status: 'В роботі', count: 8, mine: false, own: false, authorApt: '301', authorRole: 'власник' },
         { id: 13, created: now - 5 * H, entrance: 0, category: 'Вода', place: '', text: 'Слабкий тиск холодної води вечорами', status: 'Нова', count: 23, mine: true, own: false, authorApt: '12', authorRole: 'член сімʼї' },
         { id: 9, created: now - 140 * H, entrance: 2, category: 'Світло в секції', place: '26 поверх', text: 'Не світить лампа на сходах', status: 'Вирішено', count: 3, mine: false, own: true, authorApt: '317-1', confirm: '' }
       ],
@@ -1160,6 +1199,8 @@ function demoApi(action, d) {
   delete db.invite; delete db.importResult;
   const L = db.light.sections;
   if (action === 'light') { const s = L[db.me.entrance], dd = d.on ? 'on' : 'off'; db.light.mine = dd; if (s.status === 'unknown' || s.status === dd) { s.status = dd; s.at = now; if (!s.since) s.since = now; delete s.pending; } else if (s.pending && s.pending.dir === dd) { s.status = dd; s.since = now; s.at = now; s.by = 'neighbors'; delete s.pending; } else s.pending = { dir: dd, at: now }; }
+  if (action === 'comment') { const p = db.problems.find(x => x.id === d.id); (p.comments = p.comments || []).push({ id: 'c' + now, t: now, who: db.me.isAdmin ? 'Адміністратор' : p.own ? 'Автор заявки' : 'Власник', text: d.text, mine: true }); }
+  if (action === 'delComment') db.problems.forEach(p => { p.comments = (p.comments || []).filter(c => c.id !== d.cid); });
   if (action === 'metoo') { const p = db.problems.find(x => x.id === d.id); p.mine = !p.mine; p.count += p.mine ? 1 : -1; }
   if (action === 'newProblem') db.problems.unshift({ id: 15, created: now, entrance: d.wholeHouse ? 0 : 2, category: d.category, place: d.place, text: d.text, status: 'Нова', count: 1, mine: false, own: true, authorApt: '317-1' });
   if (action === 'vote' && d.options) { const p = db.polls.find(x => x.id === d.id); if (p.voted) p.voted.forEach(o => p.counts[p.options.indexOf(o)]--); else p.total++; p.voted = p.options.filter(o => d.options.indexOf(o) >= 0); p.voted.forEach(o => p.counts[p.options.indexOf(o)]++); }

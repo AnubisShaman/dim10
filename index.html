@@ -205,6 +205,23 @@ body{text-wrap:pretty}
 /* запит триває довше 150 мс: кнопки притухають */
 .is-busy{cursor:progress}
 .is-busy .btn{opacity:.6}
+
+/* ===== Пальне: адмін ===== */
+.tag.bad{background:var(--bad-bg);color:var(--bad)}
+.seg{display:flex;gap:4px;padding:4px;background:var(--soft);border-radius:14px}
+.seg button{flex:1;min-width:0;height:36px;border:none;border-radius:10px;background:transparent;color:var(--muted);font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+.pay{display:flex;flex-direction:column;gap:6px;padding:12px 0;border-top:1px solid var(--line)}
+.pay:first-child{border-top:none;padding-top:0}
+.pay .amt{font-weight:800;font-size:16px}
+.pay .who{font-size:14px;font-weight:700;overflow-wrap:anywhere}
+.pay .what{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.hint{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--yel-bg);color:var(--yel-ink);border-radius:12px;padding:8px 10px;font-size:13px;font-weight:600}
+.aptrow{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:48px;padding:6px 2px;border:none;border-top:1px solid var(--line);background:transparent;color:var(--ink);text-align:left;font:inherit}
+.aptrow:first-child{border-top:none}
+.aptrow .n{font-weight:800;font-size:16px;min-width:64px}
+.aptrow .s{margin-left:auto;font-weight:700;font-size:14px}
+.aptopen{background:var(--bg);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;margin:2px 0 8px}
 </style>
 </head>
 <body>
@@ -230,7 +247,7 @@ let D = null;
 let route = 'home';
 let stack = [];
 let busy = false;
-const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', fuelTx: {}, fuelApt: '' };
+const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30 };
 try { ui.all = localStorage.getItem('b10_all') === '1'; } catch (e) {}
 
 const ICON = {
@@ -770,36 +787,123 @@ function fuelAdmin() {
   const a = f.admin, imp = a.lastImport || {};
   const paidReg = a.regCount - a.unpaid.length;
   const pct = a.regCount ? Math.round(paidReg / a.regCount * 100) : 0;
+  const unk = a.unknown || [], ign = a.ignored || [];
   let h = '<div class="label">Пальне · ' + esc(monthName(f.month)) + '</div><div class="card" style="gap:12px">' +
     '<label class="btn graph" style="cursor:pointer">' + ic('plus', '#F2C12E', 18) + 'Завантажити виписку банки (CSV)<input type="file" accept=".csv,text/csv" style="display:none" onchange="importCsv(this)"></label>' +
     '<div class="sub" style="font-weight:500;line-height:1.45">' + (imp.at ? 'Остання виписка: ' + ago(imp.at) + ' · нових платежів ' + imp.added : 'Виписку ще не завантажували') +
     '<br>monobank → банка → ⋯ → Виписка → CSV. Можна завантажувати повторно — дублів не буде.</div>' +
-    '<div class="grid3"><div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + f.paidCount + '</span><span class="k">кв.\u00a0внесли</span></div>' +
+    '<div class="grid3"><div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + f.paidCount + '</span><span class="k">кв. внесли</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + a.unpaid.length + '</span><span class="k">зареєстр. ще ні</span></div>' +
-    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + Math.round(a.total / 1000) + 'k</span><span class="k">грн за місяць</span></div></div>' +
+    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + unk.length + '</span><span class="k">без квартири</span></div></div>' +
     '<div class="bar" style="height:8px"><i style="width:' + pct + '%;background:var(--ok)"></i></div>' +
-    '<div class="sub" style="font-weight:500">' + paidReg + ' з ' + a.regCount + ' зареєстрованих квартир внесли</div>';
-  if (a.unpaid.length) {
-    h += '<div style="font-weight:700">Ще не долучились (зареєстровані)</div><div class="aptlist">' + a.unpaid.slice(0, 80).map(x => '<span>' + esc(x) + '</span>').join('') +
-      (a.unpaid.length > 80 ? '<span>+' + (a.unpaid.length - 80) + '</span>' : '') + '</div>' +
-      '<button class="btn sm ghost" style="align-self:flex-start" onclick="copyUnpaid()">' + ic('copy', null, 16) + 'Скопіювати список</button>';
-  }
-  if (a.partial.length) h += '<div style="font-weight:700">Внесли частково</div><div class="aptlist">' + a.partial.map(x => '<span>' + esc(x.apt) + ' · ' + Math.round(x.sum) + '</span>').join('') + '</div>';
-  if (a.claims.length) h += '<div style="font-weight:700">Заявили «оплатив», але у виписці не знайдено</div><div class="aptlist">' + a.claims.map(x => '<span>' + esc(x.apt) + '</span>').join('') + '</div>';
-  h += '<div style="font-weight:700;margin-top:4px">Відмітити внесок вручну (готівка)</div>' +
+    '<div class="sub" style="font-weight:500">' + paidReg + ' з ' + a.regCount + ' зареєстрованих квартир внесли · ' + fmtMoney(a.total) + ' грн за місяць</div></div>';
+  const tabs = [['unknown', 'Без квартири · ' + unk.length], ['apts', 'Квартири'], ['ignored', 'Відкладені' + (ign.length ? ' · ' + ign.length : '')]];
+  h += '<div class="seg" role="tablist">' + tabs.map(t => '<button role="tab" aria-selected="' + (ui.fuelTab === t[0]) + '" class="' + (ui.fuelTab === t[0] ? 'on' : '') + '" onclick="ui.fuelTab=\'' + t[0] + '\';ui.fuelMore=30;render()">' + esc(t[1]) + '</button>').join('') + '</div>';
+  if (ui.fuelTab === 'apts') h += fuelAptsView();
+  else if (ui.fuelTab === 'ignored') h += fuelIgnoredView();
+  else h += fuelUnknownView();
+  return h;
+}
+function fmtMoney(n) { return Math.round(n || 0).toLocaleString('uk-UA').replace(/\s/g, ' '); }
+function payDate(t) { try { return new Date(t).toLocaleString('uk-UA', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }); } catch (e) { return ago(t); } }
+
+// квартири: зведення з платежів місяця + зареєстрованих + заяв «оплатив»
+function fuelApts() {
+  const f = D.fuel, a = f.admin, by = {};
+  const get = apt => by[apt] || (by[apt] = { apt: apt, sum: 0, pays: [], reg: false, claim: false });
+  (a.reg || []).forEach(x => { get(x).reg = true; });
+  (a.pays || []).forEach(p => { const o = get(p.apt); o.sum += p.sum; o.pays.push(p); });
+  (a.claims || []).forEach(c => { get(c.apt).claim = true; });
+  return Object.keys(by).map(k => {
+    const o = by[k];
+    o.need = Math.max(0, Math.round((f.amount - o.sum) * 100) / 100);
+    o.st = o.sum >= f.amount + 100 ? 'over' : o.sum >= f.amount - 0.01 ? 'paid' : o.sum > 0 ? 'part' : o.claim ? 'claim' : 'none';
+    o.pays.sort((x, y) => y.date - x.date);
+    return o;
+  }).sort((x, y) => parseInt(x.apt, 10) - parseInt(y.apt, 10) || x.apt.localeCompare(y.apt));
+}
+const FUEL_ST = { paid: ['ok', 'внесено'], over: ['info', 'переплата'], part: ['yel', 'частково'], claim: ['yel', 'заявили'], none: ['bad', 'ще ні'] };
+// нерозпізнані платежі, що закривають борг квартири (сума = скільки бракує)
+function fuelCandidates(apt) {
+  return (D.fuel.admin.unknown || []).filter(u => apt.need > 0 && Math.abs(u.sum - apt.need) < 0.5);
+}
+function fuelHintsFor(u) {
+  return fuelApts().filter(o => o.st === 'part' && Math.abs(u.sum - o.need) < 0.5);
+}
+
+function fuelUnknownView() {
+  const unk = D.fuel.admin.unknown || [];
+  if (!unk.length) return '<div class="card"><div class="empty">Усі платежі привʼязані до квартир</div></div>';
+  return '<div class="sub" style="font-weight:500">Нові зверху. Вкажіть квартиру — інші платежі цього відправника привʼяжуться самі.</div>' +
+    '<div class="card" style="gap:0">' + unk.slice(0, ui.fuelMore).map(u => {
+      const hints = fuelHintsFor(u);
+      return '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(u.sum) + ' грн</span><span class="sub" style="font-weight:500">' + esc(payDate(u.date)) + '</span></div>' +
+        '<div class="who">' + esc(u.sender || 'Відправник прихований') + '</div>' +
+        '<div class="what">' + esc(u.comment || 'без коментаря') + '</div>' +
+        hints.map(o => '<div class="hint"><span>Кв. ' + esc(o.apt) + ' бракує саме ' + fmtMoney(o.need) + ' грн</span><button class="btn sm graph" data-t="' + esc(u.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelAssignTo(this.dataset.t,this.dataset.a)">До кв. ' + esc(o.apt) + '</button></div>').join('') +
+        '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0;height:40px" aria-label="Номер квартири для платежу ' + esc(fmtMoney(u.sum)) + ' грн" autocomplete="off" placeholder="Номер квартири…" value="' + esc(ui.fuelTx[u.tx] || '') + '" oninput="ui.fuelTx[this.dataset.t]=this.value" data-t="' + esc(u.tx) + '">' +
+        '<button class="btn sm graph" data-t="' + esc(u.tx) + '" onclick="fuelAssign(this.dataset.t)">Привʼязати</button></div>' +
+        '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(u.tx) + '" onclick="fuelIgnore(this.dataset.t,true)">Не внесок</button></div>';
+    }).join('') + '</div>' +
+    (unk.length > ui.fuelMore ? '<button class="btn ghost" onclick="ui.fuelMore+=30;render()">Показати ще ' + Math.min(30, unk.length - ui.fuelMore) + ' з ' + (unk.length - ui.fuelMore) + '</button>' : '');
+}
+
+function fuelAptsView() {
+  const list = fuelApts(), cnt = {};
+  list.forEach(o => { cnt[o.st] = (cnt[o.st] || 0) + 1; });
+  const fl = [['all', 'Усі'], ['part', 'Частково'], ['none', 'Ще ні'], ['claim', 'Заявили'], ['over', 'Переплата']];
+  let h = '<div class="card" style="gap:10px">' +
+    '<input class="input" id="fuelQ" type="search" aria-label="Пошук квартири" autocomplete="off" inputmode="text" placeholder="Номер квартири, напр. 276…" value="' + esc(ui.fuelQ) + '" oninput="ui.fuelQ=this.value;ui.fuelOpen=\'\';fuelListUpdate()">' +
+    '<div class="chips">' + fl.map(x => '<button class="chip' + (ui.fuelF === x[0] ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="ui.fuelF=\'' + x[0] + '\';ui.fuelOpen=\'\';render()">' + x[1] + (x[0] === 'all' ? '' : ' · ' + (cnt[x[0]] || 0)) + '</button>').join('') + '</div>' +
+    (ui.fuelF === 'none' && list.some(o => o.st === 'none') ? '<button class="btn sm ghost" style="align-self:flex-start" onclick="copyUnpaid()">' + ic('copy', null, 16) + 'Скопіювати список</button>' : '') +
+    '<div id="fuelList">' + fuelListHtml(list) + '</div></div>';
+  h += '<div class="label">Готівка або вручну</div><div class="card" style="gap:8px">' +
     '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0" aria-label="Номер квартири" autocomplete="off" inputmode="text" placeholder="Кв., напр. 317-1…" value="' + esc(ui.fuelApt) + '" oninput="ui.fuelApt=this.value">' +
     '<button class="btn sm green" style="height:48px" onclick="fuelManual()">Внесено</button>' +
-    '<button class="btn sm ghost" style="height:48px" onclick="fuelUnmark()">Зняти</button></div></div>';
-  if (a.unknown.length) {
-    h += '<div class="label">Платежі без квартири · ' + a.unknown.length + '</div>' +
-      '<div class="sub" style="font-weight:500;margin-top:-6px">Вкажіть квартиру — наступні платежі цього відправника привʼяжуться самі</div>' + a.unknown.map(u =>
-      '<div class="card" style="gap:8px"><div class="row"><span style="font-weight:800">' + Math.round(u.sum) + ' грн</span><span class="sub" style="font-weight:500">' + ago(u.date) + '</span></div>' +
-      '<div style="font-size:14px;font-weight:700">' + esc(u.sender || 'Відправник прихований') + '</div>' +
-      '<div style="font-size:13px;color:var(--muted)">' + esc(u.comment || 'без коментаря') + '</div>' +
-      '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0;height:40px" aria-label="Номер квартири для платежу" autocomplete="off" placeholder="Номер квартири…" value="' + esc(ui.fuelTx[u.tx] || '') + '" oninput="ui.fuelTx[this.dataset.t]=this.value" data-t="' + esc(u.tx) + '">' +
-      '<button class="btn sm graph" data-t="' + esc(u.tx) + '" onclick="fuelAssign(this.dataset.t)">Привʼязати</button></div></div>').join('');
-  }
+    '<button class="btn sm ghost" style="height:48px" onclick="fuelUnmark()">Зняти</button></div>' +
+    '<div class="sub" style="font-weight:500">Для квартир, які ще не в списку, або для оплати готівкою</div></div>';
   return h;
+}
+function fuelListUpdate() { const el = document.getElementById('fuelList'); if (el) el.innerHTML = fuelListHtml(fuelApts()); }
+function fuelListHtml(list) {
+  const q = ui.fuelQ.trim().toLowerCase().replace(/\s+/g, '').replace(/^кв\.?/, '');
+  let rows = list.filter(o => (ui.fuelF === 'all' || o.st === ui.fuelF) && (!q || o.apt.toLowerCase().indexOf(q) === 0));
+  if (!rows.length) return '<div class="empty">' + (q ? 'Квартиру ' + esc(ui.fuelQ) + ' не знайдено серед зареєстрованих і платників. Відмітьте готівку нижче.' : 'Тут порожньо') + '</div>';
+  const more = rows.length > 150;
+  rows = rows.slice(0, 150);
+  return rows.map(o => {
+    const st = FUEL_ST[o.st], open = ui.fuelOpen === o.apt;
+    let r = '<button class="aptrow" aria-expanded="' + open + '" data-a="' + esc(o.apt) + '" onclick="fuelToggle(this.dataset.a)"><span class="n">' + esc(o.apt) + '</span>' +
+      '<span class="tag ' + st[0] + '">' + st[1] + '</span>' + (o.reg ? '' : '<span class="sub" style="font-weight:500">не в боті</span>') +
+      '<span class="s">' + (o.sum ? fmtMoney(o.sum) + ' грн' : '—') + '</span></button>';
+    if (open) r += fuelAptDetail(o);
+    return r;
+  }).join('') + (more ? '<div class="sub" style="padding-top:8px">Показано 150. Уточніть номер у пошуку.</div>' : '');
+}
+function fuelAptDetail(o) {
+  const cands = fuelCandidates(o);
+  let h = '<div class="aptopen">';
+  if (o.need > 0 && o.sum > 0) h += '<div style="font-weight:700">Бракує ' + fmtMoney(o.need) + ' грн</div>';
+  if (o.claim && o.st !== 'paid' && o.st !== 'over') h += '<div class="note">Мешканці натиснули «Я оплатив(ла)», але у виписці платіж не знайдено. Перевірте нерозпізнані.</div>';
+  h += o.pays.length ? o.pays.map(p => '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(p.sum) + ' грн</span><span class="sub" style="font-weight:500">' + esc(payDate(p.date)) + '</span></div>' +
+    '<div class="who">' + esc(p.sender || (p.source === 'готівка / вручну' ? 'Готівка / вручну' : 'Відправник прихований')) + '</div>' +
+    '<div class="what">' + esc(p.comment || 'без коментаря') + ' · ' + esc(p.source || '') + '</div>' +
+    '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(p.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelUnassign(this.dataset.t,this.dataset.a)">' + (p.source === 'готівка / вручну' ? 'Видалити відмітку' : 'Відвʼязати') + '</button></div>').join('')
+    : '<div class="sub" style="font-weight:500">Платежів за цей місяць немає</div>';
+  if (cands.length) h += '<div style="font-weight:700;margin-top:4px">Може підійти з нерозпізнаних</div>' + cands.map(u =>
+    '<div class="hint"><span>' + fmtMoney(u.sum) + ' грн · ' + esc(u.sender || 'прихований') + ' · ' + esc(payDate(u.date)) + '</span><button class="btn sm graph" data-t="' + esc(u.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelAssignTo(this.dataset.t,this.dataset.a)">Сюди</button></div>').join('');
+  if (o.st !== 'paid' && o.st !== 'over') h += '<button class="btn sm green" style="align-self:flex-start" data-a="' + esc(o.apt) + '" onclick="ui.fuelApt=this.dataset.a;fuelManual()">Внесено готівкою</button>';
+  return h + '</div>';
+}
+function fuelToggle(apt) { ui.fuelOpen = ui.fuelOpen === apt ? '' : apt; haptic(); fuelListUpdate(); }
+
+function fuelIgnoredView() {
+  const ign = D.fuel.admin.ignored || [];
+  if (!ign.length) return '<div class="card"><div class="empty">Тут будуть платежі, позначені «не внесок» або відвʼязані вручну. Наступні виписки їх не чіпають.</div></div>';
+  return '<div class="card" style="gap:0">' + ign.map(u => '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(u.sum) + ' грн</span><span class="tag info">' + esc(u.source) + '</span></div>' +
+    '<div class="who">' + esc(u.sender || 'Відправник прихований') + ' · ' + esc(payDate(u.date)) + '</div>' +
+    '<div class="what">' + esc(u.comment || 'без коментаря') + '</div>' +
+    '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(u.tx) + '" onclick="fuelIgnore(this.dataset.t,false)">Повернути в нерозпізнані</button></div>').join('') + '</div>';
 }
 function importCsv(input) {
   const file = input.files && input.files[0];
@@ -819,6 +923,9 @@ function importCsv(input) {
 function copyUnpaid() { const f = D.fuel; copyText('Ще не внесли на пальне за ' + monthName(f.month) + ' (' + f.admin.unpaid.length + '):\n' + f.admin.unpaid.join(', '), 'Список скопійовано'); }
 async function fuelManual() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } if (await run('fuelManual', { apt: ui.fuelApt }, 'Внесок відмічено')) { ui.fuelApt = ''; render(); } }
 function fuelUnmark() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } ask('Зняти ручну відмітку для кв.\u00a0' + ui.fuelApt + '?', ok => { if (ok) run('fuelUnmark', { apt: ui.fuelApt }, 'Відмітку знято'); }); }
+async function fuelAssignTo(tx, apt) { haptic(); if (await run('fuelAssign', { txId: tx, apt: apt }, 'Платіж привʼязано до кв.\u00a0' + apt)) { delete ui.fuelTx[tx]; render(); } }
+function fuelUnassign(tx, apt) { ask('Відвʼязати цей платіж від кв.\u00a0' + apt + '? Він перейде у «Відкладені», і наступні виписки не привʼяжуть його знову.', ok => { if (ok) run('fuelUnassign', { txId: tx }, 'Платіж відвʼязано'); }); }
+function fuelIgnore(tx, on) { haptic(); run('fuelIgnore', { txId: tx, on: on }, on ? 'Перенесено у «Відкладені»' : 'Повернуто в нерозпізнані'); }
 async function fuelAssign(tx) { const apt = ui.fuelTx[tx] || ''; if (!apt.trim()) { toast('Вкажіть квартиру'); return; } if (await run('fuelAssign', { txId: tx, apt: apt }, 'Платіж привʼязано')) { delete ui.fuelTx[tx]; render(); } }
 function isLift(s) { return /^Ліфт/.test(s.name); }
 function liftName(s) { return cap(String(s.name).replace(/^Ліфт\s*/, '')) || 'Ліфт'; }
@@ -918,6 +1025,40 @@ async function start() {
 }
 
 // ---------- демо-режим (?demo=1; &admin=1, &family=1, &state=pending) ----------
+// ---------- демо: пальне в адмінці ----------
+function demoFuelAdmin(now, H) {
+  const pay = (tx, apt, sum, h, sender, comment, source) => ({ tx: tx, apt: apt, sum: sum, date: now - h * H, month: '', comment: comment, sender: sender, source: source || 'виписка: коментар' });
+  const pays = [pay('p1', '276', 30, 1, '', 'Кв 276 на додаток до 1470'), pay('p2', '319', 1500, 3, '', 'Кв. 319'), pay('p3', '475-1', 1500, 6, 'Роман Лящук', 'Кв 475-1'),
+    pay('p4', '494', 1500, 26, '', 'Будинок 10, квартира 494'), pay('p5', '289', 500, 200, 'Руслан Кас’ян', '10 буд 289 кв'), pay('p6', '448', 2500, 80, 'Олександр Левицький', 'Пальне, кв 448'),
+    pay('p7', '448', 4000, 80, 'Олександр Левицький', 'Довнесок за генератор, кв 448'), pay('p8', '248', 1000, 200, 'Катерина Годлевська', 'Кв 248; ще 500 окремо'),
+    pay('p9', '248', 503, 200, 'Катерина Годлевська', 'Поповнення рахунку Банки', 'виписка: відправник (памʼять)'), pay('p10', '317-1', 1500, 30, '', 'кв 317-1'), pay('p11', '12', 1500, 100, 'Юлія Бех', 'квартира 12')];
+  const unknown = [pay('u1', '', 1470, 9, 'Kuliba Mihaylo', '', 'виписка'), pay('u2', '', 1500, 4, 'Kulyba Mykhailo', '', 'виписка'), pay('u3', '', 1500, 30, 'Наталія Черненко', 'Поповнення рахунку Банки', 'виписка'),
+    pay('u4', '', 3000, 120, 'Андрій Варченко', 'Поповнення рахунку Банки', 'виписка'), pay('u5', '', 1000, 170, '', 'Нежитлове приміщення 639', 'виписка'), pay('u6', '', 1000, 190, 'Оксана Моспан', 'Поповнення рахунку Банки', 'виписка')];
+  const a = { regCount: 0, total: 0, lastImport: { at: now - 3 * H, added: 270, known: 199, unknown: 71 }, reg: ['12', '45', '101', '158-1', '204', '248', '276', '289', '317-1', '319', '389', '402', '448', '475-1', '477-1', '494', '512', '593-2'],
+    pays: pays, unknown: unknown, ignored: [], claims: [{ apt: '204' }], unpaid: [], partial: [] };
+  demoFuelRecalc({ fuel: { amount: 1500, admin: a } });
+  return a;
+}
+function demoFuelRecalc(db) {
+  const f = db.fuel, a = f.admin, sums = {};
+  a.pays.forEach(p => { sums[p.apt] = (sums[p.apt] || 0) + p.sum; });
+  a.regCount = a.reg.length;
+  a.unpaid = a.reg.filter(x => !(sums[x] >= f.amount - 0.01));
+  a.partial = Object.keys(sums).filter(x => sums[x] < f.amount - 0.01).map(x => ({ apt: x, sum: sums[x] }));
+  a.total = a.pays.concat(a.unknown).reduce((t, p) => t + p.sum, 0);
+  f.paidCount = Object.keys(sums).filter(x => sums[x] >= f.amount - 0.01).length;
+}
+function demoFuelAct(db, action, d, now) {
+  const a = db.fuel.admin, take = (list, tx) => { const i = list.findIndex(p => p.tx === tx); return i < 0 ? null : list.splice(i, 1)[0]; };
+  if (action === 'fuelAssign') { const p = take(a.unknown, d.txId); if (p) { p.apt = String(d.apt).trim(); p.source = 'привʼязано вручну'; a.pays.push(p); } }
+  if (action === 'fuelUnassign') { const p = take(a.pays, d.txId); if (p && p.source !== 'готівка / вручну') { p.apt = ''; p.source = 'відвʼязано вручну'; a.ignored.unshift(p); } }
+  if (action === 'fuelIgnore') { if (d.on) { const p = take(a.unknown, d.txId); if (p) { p.source = 'не внесок'; a.ignored.unshift(p); } } else { const p = take(a.ignored, d.txId); if (p) { p.source = 'виписка'; a.unknown.unshift(p); } } }
+  if (action === 'fuelManual') a.pays.push({ tx: 'm' + now, apt: String(d.apt).trim(), sum: 1500, date: now, comment: 'відмітив адміністратор', sender: '', source: 'готівка / вручну' });
+  if (action === 'fuelUnmark') { const i = a.pays.map(p => p.apt === String(d.apt).trim() && p.source === 'готівка / вручну').lastIndexOf(true); if (i < 0) throw new Error('Ручних відміток за цей місяць немає'); a.pays.splice(i, 1); }
+  demoFuelRecalc(db);
+  const mine = a.pays.filter(p => p.apt === db.me.apt).reduce((t, p) => t + p.sum, 0);
+  if (db.me.apt) { db.fuel.sum = mine; if (mine >= 1500) db.fuel.key = 'on'; }
+}
 let DEMO_DB = null;
 function demoApi(action, d) {
   const now = Date.now(), H = 3600000, q = location.search;
@@ -957,9 +1098,7 @@ function demoApi(action, d) {
       ],
       fuel: { month: new Date().toISOString().slice(0, 7), amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
         sum: /fuel=part/.test(q) ? 1000 : /fuel=on/.test(q) ? 1500 : 0, key: (q.match(/fuel=(\w+)/) || [0, 'off'])[1], lastPay: { date: now - 30 * 24 * H, sum: 1500 },
-        admin: /admin=1/.test(q) ? { regCount: 263, total: 399504, lastImport: { at: now - 3 * H, added: 270, known: 201, unknown: 70 },
-          unpaid: ['12', '45', '101', '158-1', '204', '317-1', '389', '402', '477-1', '512', '593-2'], partial: [{ apt: '276', sum: 30 }, { apt: '289', sum: 500 }], claims: [{ apt: '204' }],
-          unknown: [{ tx: 'm1', sum: 1500, date: now - 2 * H, sender: 'Kulyba Mykhailo', comment: '' }, { tx: 'm2', sum: 1500, date: now - 5 * H, sender: 'Оксана Моспан', comment: 'Поповнення рахунку Банки' }] } : null },
+        admin: /admin=1/.test(q) ? demoFuelAdmin(now, H) : null },
       totalApts: 619, entrances: 4, now: now
     };
   }
@@ -980,7 +1119,7 @@ function demoApi(action, d) {
   if (action === 'closePoll') db.polls.find(x => x.id === d.id).open = false;
   if (action === 'deletePoll') db.polls = db.polls.filter(x => x.id !== d.id);
   const f = db.me.flat;
-  if (action === 'fuelManual' || action === 'fuelAssign') { const a = db.fuel.admin; const apt = String(d.apt).trim(); a.unpaid = a.unpaid.filter(x => x !== apt); db.fuel.paidCount++; a.total += 1500; if (action === 'fuelAssign') a.unknown = a.unknown.filter(u => u.tx !== d.txId); if (apt === db.me.apt) { db.fuel.key = 'on'; db.fuel.sum = 1500; } }
+  if (db.fuel && db.fuel.admin && /^fuel(Manual|Assign|Unassign|Ignore|Unmark)$/.test(action)) demoFuelAct(db, action, d, now);
   if (action === 'fuelClaim') db.fuel.key = 'claimed';
   if (action === 'importCsv') { db.importResult = { added: 12, known: 10, unknown: 2 }; db.fuel.admin.lastImport = { at: now, added: 12 }; }
   if (action === 'invite') { if (!f.left) return Promise.reject(new Error('На квартиру вже додано або запрошено 3 людини')); f.openInvites++; f.left--; db.invite = 'https://t.me/budynok10_bot?start=inv_' + Math.random().toString(16).slice(2, 14); }

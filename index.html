@@ -207,6 +207,7 @@ body{text-wrap:pretty}
 .is-busy .btn{opacity:.6}
 
 /* ===== Пальне: адмін ===== */
+[hidden]{display:none!important}
 .tag.bad{background:var(--bad-bg);color:var(--bad)}
 .seg{display:flex;gap:4px;padding:4px;background:var(--soft);border-radius:14px}
 .seg button{flex:1;min-width:0;height:36px;border:none;border-radius:10px;background:transparent;color:var(--muted);font-weight:700;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -247,7 +248,7 @@ let D = null;
 let route = 'home';
 let stack = [];
 let busy = false;
-const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30 };
+const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30, fuelS: '' };
 try { ui.all = localStorage.getItem('b10_all') === '1'; } catch (e) {}
 
 const ICON = {
@@ -343,7 +344,7 @@ function save() { try { const c = Object.assign({}, D); delete c.invite; localSt
 
 // ---------- навігація ----------
 function go(r) {
-  if (['new', 'useful', 'admin'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
+  if (['new', 'useful', 'admin', 'fuel'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
   else { stack = []; ui.anim = r === route ? '' : 'tab'; }
   route = r; render(); window.scrollTo(0, 0);
 }
@@ -357,7 +358,7 @@ function syncBack() {
 function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
-  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin }[route] || home;
+  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen }[route] || home;
   let scr = document.getElementById('scr');
   if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
   const anim = ui.anim; ui.anim = '';
@@ -394,7 +395,7 @@ function openBot() {
 }
 
 const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me' }[route] || route; }
+function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me' }[route] || route; }
 function tabs() {
   const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
   const cur = tabCur();
@@ -719,7 +720,7 @@ function cabinet() {
       '<div style="display:flex;align-items:center;gap:8px;background:var(--ok-bg);color:var(--ok);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">' + ic('shield', '#1E6B4A', 18) + (me.family ? 'Додано мешканцем квартири' : 'Підтверджено адміністратором') + '</div>' : '') +
     '</div>' +
     fuelCard() +
-    (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' : '') +
+    (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
     flatCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
     '<div class="label">Мої заявки</div>' +
@@ -781,6 +782,54 @@ async function fuelClaim() {
   });
 }
 
+function fuelEntry() {
+  const f = D.fuel;
+  if (!f || !f.admin) return '';
+  const n = (f.admin.unknown || []).length;
+  return '<button class="card" style="flex-direction:row;align-items:center;justify-content:space-between;border:none;text-align:left;font:inherit;color:inherit" onclick="go(\'fuel\')">' +
+    '<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:16px">Пальне: оплати</span><span class="sub" style="font-weight:500">' +
+    f.paidCount + ' кв.\u00a0внесли' + (n ? ' · без квартири ' + n : '') + '</span></span>' + (n ? '<span class="tag yel">' + n + '</span>' : '') + '</button>';
+}
+function fuelScreen() {
+  if (!D.me.isAdmin || !D.fuel || !D.fuel.admin) return '<div class="empty">Немає доступу</div>';
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Пальне: оплати</div></div>' +
+    '<input class="input" id="fuelS" type="search" aria-label="Пошук платежу" autocomplete="off" placeholder="Пошук: сума, імʼя, коментар або кв.…" value="' + esc(ui.fuelS) + '" oninput="ui.fuelS=this.value;fuelSearchUpdate()">' +
+    '<div id="fuelSearch">' + fuelSearchHtml() + '</div>' +
+    '<div id="fuelMain"' + (ui.fuelS.trim() ? ' hidden' : '') + ' style="display:flex;flex-direction:column;gap:12px">' + fuelAdmin() + '</div>';
+}
+// пошук по всіх платежах: без квартири, привʼязаних і відкладених
+function fuelSearchHtml() {
+  const q = ui.fuelS.trim().toLowerCase();
+  if (!q) return '';
+  const a = D.fuel.admin, num = q.replace(/[\s,.]/g, '');
+  const all = (a.unknown || []).map(p => [p, 'free']).concat((a.pays || []).map(p => [p, 'linked']), (a.ignored || []).map(p => [p, 'ign']));
+  const hit = all.filter(x => {
+    const p = x[0];
+    if (/^\d+$/.test(num) && (String(Math.round(p.sum)) === num || String(p.sum) === num)) return true;
+    return (p.sender || '').toLowerCase().indexOf(q) >= 0 || (p.comment || '').toLowerCase().indexOf(q) >= 0 || (p.apt && p.apt.toLowerCase() === q.replace(/^кв\.?\s*/, ''));
+  }).sort((x, y) => y[0].date - x[0].date).slice(0, 40);
+  if (!hit.length) return '<div class="card"><div class="empty">Нічого не знайдено за «' + esc(ui.fuelS) + '». Пошук іде за поточний місяць і всі нерозпізнані.</div></div>';
+  return '<div class="sub" style="font-weight:500">Знайдено: ' + hit.length + '</div><div class="card" style="gap:0">' + hit.map(x => {
+    const p = x[0], where = x[1];
+    const tag = where === 'linked' ? '<span class="tag ok">кв.\u00a0' + esc(p.apt) + '</span>' : where === 'ign' ? '<span class="tag info">' + esc(p.source) + '</span>' : '<span class="tag yel">без квартири</span>';
+    let act = '';
+    if (where === 'free') act = fuelHintsFor(p).map(o => '<div class="hint"><span>Кв.\u00a0' + esc(o.apt) + ' бракує саме ' + fmtMoney(o.need) + ' грн</span><button class="btn sm graph" data-t="' + esc(p.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelAssignTo(this.dataset.t,this.dataset.a)">До кв.\u00a0' + esc(o.apt) + '</button></div>').join('') + fuelAssignRow(p);
+    if (where === 'linked') act = '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(p.tx) + '" data-a="' + esc(p.apt) + '" onclick="fuelUnassign(this.dataset.t,this.dataset.a)">Відвʼязати від кв.\u00a0' + esc(p.apt) + '</button>';
+    if (where === 'ign') act = '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(p.tx) + '" onclick="fuelIgnore(this.dataset.t,false)">Повернути в нерозпізнані</button>';
+    return '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(p.sum) + ' грн</span>' + tag + '</div>' +
+      '<div class="who">' + esc(p.sender || 'Відправник прихований') + ' · ' + esc(payDate(p.date)) + '</div>' +
+      '<div class="what">' + esc(p.comment || 'без коментаря') + (p.source && where === 'linked' ? ' · ' + esc(p.source) : '') + '</div>' + act + '</div>';
+  }).join('') + '</div>';
+}
+function fuelSearchUpdate() {
+  const r = document.getElementById('fuelSearch'), m = document.getElementById('fuelMain');
+  if (r) r.innerHTML = fuelSearchHtml();
+  if (m) m.hidden = !!ui.fuelS.trim();
+}
+function fuelAssignRow(u) {
+  return '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0;height:40px" aria-label="Номер квартири для платежу ' + esc(fmtMoney(u.sum)) + ' грн" autocomplete="off" placeholder="Номер квартири…" value="' + esc(ui.fuelTx[u.tx] || '') + '" oninput="ui.fuelTx[this.dataset.t]=this.value" data-t="' + esc(u.tx) + '">' +
+    '<button class="btn sm graph" data-t="' + esc(u.tx) + '" onclick="fuelAssign(this.dataset.t)">Привʼязати</button></div>';
+}
 function fuelAdmin() {
   const f = D.fuel;
   if (!f || !f.admin) return '';
@@ -830,19 +879,24 @@ function fuelCandidates(apt) {
 function fuelHintsFor(u) {
   return fuelApts().filter(o => o.st === 'part' && Math.abs(u.sum - o.need) < 0.5);
 }
+function fuelSenderHint(u) {
+  if (!u.sender) return '';
+  const k = u.sender.toLowerCase(), apts = [];
+  (D.fuel.admin.pays || []).forEach(p => { if (p.sender && p.sender.toLowerCase() === k && apts.indexOf(p.apt) < 0) apts.push(p.apt); });
+  return apts.length ? '<div class="sub" style="font-weight:500">Цей відправник цього місяця вже платив за кв.\u00a0' + apts.map(esc).join(', ') + '. Перевірте, чи це та сама квартира.</div>' : '';
+}
 
 function fuelUnknownView() {
   const unk = D.fuel.admin.unknown || [];
   if (!unk.length) return '<div class="card"><div class="empty">Усі платежі привʼязані до квартир</div></div>';
-  return '<div class="sub" style="font-weight:500">Нові зверху. Вкажіть квартиру — інші платежі цього відправника привʼяжуться самі.</div>' +
+  return '<div class="sub" style="font-weight:500">Нові зверху. Квартира визначається лише з коментаря, тож решту привʼяжіть вручну. Шукайте за сумою, наприклад 1470.</div>' +
     '<div class="card" style="gap:0">' + unk.slice(0, ui.fuelMore).map(u => {
       const hints = fuelHintsFor(u);
       return '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(u.sum) + ' грн</span><span class="sub" style="font-weight:500">' + esc(payDate(u.date)) + '</span></div>' +
         '<div class="who">' + esc(u.sender || 'Відправник прихований') + '</div>' +
         '<div class="what">' + esc(u.comment || 'без коментаря') + '</div>' +
         hints.map(o => '<div class="hint"><span>Кв. ' + esc(o.apt) + ' бракує саме ' + fmtMoney(o.need) + ' грн</span><button class="btn sm graph" data-t="' + esc(u.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelAssignTo(this.dataset.t,this.dataset.a)">До кв. ' + esc(o.apt) + '</button></div>').join('') +
-        '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0;height:40px" aria-label="Номер квартири для платежу ' + esc(fmtMoney(u.sum)) + ' грн" autocomplete="off" placeholder="Номер квартири…" value="' + esc(ui.fuelTx[u.tx] || '') + '" oninput="ui.fuelTx[this.dataset.t]=this.value" data-t="' + esc(u.tx) + '">' +
-        '<button class="btn sm graph" data-t="' + esc(u.tx) + '" onclick="fuelAssign(this.dataset.t)">Привʼязати</button></div>' +
+        fuelSenderHint(u) + fuelAssignRow(u) +
         '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(u.tx) + '" onclick="fuelIgnore(this.dataset.t,true)">Не внесок</button></div>';
     }).join('') + '</div>' +
     (unk.length > ui.fuelMore ? '<button class="btn ghost" onclick="ui.fuelMore+=30;render()">Показати ще ' + Math.min(30, unk.length - ui.fuelMore) + ' з ' + (unk.length - ui.fuelMore) + '</button>' : '');
@@ -957,6 +1011,7 @@ function admin() {
   const ents = []; for (let i = 1; i <= D.entrances; i++) ents.push(i);
   const chipSel = (on) => on ? 'background:var(--yellow);color:var(--ink);border-color:var(--yellow)' : 'background:transparent;color:#fff;border-color:#6B7079';
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Керування</div></div>' +
+    fuelEntry() +
     '<div class="grid3"><div class="tile"><span class="v" style="font-size:22px">' + fresh.length + '</span><span class="k">потребують уваги</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.problems.filter(p => p.status === 'В роботі').length + '</span><span class="k">в роботі</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.polls.filter(p => p.open).length + '</span><span class="k">опитування</span></div></div>' +
     '<div class="label">Світло (ручне виправлення)</div><div class="card"><div class="chips">' + [0].concat(ents).map(e => '<button class="chip' + (ui.lsec === e ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="ui.lsec=' + e + ';render()">' + (e ? 'Секція ' + e : 'Усі секції') + '</button>').join('') + '</div>' +
     '<div class="grid2"><button class="btn yellow" onclick="run(\'lightSet\',{on:true,section:ui.lsec},\'Світло: є\')">Світло є</button><button class="btn graph" onclick="run(\'lightSet\',{on:false,section:ui.lsec},\'Світло: немає\')">Світла немає</button></div></div>' +
@@ -970,7 +1025,6 @@ function admin() {
     '<div class="label">Статуси будинку · тап змінює</div><div class="card" style="gap:0">' +
     D.statuses.filter(s => !isLift(s)).map(s => '<div class="admin-line"><span style="font-weight:600">' + esc(s.name) + (s.entrance ? ' · секція ' + s.entrance : '') + '</span><div class="chips">' +
       s.options.map(o => '<button class="chip' + (o.value === s.value ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="run(\'setStatus\',{row:' + s.row + ',value:this.dataset.v,tone:this.dataset.t},\'Оновлено\')" data-v="' + esc(o.value) + '" data-t="' + esc(o.tone) + '">' + esc(o.value) + '</button>').join('') + '</div></div>').join('') + '</div>' +
-    fuelAdmin() +
     '<div class="label">Потребують уваги</div>' + (fresh.length ? fresh.map(problemCard).join('') : '<div class="empty">Усе оброблено</div>') +
     '<div class="card dark" style="gap:10px"><div style="font-weight:700;font-size:16px">Оголошення / термінове</div>' +
     '<div class="chips">' + [0].concat(ents).map(e => '<button class="chip" style="height:32px;font-size:12px;' + chipSel(u.ent === e) + '" onclick="ui.urgent.ent=' + e + ';render()">' + (e ? 'Секція ' + e : 'Весь будинок') + '</button>').join('') + '</div>' +

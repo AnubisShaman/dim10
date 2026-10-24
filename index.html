@@ -2,9 +2,11 @@
 <html lang="uk">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
 <title>10 будинок</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ===== Кольори фасаду 10 будинку ===== */
 :root{
@@ -13,7 +15,7 @@
   --ok-bg:#DCEFE5; --ok:#1E6B4A; --bad-bg:#F7E0DA; --bad:#8A2E12; --info-bg:#E6E8EB; --info:#3A3F47; --soft:#EEF0F2; --yel-bg:#FCEFC2; --yel-ink:#6B5300;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,system-ui,sans-serif;font-size:.9375rem;line-height:1.45;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:'Manrope',system-ui,sans-serif;font-size:15px}
 button,input,textarea{font-family:inherit;font-size:inherit;color:inherit}
 button{cursor:pointer}
 .app{max-width:520px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column}
@@ -67,6 +69,15 @@ button{cursor:pointer}
 .pend.on{background:#F2C12E} .pend.off{background:#4A4F57}
 .legend .pdot{background:linear-gradient(90deg,#F2C12E 50%,#4A4F57 50%);border-radius:6px}
 .pendbox{background:var(--yel-bg);color:var(--yel-ink);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600;line-height:1.4}
+.fuel{border-radius:24px;padding:18px;display:flex;flex-direction:column;gap:12px}
+.fuel.on{background:var(--card)} .fuel.grace{background:var(--yel-bg)} .fuel.off{background:var(--bad-bg)}
+.keyrow{display:flex;align-items:center;gap:12px}
+.keyic{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fuel.on .keyic{background:var(--ok-bg)} .fuel.grace .keyic{background:var(--yellow)} .fuel.off .keyic{background:#fff}
+.banner{border-radius:18px;padding:12px 14px;display:flex;align-items:center;gap:12px;border:none;text-align:left;width:100%}
+.banner.grace{background:var(--yel-bg);color:var(--yel-ink)} .banner.off{background:var(--bad-bg);color:var(--bad)}
+.aptlist{display:flex;flex-wrap:wrap;gap:6px}
+.aptlist span{background:var(--bg);border-radius:8px;padding:4px 8px;font-size:13px;font-weight:700}
 .field{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600;color:var(--muted)}
 .input{height:48px;border-radius:14px;border:1px solid var(--line2);background:var(--card);padding:0 14px;color:var(--ink);font-size:15px}
 textarea.input{height:96px;padding:12px 14px;resize:none;line-height:1.4}
@@ -99,109 +110,11 @@ nav.tabs button.on{background:var(--yellow);color:var(--ink);font-weight:800}
 .invite{background:var(--yel-bg);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
 .invite code{font-size:13px;word-break:break-all;color:var(--yel-ink);font-family:inherit;font-weight:700}
 a{color:var(--graph)}
-
-/* ===== Apple-шар (скилл apple-design) =====
-   §1 відгук на натискання · §3-4 пружини (damping 1.0) · §7 просторова узгодженість
-   §12 матеріали і глибина · §14 reduced motion / transparency / contrast · §15 типографіка */
-:root{
-  --spring:cubic-bezier(.22,1,.36,1);
-  --press:100ms;
-  --glass:rgba(255,255,255,.72);
-  --shadow-1:0 1px 2px rgba(35,38,43,.05);
-  --shadow-2:0 1px 2px rgba(35,38,43,.05),0 8px 24px rgba(35,38,43,.07);
-  --shadow-3:0 2px 4px rgba(35,38,43,.06),0 14px 36px rgba(35,38,43,.14);
-}
-
-/* типографіка: великий текст стискаємо, дрібний трохи розкриваємо */
-.h1{font-weight:700;font-size:1.625rem;line-height:1.08;letter-spacing:-.022em;text-wrap:balance}
-.h2{font-weight:700;font-size:1.3125rem;line-height:1.15;letter-spacing:-.016em;text-wrap:balance}
-.label{font-weight:600;letter-spacing:.07em}
-.sub,.tile .k,.tag,.legend,.sec .lb,.sec .age{letter-spacing:.01em}
-
-/* §1 відгук одразу на дотик, повернення пружиною */
-button,a.iconbtn,.card[onclick]{touch-action:manipulation;transition:transform 240ms var(--spring),background-color 160ms ease,color 160ms ease,border-color 160ms ease,opacity 160ms ease}
-button:active,a.iconbtn:active{transform:scale(.97);transition-duration:var(--press),160ms,160ms,160ms,160ms}
-.card[onclick]:active{transform:scale(.985);transition-duration:var(--press),160ms,160ms,160ms,160ms}
-button:disabled:active{transform:none}
-nav.tabs button:active{transform:scale(.94)}
-button:focus-visible,a:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-.input:focus{border-color:var(--graph);outline:none;box-shadow:0 0 0 3px rgba(242,193,46,.45)}
-
-/* §12 глибина: чим більша поверхня, тим глибша тінь */
-.card{box-shadow:var(--shadow-1)}
-.card.dark{box-shadow:var(--shadow-2)}
-.lightc{box-shadow:var(--shadow-2);border-radius:28px}
-
-/* §12 нижня панель як скляний матеріал, контент ковзає під нею */
-nav.tabs{background:var(--glass);-webkit-backdrop-filter:blur(22px) saturate(180%);backdrop-filter:blur(22px) saturate(180%);box-shadow:var(--shadow-3),inset 0 0 0 1px rgba(255,255,255,.55),inset 0 1px 0 rgba(255,255,255,.9);z-index:5;isolation:isolate}
-nav.tabs button{position:relative;z-index:1;color:var(--graph);font-weight:600;letter-spacing:.01em}
-nav.tabs button.on{background:transparent;color:var(--ink);font-weight:700}
-nav.tabs .pill{position:absolute;z-index:0;top:8px;bottom:8px;left:8px;width:calc((100% - 28px) / 4);border-radius:20px;background:var(--yellow);transform:translateX(calc(var(--i,0) * (100% + 4px)));transition:transform 320ms var(--spring)}
-/* §12 замість жорсткої межі: м'яке згасання знизу там, де плаваюча панель накладається на контент */
-.edge{position:fixed;left:0;right:0;bottom:0;height:calc(100px + env(safe-area-inset-bottom));pointer-events:none;z-index:4;background:linear-gradient(to top,rgba(242,243,245,.94),rgba(242,243,245,0));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);-webkit-mask-image:linear-gradient(to top,#000 45%,transparent);mask-image:linear-gradient(to top,#000 45%,transparent)}
-
-/* §7 екрани: вхід і вихід тим самим шляхом. Вперед справа, назад зліва, вкладки без зсуву */
-@keyframes enter-r{from{opacity:0;transform:translateX(28px)}to{opacity:1;transform:none}}
-@keyframes enter-l{from{opacity:0;transform:translateX(-28px)}to{opacity:1;transform:none}}
-@keyframes enter-f{from{opacity:0}to{opacity:1}}
-@keyframes fade-out{to{opacity:0}}
-.screen.in-push{animation:enter-r 320ms var(--spring) backwards}
-.screen.in-pop{animation:enter-l 280ms var(--spring) backwards}
-.screen.in-tab{animation:enter-f 150ms ease-out backwards}
-@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.in-push .bar>i,.in-pop .bar>i,.in-tab .bar>i,.in-bars .bar>i{transform-origin:left;animation:grow 500ms var(--spring) 60ms backwards}
-
-/* зміна статусу світла в секції: колонка «осідає» */
-@keyframes settle{from{transform:scale(.93);filter:brightness(1.1)}to{transform:none;filter:none}}
-.col.changed{animation:settle 520ms var(--spring)}
-
-/* тост матеріалізується (розмиття і масштаб разом), а не просто з'являється */
-.toast{background:rgba(35,38,43,.84);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);box-shadow:var(--shadow-3);letter-spacing:.005em;animation:mat-in 300ms var(--spring) backwards}
-.toast.out{animation:mat-out 180ms cubic-bezier(.23,1,.32,1) forwards}
-@keyframes mat-in{from{opacity:0;filter:blur(10px);transform:translateX(-50%) translateY(10px) scale(.94)}to{opacity:1;filter:none;transform:translateX(-50%)}}
-@keyframes mat-out{to{opacity:0;filter:blur(8px);transform:translateX(-50%) scale(.96)}}
-
-/* §14 зменшений рух: перехід через прозорість замість зсувів і пружин */
-@media (prefers-reduced-motion:reduce){
-  .screen.in-push,.screen.in-pop{animation:enter-f 200ms ease-out backwards}
-  .in-push .bar>i,.in-pop .bar>i,.in-tab .bar>i,.in-bars .bar>i{animation:none}
-  .col.changed{animation:none}
-  .skel{animation:none}
-  .toast{animation:enter-f 200ms ease-out backwards}
-  .toast.out{animation:fade-out 150ms ease-out forwards}
-  nav.tabs .pill{transition:none}
-  button:active,a.iconbtn:active,.card[onclick]:active,nav.tabs button:active{transform:none;opacity:.7}
-}
-@media (prefers-reduced-transparency:reduce){
-  nav.tabs{background:#fff;-webkit-backdrop-filter:none;backdrop-filter:none}
-  .edge{-webkit-backdrop-filter:none;backdrop-filter:none;background:linear-gradient(to top,var(--bg),rgba(242,243,245,0))}
-  .toast{background:var(--ink);-webkit-backdrop-filter:none;backdrop-filter:none}
-}
-@media (prefers-contrast:more){
-  nav.tabs{background:#fff;box-shadow:var(--shadow-3),inset 0 0 0 1.5px var(--graph)}
-  .card{box-shadow:inset 0 0 0 1px var(--line2)}
-  .sub,.tile .k{color:var(--ink)}
-}
-
-/* ===== Аудит (web-design-guidelines + emil-design-eng) ===== */
-html,body{touch-action:manipulation}             /* без зуму подвійним тапом, щіпок працює */
-body{text-wrap:pretty}
-.input,input.input,textarea.input{font-size:16px} /* iOS не наближає поле при фокусі */
-/* зона нажимання ≥ 44px без зміни вигляду */
-.chip,.btn.sm,.chatbtn,.scope{position:relative}
-.chip::before,.btn.sm::before,.chatbtn::before,.scope::before{content:"";position:absolute;inset:-6px}
-/* колір не єдиний сигнал: ліфт, що не працює, закреслений */
-.lift.bad{text-decoration:line-through;text-decoration-thickness:1.5px}
-.card[onclick]:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
-/* запит триває довше 150 мс: кнопки притухають */
-.is-busy{cursor:progress}
-.is-busy .btn{opacity:.6}
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
-<div id="toast" role="status" aria-live="polite"></div>
-<div class="edge" aria-hidden="true"></div>
+<div id="toast"></div>
 
 <script>
 // ===== НАЛАШТУВАННЯ =====
@@ -221,7 +134,7 @@ let D = null;
 let route = 'home';
 let stack = [];
 let busy = false;
-const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '' };
+const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', fuelTx: {}, fuelApt: '' };
 try { ui.all = localStorage.getItem('b10_all') === '1'; } catch (e) {}
 
 const ICON = {
@@ -238,6 +151,7 @@ const ICON = {
   back: '<path d="M15 18l-6-6 6-6"/>',
   share: '<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/>',
   copy: '<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>',
+  key: '<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2"/><path d="M16 7l3 3"/><path d="M14 9l2 2"/>',
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
 };
 function ic(name, color, size) {
@@ -270,11 +184,7 @@ function haptic(type) { try { tg && tg.HapticFeedback && (type === 'ok' ? tg.Hap
 function toast(msg) {
   const el = document.getElementById('toast');
   el.innerHTML = '<div class="toast">' + esc(msg) + '</div>';
-  clearTimeout(toast.t); clearTimeout(toast.t2);
-  toast.t = setTimeout(() => {
-    const t = el.firstChild; if (t) t.classList.add('out');
-    toast.t2 = setTimeout(() => { el.innerHTML = ''; }, 200);
-  }, 2600);
+  clearTimeout(toast.t); toast.t = setTimeout(() => { el.innerHTML = ''; }, 2600);
 }
 function entName(e) { return e ? 'Секція ' + e : 'Весь будинок'; }
 function visible(e) { return ui.all || !e || !D.me.entrance || e === D.me.entrance; }
@@ -300,7 +210,6 @@ async function api(action, data) {
 async function run(action, data, okMsg) {
   if (busy) return false;
   busy = true;
-  const bt = setTimeout(function () { $app.classList.add('is-busy'); }, 150);
   try {
     D = await api(action, data);
     save();
@@ -310,17 +219,16 @@ async function run(action, data, okMsg) {
   } catch (e) {
     toast(e.message || 'Помилка, спробуйте ще раз');
     return false;
-  } finally { clearTimeout(bt); $app.classList.remove('is-busy'); busy = false; }
+  } finally { busy = false; }
 }
 function save() { try { const c = Object.assign({}, D); delete c.invite; localStorage.setItem('b10_cache', JSON.stringify(c)); } catch (e) {} }
 
 // ---------- навігація ----------
 function go(r) {
-  if (['new', 'useful', 'admin'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
-  else { stack = []; ui.anim = r === route ? '' : 'tab'; }
+  if (['new', 'useful', 'admin'].indexOf(r) >= 0) stack.push(route); else stack = [];
   route = r; render(); window.scrollTo(0, 0);
 }
-function back() { route = stack.pop() || 'home'; ui.anim = 'pop'; render(); window.scrollTo(0, 0); }
+function back() { route = stack.pop() || 'home'; render(); window.scrollTo(0, 0); }
 function syncBack() {
   if (!tg || !tg.BackButton) return;
   if (stack.length) tg.BackButton.show(); else tg.BackButton.hide();
@@ -331,13 +239,7 @@ function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
   const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin }[route] || home;
-  let scr = document.getElementById('scr');
-  if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
-  const anim = ui.anim; ui.anim = '';
-  scr.className = 'screen';
-  scr.innerHTML = s();
-  if (anim) { void scr.offsetWidth; scr.className = 'screen in-' + anim; }
-  setNav();
+  $app.innerHTML = '<div class="screen">' + s() + '</div>' + tabs();
   syncBack();
 }
 
@@ -359,29 +261,17 @@ function gate() {
     : 'Щоб увійти, підтвердіть, що ви живете тут. Це хвилина в боті і робиться один раз.<br><br>Вас запросили мешканці квартири? Відкрийте посилання-запрошення від них.';
   const btn = st === 'pending' ? '<button class="btn ghost" onclick="location.reload()">Перевірити ще раз</button>'
     : '<button class="btn yellow" onclick="openBot()">Пройти реєстрацію</button>';
-  return '<div class="center">' + facade() + '<div class="label">10 будинок</div><div class="h1" role="heading" aria-level="1" style="font-size:30px;line-height:1.1">' + title + '</div><div style="color:var(--graph);line-height:1.5">' + text + '</div>' + btn + '</div>';
+  return '<div class="center">' + facade() + '<div class="label">10 будинок</div><div class="h1" style="font-size:30px;line-height:1.1">' + title + '</div><div style="color:var(--graph);line-height:1.5">' + text + '</div>' + btn + '</div>';
 }
 function openBot() {
   const url = 'https://t.me/' + CONFIG.BOT_USERNAME;
   if (tg && tg.openTelegramLink) { tg.openTelegramLink(url); tg.close(); } else location.href = url;
 }
 
-const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me' }[route] || route; }
 function tabs() {
-  const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
-  const cur = tabCur();
-  return '<nav class="tabs" id="nav" style="--i:' + Math.max(0, TAB_KEYS.indexOf(cur)) + '"><i class="pill" aria-hidden="true"></i>' + t.map(x => '<button class="' + (cur === x[0] ? 'on' : '') + '" onclick="go(\'' + x[0] + '\')">' + ic(x[1], null, 20) + x[2] + '</button>').join('') + '</nav>';
-}
-function setNav() {
-  const nav = document.getElementById('nav'); if (!nav) return;
-  const cur = tabCur();
-  nav.style.setProperty('--i', Math.max(0, TAB_KEYS.indexOf(cur)));
-  Array.prototype.forEach.call(nav.querySelectorAll('button'), function (b, k) {
-    const on = TAB_KEYS[k] === cur;
-    b.classList.toggle('on', on);
-    if (on) b.setAttribute('aria-current', 'page'); else b.removeAttribute('aria-current');
-  });
+  const t = [['home', 'home', 'Дім'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
+  const cur = { new: 'problems', useful: 'home', admin: 'me' }[route] || route;
+  return '<nav class="tabs">' + t.map(x => '<button class="' + (cur === x[0] ? 'on' : '') + '" onclick="go(\'' + x[0] + '\')">' + ic(x[1], null, 20) + x[2] + '</button>').join('') + '</nav>';
 }
 
 function scopeBtn() {
@@ -411,25 +301,20 @@ function lightCard() {
   const L = (D.light && D.light.sections) || {};
   const me = D.me, n = D.entrances || 4;
   let on = 0, known = 0;
-  const nextLight = {};
   const cols = [];
   for (let s = 1; s <= n; s++) {
     const x = L[s] || { status: 'unknown' };
     if (x.status === 'on') on++;
     if (x.status !== 'unknown') known++;
     const isMe = s === me.entrance;
-    const prevSt = ui.prevLight && ui.prevLight[s];
-    const chg = !!prevSt && prevSt !== x.status;
-    nextLight[s] = x.status;
     const word = x.status === 'on' ? 'світло є' : x.status === 'off' ? 'світла немає' : 'ще не відмічали';
-    cols.push('<div class="sec' + (isMe ? ' me' : '') + '"><div class="col ' + x.status + (isMe ? ' me' : '') + (chg ? ' changed' : '') + '" role="img" aria-label="Секція ' + s + ': ' + word + '">' +
+    cols.push('<div class="sec' + (isMe ? ' me' : '') + '"><div class="col ' + x.status + (isMe ? ' me' : '') + '" role="img" aria-label="Секція ' + s + ': ' + word + '">' +
       (x.pending ? '<i class="pend ' + x.pending.dir + '" title="очікує підтвердження"></i>' : '') +
       (x.status === 'on' ? ic('bulb', '#23262B', 20) : x.status === 'off' ? ic('nobulb', '#C6CBD1', 18) : '') + '</div>' +
       '<span class="lb">Секц. ' + s + '</span><span class="age">' + (x.status === 'unknown' ? '—' : shortAgo(x.at)) + '</span></div>');
   }
-  ui.prevLight = nextLight;
   const title = known ? on + ' з ' + n + ' секцій зі світлом' : 'Поки невідомо';
-  let h = '<div class="lightc"><div style="display:flex;flex-direction:column;gap:4px"><div class="label">Світло в будинку</div><div class="h2" role="heading" aria-level="2">' + title + '</div></div>' +
+  let h = '<div class="lightc"><div style="display:flex;flex-direction:column;gap:4px"><div class="label">Світло в будинку</div><div class="h2">' + title + '</div></div>' +
     '<div class="secs">' + cols.join('') + '</div>' +
     '<div class="legend"><span><i style="background:#F2C12E"></i>є світло</span><span><i style="background:#4A4F57"></i>немає</span><span><i style="background:#D5D9DE"></i>ще не відмічали</span><span><i class="pdot"></i>чекає підтвердження</span></div>';
   if (me.entrance) {
@@ -453,27 +338,22 @@ function lightCard() {
   }
   return h + '</div>';
 }
-function markLight(on) {
-  if (busy) return;
-  const prev = ui.myLight;
-  ui.myLight = on ? 'on' : 'off'; haptic(); render();
-  run('light', { on: on }, 'Дякуємо, відмітку враховано').then(function (ok) { if (!ok) { ui.myLight = prev; render(); } });
-}
+function markLight(on) { ui.myLight = on ? 'on' : 'off'; haptic(); run('light', { on: on }, 'Дякуємо, відмітку враховано'); }
 
 function home() {
   const me = D.me;
   const st = D.statuses.filter(s => !isLift(s) && (!s.entrance || s.entrance === me.entrance));
   const myLifts = D.statuses.filter(s => isLift(s) && me.entrance && s.entrance === me.entrance);
-  const liftCard = myLifts.length ? '<div class="card"><div class="row"><span style="font-weight:700">Ліфти · секція ' + me.entrance + '</span><span class="sub" style="font-weight:500">закреслено — не працює</span></div><div class="lifts">' +
-    myLifts.map(s => '<div class="lift ' + (s.tone === 'ok' ? 'ok' : 'bad') + '" role="img" aria-label="' + esc(liftName(s)) + ': ' + (s.tone === 'ok' ? 'працює' : 'не працює') + '"><i></i>' + esc(liftName(s)) + '</div>').join('') + '</div></div>' : '';
+  const liftCard = myLifts.length ? '<div class="card"><div class="row"><span style="font-weight:700">Ліфти · секція ' + me.entrance + '</span><span class="sub" style="font-weight:500">зелений — працює</span></div><div class="lifts">' +
+    myLifts.map(s => '<div class="lift ' + (s.tone === 'ok' ? 'ok' : 'bad') + '"><i></i>' + esc(liftName(s)) + '</div>').join('') + '</div></div>' : '';
   const tiles = st.map(s => '<div class="tile"><span class="k">' + esc(s.name + (s.entrance ? ' с. ' + s.entrance : '')) + '</span><span class="v t-' + esc(s.tone) + '">' + esc(s.value) + '</span></div>').join('');
   const feed = [].concat(
     D.news.filter(n => visible(n.entrance)).map(n => ({ t: n.time, html: '<div class="card" style="gap:6px"><div class="row"><span class="tag ' + (n.entrance ? 'soft' : 'yel') + '">' + (n.entrance ? entName(n.entrance) : 'Оголошення') + '</span><span class="sub" style="font-weight:500">' + ago(n.time) + '</span></div><div style="font-weight:700;white-space:pre-line">' + esc(n.text) + '</div></div>' })),
-    D.problems.filter(p => p.status !== 'Вирішено' && visible(p.entrance)).map(p => ({ t: p.created, html: '<div class="card" style="gap:6px" role="button" tabindex="0" onkeydown="if(event.keyCode===13||event.keyCode===32){this.click();return false}" onclick="go(\'problems\')"><div class="row"><span class="tag ' + (p.entrance === me.entrance && p.entrance ? 'info' : p.entrance ? 'soft' : 'bad') + '">' + entName(p.entrance) + '</span><span class="sub" style="font-weight:500">' + ago(p.created) + '</span></div><div style="font-weight:700">' + esc(p.category) + ': ' + esc(p.text) + '</div><div class="sub" style="font-weight:500">' + p.count + ' ' + plural(p.count, 'квартира', 'квартири', 'квартир') + ' · ' + esc(String(p.status).toLowerCase()) + '</div></div>' }))
+    D.problems.filter(p => p.status !== 'Вирішено' && visible(p.entrance)).map(p => ({ t: p.created, html: '<div class="card" style="gap:6px" onclick="go(\'problems\')"><div class="row"><span class="tag ' + (p.entrance === me.entrance && p.entrance ? 'info' : p.entrance ? 'soft' : 'bad') + '">' + entName(p.entrance) + '</span><span class="sub" style="font-weight:500">' + ago(p.created) + '</span></div><div style="font-weight:700">' + esc(p.category) + ': ' + esc(p.text) + '</div><div class="sub" style="font-weight:500">' + p.count + ' ' + plural(p.count, 'квартира', 'квартири', 'квартир') + ' · ' + esc(String(p.status).toLowerCase()) + '</div></div>' }))
   ).sort((a, b) => b.t - a.t).slice(0, 5);
-  return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">10 будинок</div></div>' +
+  return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв. ' + esc(me.apt) : 'адміністратор') + '</div><div class="h1">10 будинок</div></div>' +
     '<button class="iconbtn" aria-label="Корисне" onclick="go(\'useful\')">' + ic('phone', '#23262B', 20) + '</button></div>' +
-    confirmCards() + lightCard() +
+    confirmCards() + fuelBanner() + lightCard() +
     (tiles ? '<div class="grid3">' + tiles + '</div>' : '') + liftCard +
     '<div class="row"><div style="font-size:16px;font-weight:700">Що відбувається</div>' + scopeBtn() + '</div>' +
     (feed.length ? feed.map(f => f.html).join('') : '<div class="empty">Усе спокійно</div>') +
@@ -485,9 +365,9 @@ function home() {
 function problemCard(p) {
   const tone = p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad';
   const pct = Math.min(100, Math.round(p.count / Math.max(20, D.totalApts / Math.max(1, D.entrances)) * 100));
-  let html = '<div class="card" style="gap:10px"><div class="row"><span class="sub">' + entName(p.entrance) + (p.place ? ' · ' + esc(p.place) : '') + ' · №\u00a0' + p.id + '</span><span class="tag ' + tone + '">' + esc(p.status) + '</span></div>' +
+  let html = '<div class="card" style="gap:10px"><div class="row"><span class="sub">' + entName(p.entrance) + (p.place ? ' · ' + esc(p.place) : '') + ' · № ' + p.id + '</span><span class="tag ' + tone + '">' + esc(p.status) + '</span></div>' +
     '<div><div style="font-size:16px;font-weight:700">' + esc(p.category) + '</div><div style="font-size:14px;color:var(--muted);margin-top:2px;white-space:pre-line">' + esc(p.text) + '</div>' +
-    '<div class="sub" style="font-weight:500;margin-top:4px">' + ago(p.created) + (p.own ? ' · ваша заявка' : '') + (D.me.isAdmin && p.authorApt ? ' · від кв.\u00a0' + esc(p.authorApt) + (/член/.test(p.authorRole || '') ? ' (член сімʼї)' : '') : '') + '</div>' +
+    '<div class="sub" style="font-weight:500;margin-top:4px">' + ago(p.created) + (p.own ? ' · ваша заявка' : '') + (D.me.isAdmin && p.authorApt ? ' · від кв. ' + esc(p.authorApt) + (/член/.test(p.authorRole || '') ? ' (член сімʼї)' : '') : '') + '</div>' +
     (p.confirm === 'підтверджено' ? '<div style="font-size:13px;font-weight:700;color:var(--ok);margin-top:4px">✓ Мешканець підтвердив, що вирішено</div>'
       : p.confirm === 'не вирішено' ? '<div style="font-size:13px;font-weight:700;color:var(--bad);margin-top:4px">Мешканець повідомив: не вирішено</div>' : '') + '</div>' +
     '<div class="bar"><i style="width:' + pct + '%;background:' + (tone === 'ok' ? 'var(--ok)' : 'var(--yellow-d)') + '"></i></div>' +
@@ -501,27 +381,19 @@ function problemCard(p) {
 }
 function confirmCards() {
   return D.problems.filter(p => p.own && p.status === 'Вирішено' && !p.confirm).map(p =>
-    '<div class="card" style="gap:10px;border:2px solid var(--ok)"><div style="font-weight:700;font-size:15px">Заявку №\u00a0' + p.id + ' (' + esc(p.category) + ') позначено вирішеною</div>' +
+    '<div class="card" style="gap:10px;border:2px solid var(--ok)"><div style="font-weight:700;font-size:15px">Заявку № ' + p.id + ' (' + esc(p.category) + ') позначено вирішеною</div>' +
     '<div style="font-size:14px;color:var(--muted)">' + esc(p.text) + '</div><div style="font-weight:600">Проблему справді усунуто?</div>' +
     '<div class="grid2"><button class="btn green" onclick="confirmProblem(' + p.id + ',true)">Так, вирішено</button>' +
     '<button class="btn ghost" onclick="confirmProblem(' + p.id + ',false)">Ні, не вирішено</button></div></div>').join('');
 }
 function confirmProblem(id, ok) { haptic(); run('confirmProblem', { id: id, ok: ok }, ok ? 'Дякуємо! Заявку закрито' : 'Заявку знову відкрито'); }
-function metoo(id) {
-  if (busy) return;
-  haptic();
-  const p = D.problems.find(function (x) { return x.id === id; });
-  if (p) { p.mine = !p.mine; p.count += p.mine ? 1 : -1; render(); }
-  run('metoo', { id: id }).then(function (ok) {
-    if (!ok) api('load').then(function (d) { D = d; render(); }).catch(function () {});
-  });
-}
+function metoo(id) { haptic(); run('metoo', { id: id }); }
 function setProblem(id, s) { run('problemStatus', { id: id, status: s }, 'Статус оновлено'); }
 
 function problems() {
   const open = ui.ptab === 'open';
   const list = D.problems.filter(p => (p.status !== 'Вирішено') === open && visible(p.entrance));
-  return '<div class="row"><div class="h1" role="heading" aria-level="1">Заявки</div><button class="iconbtn" style="background:var(--yellow)" aria-label="Нова заявка" onclick="go(\'new\')">' + ic('plus', '#23262B') + '</button></div>' +
+  return '<div class="row"><div class="h1">Заявки</div><button class="iconbtn" style="background:var(--yellow)" aria-label="Нова заявка" onclick="go(\'new\')">' + ic('plus', '#23262B') + '</button></div>' +
     '<div class="row"><div class="chips">' + [['open', 'Актуальні'], ['done', 'Вирішені']].map(x => '<button class="chip' + (ui.ptab === x[0] ? ' on' : '') + '" onclick="ui.ptab=\'' + x[0] + '\';render()">' + x[1] + '</button>').join('') + '</div>' + scopeBtn() + '</div>' +
     (list.length ? list.map(problemCard).join('') : '<div class="empty">' + (open ? 'Відкритих заявок немає' : 'Поки нічого не вирішено') + '</div>');
 }
@@ -529,27 +401,27 @@ function problems() {
 function newProblem() {
   const f = ui.form;
   const cats = ['Ліфт', 'Двері / доводчик', 'Світло в секції', 'Вода', 'Опалення', 'Прибирання', 'Шум', 'Інше'];
-  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Нова заявка</div></div>' +
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2">Нова заявка</div></div>' +
     '<div class="label">Що сталося?</div><div class="chips">' + cats.map(c => '<button class="chip' + (f.cat === c ? ' on' : '') + '" onclick="ui.form.cat=this.textContent;render()">' + c + '</button>').join('') + '</div>' +
     '<div class="label">Кого стосується?</div><div class="chips">' +
     '<button class="chip' + (!f.whole ? ' on' : '') + '" onclick="ui.form.whole=false;render()">' + (D.me.entrance ? 'Моя секція (' + D.me.entrance + ')' : 'Моя секція') + '</button>' +
     '<button class="chip' + (f.whole ? ' on' : '') + '" onclick="ui.form.whole=true;render()">Весь будинок / двір</button></div>' +
-    '<label class="field">Де саме (необовʼязково)<input class="input" maxlength="60" autocomplete="off" placeholder="напр. 7 поверх, ліфт ліворуч…" value="' + esc(f.place) + '" oninput="ui.form.place=this.value"></label>' +
-    '<label class="field">Коротко опишіть<textarea class="input" maxlength="500" placeholder="Що саме не так…" oninput="ui.form.text=this.value">' + esc(f.text) + '</textarea></label>' +
+    '<label class="field">Де саме (необовʼязково)<input class="input" maxlength="60" placeholder="напр. 7 поверх, ліфт ліворуч" value="' + esc(f.place) + '" oninput="ui.form.place=this.value"></label>' +
+    '<label class="field">Коротко опишіть<textarea class="input" maxlength="500" placeholder="Що саме не так?" oninput="ui.form.text=this.value">' + esc(f.text) + '</textarea></label>' +
     '<div class="note">Побачать ' + (f.whole ? 'усі мешканці будинку' : 'мешканці вашої секції') + ' і зможуть відмітити «у мене теж». Ваше імʼя та квартиру сусіди не бачать.</div>' +
     '<button class="btn yellow" onclick="sendProblem()">Надіслати</button>';
 }
 async function sendProblem() {
   const f = ui.form;
   if (!f.text.trim()) { toast('Опишіть проблему кількома словами'); return; }
-  if (await run('newProblem', { category: f.cat, wholeHouse: f.whole, place: f.place, text: f.text }, 'Заявку надіслано')) { ui.form = { cat: 'Ліфт', whole: false, place: '', text: '' }; ui.ptab = 'open'; stack = []; route = 'problems'; ui.anim = 'tab'; render(); }
+  if (await run('newProblem', { category: f.cat, wholeHouse: f.whole, place: f.place, text: f.text }, 'Заявку надіслано')) { ui.form = { cat: 'Ліфт', whole: false, place: '', text: '' }; ui.ptab = 'open'; stack = []; route = 'problems'; render(); }
 }
 
 // ---------- голосування ----------
 function polls() {
   const list = D.polls;
   const open = list.filter(p => p.open), closed = list.filter(p => !p.open);
-  return '<div class="h1" role="heading" aria-level="1">Голосування</div>' +
+  return '<div class="h1">Голосування</div>' +
     (open.length ? open.map(pollCard).join('') : '<div class="empty">Активних опитувань немає</div>') +
     (closed.length ? '<div class="label">Завершені</div>' + closed.map(pollCard).join('') : '');
 }
@@ -605,8 +477,7 @@ function pickMulti(id, i) {
 async function saveMulti(id) {
   const s = ui.sel[id] || [];
   if (!s.length) return;
-  ui.anim = 'bars';
-  if (await run('vote', { id: id, options: s }, 'Вибір збережено')) { ui.sel[id] = null; ui.editing[id] = false; ui.anim = 'bars'; render(); } else ui.anim = '';
+  if (await run('vote', { id: id, options: s }, 'Вибір збережено')) { ui.sel[id] = null; ui.editing[id] = false; render(); }
 }
 function pollCard(p) {
   if (p.multi) return multiPollCard(p);
@@ -633,7 +504,7 @@ function pollCard(p) {
 function delPoll(id) {
   ask('Видалити опитування разом з усіма голосами? Це не можна скасувати.', ok => { if (ok) run('deletePoll', { id: id }, 'Опитування видалено'); });
 }
-function vote(id, o) { haptic(); ui.anim = 'bars'; run('vote', { id: id, option: o }, 'Голос враховано').then(function (ok) { if (!ok) ui.anim = ''; }); }
+function vote(id, o) { haptic(); run('vote', { id: id, option: o }, 'Голос враховано'); }
 
 // ---------- кабінет і квартира ----------
 function flatCard() {
@@ -657,9 +528,9 @@ function flatCard() {
     }
     h += '<button class="btn graph" onclick="makeInvite()"' + (f.left ? '' : ' disabled') + '>' + ic('plus', '#F2C12E', 20) + 'Запросити в квартиру</button>';
     if (f.openInvites) h += '<button class="btn sm ghost" style="align-self:flex-start" onclick="cancelInvites()">Скасувати запрошення, що очікують</button>';
-    h += '<div class="note">Запрошені бачать усе в застосунку і можуть подавати заявки від кв.\u00a0' + esc(f.apt) + '. Голосувати вони не можуть.</div>';
+    h += '<div class="note">Запрошені бачать усе в застосунку і можуть подавати заявки від кв. ' + esc(f.apt) + '. Голосувати вони не можуть.</div>';
   } else {
-    h += '<div class="note">Вас додано до кв.\u00a0' + esc(f.apt) + ' членом сімʼї. Ви можете подавати заявки, а голосує власник або орендар.</div>';
+    h += '<div class="note">Вас додано до кв. ' + esc(f.apt) + ' членом сімʼї. Ви можете подавати заявки, а голосує власник або орендар.</div>';
   }
   return h;
 }
@@ -668,7 +539,7 @@ async function makeInvite() {
   if (await run('invite', {}, 'Посилання створено')) { ui.invite = D.invite || ''; render(); }
 }
 function shareInvite() {
-  const u = 'https://t.me/share/url?url=' + encodeURIComponent(ui.invite) + '&text=' + encodeURIComponent('Запрошення в застосунок 10 будинку, кв.\u00a0' + D.me.apt);
+  const u = 'https://t.me/share/url?url=' + encodeURIComponent(ui.invite) + '&text=' + encodeURIComponent('Запрошення в застосунок 10 будинку, кв. ' + D.me.apt);
   if (tg && tg.openTelegramLink && tg.initData) tg.openTelegramLink(u); else window.open(u, '_blank');
 }
 function copyInvite() {
@@ -684,20 +555,132 @@ function removeMember(id, name) {
 function cabinet() {
   const me = D.me;
   const mine = D.problems.filter(p => p.own);
-  return '<div class="h1" role="heading" aria-level="1">Мій кабінет</div>' + confirmCards() +
+  return '<div class="h1">Мій кабінет</div>' + confirmCards() +
     '<div class="card" style="gap:14px;padding:18px;border-radius:24px"><div style="display:flex;align-items:center;gap:12px">' +
     '<div class="av y" style="width:52px;height:52px;border-radius:26px;font-size:18px">' + esc(initials(me.name)) + '</div>' +
     '<div><div style="font-size:17px;font-weight:700">' + esc(me.name) + '</div><div class="sub" style="font-weight:500">' + (me.username ? '@' + esc(me.username) : '') + '</div></div></div>' +
     (me.apt ? '<div class="grid3"><div class="tile" style="background:var(--bg)"><span class="k">Квартира</span><span class="v">' + esc(me.apt) + '</span></div><div class="tile" style="background:var(--bg)"><span class="k">Секція</span><span class="v">' + (me.entrance || '—') + '</span></div><div class="tile" style="background:var(--bg)"><span class="k">Статус</span><span class="v">' + esc(cap(me.role)) + '</span></div></div>' +
       '<div style="display:flex;align-items:center;gap:8px;background:var(--ok-bg);color:var(--ok);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">' + ic('shield', '#1E6B4A', 18) + (me.family ? 'Додано мешканцем квартири' : 'Підтверджено адміністратором') + '</div>' : '') +
     '</div>' +
+    fuelCard() +
     (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' : '') +
     flatCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
     '<div class="label">Мої заявки</div>' +
-    (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№\u00a0' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +
+    (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№ ' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +
     '<div style="font-size:12px;color:var(--muted);line-height:1.5">Телефон і ПІБ бачить лише адміністратор. Змінити квартиру чи статус можна через адміністратора. Сповіщення про ваші заявки приходять у чат із ботом.</div>';
 }
+// ---------- паливо / ключ від ліфта (добровільний внесок) ----------
+function monthName(k) { try { return new Date(k + '-01T12:00:00').toLocaleDateString('uk-UA', { month: 'long' }); } catch (e) { return k; } }
+function fuelState() { const f = D.fuel; return f && D.me.apt ? f.key : null; }
+function payFuel() {
+  const f = D.fuel; haptic();
+  const u = f.link + (f.link.indexOf('?') >= 0 ? '&' : '?') + 'a=' + f.amount + '&t=' + encodeURIComponent('кв ' + D.me.apt);
+  if (tg && tg.openLink && tg.initData) tg.openLink(u); else window.open(u, '_blank');
+}
+function copyText(t, ok) { try { navigator.clipboard.writeText(t).then(() => toast(ok || 'Скопійовано'), () => toast('Не вдалося скопіювати')); } catch (e) { toast('Не вдалося скопіювати'); } }
+const KEY_TXT = {
+  on: ['Ключ від ліфта активний', 'Внесок за {m} зараховано'],
+  claimed: ['Оплату заявлено', 'Ключ працює. Чекаємо звірки з випискою банки'],
+  grace: ['Ключ працює до {d} числа', 'Внесок за {m} ще не надійшов'],
+  part: ['Ключ від ліфта неактивний', 'Внесено {s} з {a} грн за {m}'],
+  off: ['Ключ від ліфта неактивний', 'Внесок за {m} ще не надійшов']
+};
+function keyTxt(i) {
+  const f = D.fuel;
+  return KEY_TXT[f.key][i].replace('{m}', monthName(f.month)).replace('{d}', f.due).replace('{s}', Math.round(f.sum || 0)).replace('{a}', f.amount);
+}
+function fuelBanner() {
+  const k = fuelState();
+  if (!k || k === 'on' || k === 'claimed') return '';
+  const cls = k === 'grace' ? 'grace' : 'off';
+  return '<button class="banner ' + cls + '" onclick="go(\'me\')">' + ic('key', null, 22) + '<span style="font-size:14px;font-weight:700;line-height:1.35">' +
+    esc(keyTxt(0) + ' · ' + keyTxt(1)) + '</span></button>';
+}
+function fuelCard() {
+  const f = D.fuel, k = fuelState();
+  if (!k) return '';
+  const cls = k === 'on' ? 'on' : (k === 'claimed' || k === 'grace') ? 'grace' : 'off';
+  let h = '<div class="label">Пальне для генератора · кв. ' + esc(D.me.apt) + '</div><div class="fuel ' + cls + '">' +
+    '<div class="keyrow"><div class="keyic">' + ic('key', cls === 'on' ? '#1E6B4A' : cls === 'off' ? '#8A2E12' : '#23262B', 24) + '</div>' +
+    '<div><div style="font-size:17px;font-weight:800">' + esc(keyTxt(0)) + '</div><div class="sub" style="font-weight:500;color:' + (cls === 'off' ? 'var(--bad)' : 'var(--muted)') + '">' + esc(keyTxt(1)) + '</div></div></div>';
+  if (k === 'part') h += '<div class="bar" style="height:8px;background:#fff"><i style="width:' + Math.min(100, Math.round(f.sum / f.amount * 100)) + '%;background:var(--yellow-d)"></i></div>';
+  if (k !== 'on') {
+    const left = Math.max(0, f.amount - Math.round(f.sum || 0));
+    h += '<div style="font-size:13px;line-height:1.45;color:var(--graph)">Добровільний внесок на пальне — <b>' + f.amount + ' грн</b> з квартири на місяць.</div>';
+    if (f.link) h += '<button class="btn yellow" onclick="payFuel()">Внести ' + (k === 'part' ? left : f.amount) + ' грн у банку</button>';
+    if (f.card) h += '<div style="background:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="sub" style="font-weight:500">Або переказом на картку</div>' +
+      '<div style="font-weight:800;letter-spacing:.04em">' + esc(f.card) + '</div></div><button class="btn sm ghost" onclick="copyText(\'' + esc(f.card.replace(/\s/g, '')) + '\',\'Номер картки скопійовано\')">' + ic('copy', null, 16) + '</button></div>';
+    h += '<div style="background:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="sub" style="font-weight:500">Обовʼязково вкажіть у коментарі</div>' +
+      '<div style="font-weight:800">кв ' + esc(D.me.apt) + '</div></div><button class="btn sm ghost" onclick="copyText(\'кв ' + esc(D.me.apt) + '\',\'Скопійовано\')">' + ic('copy', null, 16) + '</button></div>';
+    if (k !== 'claimed') h += '<button class="btn ghost" onclick="fuelClaim()">Я вже оплатив(ла)</button>';
+    h += '<div style="font-size:12px;line-height:1.45;color:var(--graph)">Статус оновлюється після звірки з випискою банки' + (f.updated ? ' (остання — ' + ago(f.updated) + ')' : '') + '.</div>';
+  }
+  if (f.paidCount) h += '<div class="sub" style="font-weight:500">У ' + monthName(f.month) + ' вже долучились ' + f.paidCount + ' ' + plural(f.paidCount, 'квартира', 'квартири', 'квартир') + ' 💛</div>';
+  return h + '</div>';
+}
+async function fuelClaim() {
+  ask('Підтвердіть, що ви вже внесли ' + D.fuel.amount + ' грн за кв. ' + D.me.apt + '. Адміністратор звірить з випискою банки.', async ok => {
+    if (ok) await run('fuelClaim', {}, 'Дякуємо! Оплату буде звірено');
+  });
+}
+
+function fuelAdmin() {
+  const f = D.fuel;
+  if (!f || !f.admin) return '';
+  const a = f.admin, imp = a.lastImport || {};
+  const paidReg = a.regCount - a.unpaid.length;
+  const pct = a.regCount ? Math.round(paidReg / a.regCount * 100) : 0;
+  let h = '<div class="label">Пальне · ' + esc(monthName(f.month)) + '</div><div class="card" style="gap:12px">' +
+    '<label class="btn graph" style="cursor:pointer">' + ic('plus', '#F2C12E', 18) + 'Завантажити виписку банки (CSV)<input type="file" accept=".csv,text/csv" style="display:none" onchange="importCsv(this)"></label>' +
+    '<div class="sub" style="font-weight:500;line-height:1.45">' + (imp.at ? 'Остання виписка: ' + ago(imp.at) + ' · нових платежів ' + imp.added : 'Виписку ще не завантажували') +
+    '<br>monobank → банка → ⋯ → Виписка → CSV. Можна завантажувати повторно — дублів не буде.</div>' +
+    '<div class="grid3"><div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + f.paidCount + '</span><span class="k">кв. внесли</span></div>' +
+    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + a.unpaid.length + '</span><span class="k">зареєстр. ще ні</span></div>' +
+    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + Math.round(a.total / 1000) + 'k</span><span class="k">грн за місяць</span></div></div>' +
+    '<div class="bar" style="height:8px"><i style="width:' + pct + '%;background:var(--ok)"></i></div>' +
+    '<div class="sub" style="font-weight:500">' + paidReg + ' з ' + a.regCount + ' зареєстрованих квартир внесли</div>';
+  if (a.unpaid.length) {
+    h += '<div style="font-weight:700">Ще не долучились (зареєстровані)</div><div class="aptlist">' + a.unpaid.slice(0, 80).map(x => '<span>' + esc(x) + '</span>').join('') +
+      (a.unpaid.length > 80 ? '<span>+' + (a.unpaid.length - 80) + '</span>' : '') + '</div>' +
+      '<button class="btn sm ghost" style="align-self:flex-start" onclick="copyUnpaid()">' + ic('copy', null, 16) + 'Скопіювати список</button>';
+  }
+  if (a.partial.length) h += '<div style="font-weight:700">Внесли частково</div><div class="aptlist">' + a.partial.map(x => '<span>' + esc(x.apt) + ' · ' + Math.round(x.sum) + '</span>').join('') + '</div>';
+  if (a.claims.length) h += '<div style="font-weight:700">Заявили «оплатив», але у виписці не знайдено</div><div class="aptlist">' + a.claims.map(x => '<span>' + esc(x.apt) + '</span>').join('') + '</div>';
+  h += '<div style="font-weight:700;margin-top:4px">Відмітити внесок вручну (готівка)</div>' +
+    '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0" placeholder="Кв., напр. 317-1" value="' + esc(ui.fuelApt) + '" oninput="ui.fuelApt=this.value">' +
+    '<button class="btn sm green" style="height:48px" onclick="fuelManual()">Внесено</button>' +
+    '<button class="btn sm ghost" style="height:48px" onclick="fuelUnmark()">Зняти</button></div></div>';
+  if (a.unknown.length) {
+    h += '<div class="label">Платежі без квартири · ' + a.unknown.length + '</div>' +
+      '<div class="sub" style="font-weight:500;margin-top:-6px">Вкажіть квартиру — наступні платежі цього відправника привʼяжуться самі</div>' + a.unknown.map(u =>
+      '<div class="card" style="gap:8px"><div class="row"><span style="font-weight:800">' + Math.round(u.sum) + ' грн</span><span class="sub" style="font-weight:500">' + ago(u.date) + '</span></div>' +
+      '<div style="font-size:14px;font-weight:700">' + esc(u.sender || 'Відправник прихований') + '</div>' +
+      '<div style="font-size:13px;color:var(--muted)">' + esc(u.comment || 'без коментаря') + '</div>' +
+      '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0;height:40px" placeholder="Номер квартири" value="' + esc(ui.fuelTx[u.tx] || '') + '" oninput="ui.fuelTx[this.dataset.t]=this.value" data-t="' + esc(u.tx) + '">' +
+      '<button class="btn sm graph" data-t="' + esc(u.tx) + '" onclick="fuelAssign(this.dataset.t)">Привʼязати</button></div></div>').join('');
+  }
+  return h;
+}
+function importCsv(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = async () => {
+    input.value = '';
+    if (await run('importCsv', { csv: r.result })) {
+      const x = D.importResult || {};
+      toast('Нових платежів: ' + (x.added || 0) + ' · розпізнано ' + (x.known || 0) + ' · без квартири ' + (x.unknown || 0));
+      haptic('ok');
+    }
+  };
+  r.onerror = () => toast('Не вдалося прочитати файл');
+  r.readAsText(file, 'utf-8');
+}
+function copyUnpaid() { const f = D.fuel; copyText('Ще не внесли на пальне за ' + monthName(f.month) + ' (' + f.admin.unpaid.length + '):\n' + f.admin.unpaid.join(', '), 'Список скопійовано'); }
+async function fuelManual() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } if (await run('fuelManual', { apt: ui.fuelApt }, 'Внесок відмічено')) { ui.fuelApt = ''; render(); } }
+function fuelUnmark() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } ask('Зняти ручну відмітку для кв. ' + ui.fuelApt + '?', ok => { if (ok) run('fuelUnmark', { apt: ui.fuelApt }, 'Відмітку знято'); }); }
+async function fuelAssign(tx) { const apt = ui.fuelTx[tx] || ''; if (!apt.trim()) { toast('Вкажіть квартиру'); return; } if (await run('fuelAssign', { txId: tx, apt: apt }, 'Платіж привʼязано')) { delete ui.fuelTx[tx]; render(); } }
 function isLift(s) { return /^Ліфт/.test(s.name); }
 function liftName(s) { return cap(String(s.name).replace(/^Ліфт\s*/, '')) || 'Ліфт'; }
 function toggleLift(row) {
@@ -710,7 +693,7 @@ function toggleLift(row) {
 function useful() {
   const secs = [];
   D.useful.forEach(u => { if (secs.indexOf(u.section) < 0) secs.push(u.section); });
-  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Корисне</div></div>' +
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2">Корисне</div></div>' +
     secs.map((s, si) => '<div class="label">' + esc(s) + '</div><div class="card' + (si === 0 ? ' dark' : '') + '" style="gap:0;padding:4px 16px">' +
       D.useful.filter(u => u.section === s).map((u, i, arr) => {
         const tel = u.phone && /^[+\d\s()-]{3,}$/.test(u.phone) ? 'tel:' + u.phone.replace(/[^\d+]/g, '') : (/^https?:/.test(u.phone) ? u.phone : '');
@@ -727,7 +710,7 @@ function admin() {
   const fresh = D.problems.filter(p => p.status === 'Нова' || (p.confirm === 'не вирішено' && p.status !== 'Вирішено'));
   const ents = []; for (let i = 1; i <= D.entrances; i++) ents.push(i);
   const chipSel = (on) => on ? 'background:var(--yellow);color:var(--ink);border-color:var(--yellow)' : 'background:transparent;color:#fff;border-color:#6B7079';
-  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Керування</div></div>' +
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2">Керування</div></div>' +
     '<div class="grid3"><div class="tile"><span class="v" style="font-size:22px">' + fresh.length + '</span><span class="k">потребують уваги</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.problems.filter(p => p.status === 'В роботі').length + '</span><span class="k">в роботі</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.polls.filter(p => p.open).length + '</span><span class="k">опитування</span></div></div>' +
     '<div class="label">Світло (ручне виправлення)</div><div class="card"><div class="chips">' + [0].concat(ents).map(e => '<button class="chip' + (ui.lsec === e ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="ui.lsec=' + e + ';render()">' + (e ? 'Секція ' + e : 'Усі секції') + '</button>').join('') + '</div>' +
     '<div class="grid2"><button class="btn yellow" onclick="run(\'lightSet\',{on:true,section:ui.lsec},\'Світло: є\')">Світло є</button><button class="btn graph" onclick="run(\'lightSet\',{on:false,section:ui.lsec},\'Світло: немає\')">Світла немає</button></div></div>' +
@@ -741,16 +724,17 @@ function admin() {
     '<div class="label">Статуси будинку · тап змінює</div><div class="card" style="gap:0">' +
     D.statuses.filter(s => !isLift(s)).map(s => '<div class="admin-line"><span style="font-weight:600">' + esc(s.name) + (s.entrance ? ' · секція ' + s.entrance : '') + '</span><div class="chips">' +
       s.options.map(o => '<button class="chip' + (o.value === s.value ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="run(\'setStatus\',{row:' + s.row + ',value:this.dataset.v,tone:this.dataset.t},\'Оновлено\')" data-v="' + esc(o.value) + '" data-t="' + esc(o.tone) + '">' + esc(o.value) + '</button>').join('') + '</div></div>').join('') + '</div>' +
+    fuelAdmin() +
     '<div class="label">Потребують уваги</div>' + (fresh.length ? fresh.map(problemCard).join('') : '<div class="empty">Усе оброблено</div>') +
     '<div class="card dark" style="gap:10px"><div style="font-weight:700;font-size:16px">Оголошення / термінове</div>' +
     '<div class="chips">' + [0].concat(ents).map(e => '<button class="chip" style="height:32px;font-size:12px;' + chipSel(u.ent === e) + '" onclick="ui.urgent.ent=' + e + ';render()">' + (e ? 'Секція ' + e : 'Весь будинок') + '</button>').join('') + '</div>' +
-    '<textarea class="input" style="height:80px" maxlength="1000" aria-label="Текст оголошення" placeholder="Напр.: завтра 9:00–13:00 не буде холодної води" oninput="ui.urgent.text=this.value">' + esc(u.text) + '</textarea>' +
+    '<textarea class="input" style="height:80px" maxlength="1000" placeholder="Напр.: завтра 9:00–13:00 не буде холодної води" oninput="ui.urgent.text=this.value">' + esc(u.text) + '</textarea>' +
     '<div style="font-size:12px;line-height:1.45;color:#C9CDD2">' + (u.ent ? 'Отримають особисто лише мешканці секції ' + u.ent + '. У загальну групу не піде.' : 'Піде в групу і особисто кожному мешканцю.') + '</div>' +
     '<button class="btn yellow" onclick="sendUrgent()">Надіслати</button></div>' +
     '<div class="card" style="gap:10px"><div class="row"><div style="font-weight:700;font-size:16px">Нове опитування</div>' +
     '<button class="btn sm ghost" onclick="genTemplate()">Шаблон: генератор</button></div>' +
-    '<input class="input" aria-label="Питання опитування" autocomplete="off" placeholder="Питання…" value="' + esc(pl.q) + '" oninput="ui.poll.q=this.value">' +
-    '<textarea class="input" style="height:90px" aria-label="Варіанти відповіді" placeholder="Варіанти, кожен з нового рядка…" oninput="ui.poll.opts=this.value">' + esc(pl.opts) + '</textarea>' +
+    '<input class="input" placeholder="Питання" value="' + esc(pl.q) + '" oninput="ui.poll.q=this.value">' +
+    '<textarea class="input" style="height:90px" placeholder="Варіанти, кожен з нового рядка" oninput="ui.poll.opts=this.value">' + esc(pl.opts) + '</textarea>' +
     '<label style="display:flex;align-items:center;gap:8px;font-weight:600"><input type="checkbox" ' + (pl.multi ? 'checked' : '') + ' onchange="ui.poll.multi=this.checked" style="width:20px;height:20px;accent-color:#4A4F57">Можна обрати кілька варіантів</label>' +
     '<label style="display:flex;align-items:center;gap:8px;font-weight:600"><input type="checkbox" ' + (pl.owners ? 'checked' : '') + ' onchange="ui.poll.owners=this.checked" style="width:20px;height:20px;accent-color:#4A4F57">Голосують лише власники</label>' +
     '<button class="btn graph" onclick="sendPoll()">Створити опитування</button></div>';
@@ -782,14 +766,14 @@ async function start() {
     } catch (e) {}
   }
   if (!DEMO && (!tg || !tg.initData)) {
-    $app.innerHTML = '<div class="center">' + facade() + '<div class="h2" role="heading" aria-level="2">Відкрийте в Telegram</div><div style="color:var(--muted)">Цей застосунок працює всередині Telegram.</div></div>';
+    $app.innerHTML = '<div class="center">' + facade() + '<div class="h2">Відкрийте в Telegram</div><div style="color:var(--muted)">Цей застосунок працює всередині Telegram.</div></div>';
     return;
   }
   if (!DEMO) { try { const c = localStorage.getItem('b10_cache'); if (c) D = JSON.parse(c); } catch (e) {} }
   render();
   try { D = await api('load'); save(); render(); }
   catch (e) {
-    if (!D) $app.innerHTML = '<div class="center"><div class="h2" role="heading" aria-level="2">Не вдалося завантажити</div><div style="color:var(--muted)">' + esc(e.message) + '</div><button class="btn" onclick="location.reload()">Спробувати ще</button></div>';
+    if (!D) $app.innerHTML = '<div class="center"><div class="h2">Не вдалося завантажити</div><div style="color:var(--muted)">' + esc(e.message) + '</div><button class="btn" onclick="location.reload()">Спробувати ще</button></div>';
     else toast('Немає звʼязку, показую збережене');
   }
 }
@@ -832,11 +816,16 @@ function demoApi(action, d) {
         { section: 'Контакти', name: 'Аварійна служба УК', desc: 'цілодобово', phone: '[номер]' },
         { section: 'Контакти', name: 'Гаряча лінія міста', desc: 'скарги на комунальні служби', phone: '1551' }
       ],
-      totalApts: 617, entrances: 4, now: now
+      fuel: { month: new Date().toISOString().slice(0, 7), amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
+        sum: /fuel=part/.test(q) ? 1000 : /fuel=on/.test(q) ? 1500 : 0, key: (q.match(/fuel=(\w+)/) || [0, 'off'])[1], lastPay: { date: now - 30 * 24 * H, sum: 1500 },
+        admin: /admin=1/.test(q) ? { regCount: 263, total: 399504, lastImport: { at: now - 3 * H, added: 270, known: 201, unknown: 70 },
+          unpaid: ['12', '45', '101', '158-1', '204', '317-1', '389', '402', '477-1', '512', '593-2'], partial: [{ apt: '276', sum: 30 }, { apt: '289', sum: 500 }], claims: [{ apt: '204' }],
+          unknown: [{ tx: 'm1', sum: 1500, date: now - 2 * H, sender: 'Kulyba Mykhailo', comment: '' }, { tx: 'm2', sum: 1500, date: now - 5 * H, sender: 'Оксана Моспан', comment: 'Поповнення рахунку Банки' }] } : null },
+      totalApts: 619, entrances: 4, now: now
     };
   }
   const db = DEMO_DB;
-  delete db.invite;
+  delete db.invite; delete db.importResult;
   const L = db.light.sections;
   if (action === 'light') { const s = L[db.me.entrance], dd = d.on ? 'on' : 'off'; db.light.mine = dd; if (s.status === 'unknown' || s.status === dd) { s.status = dd; s.at = now; if (!s.since) s.since = now; delete s.pending; } else if (s.pending && s.pending.dir === dd) { s.status = dd; s.since = now; s.at = now; s.by = 'neighbors'; delete s.pending; } else s.pending = { dir: dd, at: now }; }
   if (action === 'metoo') { const p = db.problems.find(x => x.id === d.id); p.mine = !p.mine; p.count += p.mine ? 1 : -1; }
@@ -852,6 +841,9 @@ function demoApi(action, d) {
   if (action === 'closePoll') db.polls.find(x => x.id === d.id).open = false;
   if (action === 'deletePoll') db.polls = db.polls.filter(x => x.id !== d.id);
   const f = db.me.flat;
+  if (action === 'fuelManual' || action === 'fuelAssign') { const a = db.fuel.admin; const apt = String(d.apt).trim(); a.unpaid = a.unpaid.filter(x => x !== apt); db.fuel.paidCount++; a.total += 1500; if (action === 'fuelAssign') a.unknown = a.unknown.filter(u => u.tx !== d.txId); if (apt === db.me.apt) { db.fuel.key = 'on'; db.fuel.sum = 1500; } }
+  if (action === 'fuelClaim') db.fuel.key = 'claimed';
+  if (action === 'importCsv') { db.importResult = { added: 12, known: 10, unknown: 2 }; db.fuel.admin.lastImport = { at: now, added: 12 }; }
   if (action === 'invite') { if (!f.left) return Promise.reject(new Error('На квартиру вже додано або запрошено 3 людини')); f.openInvites++; f.left--; db.invite = 'https://t.me/budynok10_bot?start=inv_' + Math.random().toString(16).slice(2, 14); }
   if (action === 'cancelInvites') { f.left += f.openInvites; f.openInvites = 0; }
   if (action === 'removeMember') { f.members = f.members.filter(m => m.id !== d.id); f.left++; }

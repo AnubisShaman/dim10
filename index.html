@@ -855,7 +855,7 @@ function osbbScreen() {
     (D.osbb ? '<div class="card" style="gap:8px"><label class="btn graph" style="cursor:pointer">' + ic('plus', '#F2C12E', 18) + 'Завантажити виписку банки ОСББ (CSV)<input type="file" accept=".csv,text/csv" style="display:none" onchange="osbbImportFile(this)"></label>' +
       '<div class="sub" style="font-weight:500;line-height:1.45">Платежі до ' + esc(D.osbb.from || '') + ' вже враховані в реєстрі й пропускаються. Нові привʼязуються за коментарем, решта — у «без номеру». Повторне завантаження дублів не створює.' +
       (D.osbb.lastImport && D.osbb.lastImport.at ? '<br>Остання виписка: ' + ago(D.osbb.lastImport.at) + ' · нових ' + D.osbb.lastImport.added : '') + '</div></div>' : '');
-  if (!o.apts.length) return head + '<div class="card"><div class="empty">У таблиці ще немає листа «ОСББ внески». Імпортуйте файл з реєстром, і дані зʼявляться тут.</div></div>';
+  if (!o.apts.length) return head + '<div class="card"><div class="empty">У таблиці ще немає листа «ОСББ внески». Відкрийте таблицю застосунку: Файл → Імпорт → Завантажити → файл реєстру → «Вставити нові аркуші». Якщо аркуш «ОСББ без номеру» вже є, спершу видаліть його, а після імпорту ще раз завантажте виписку.</div></div>';
   const T = osbbTotals(), free = o.nonum.filter(x => !x[4]);
   const all = T.reduce((t, a) => t + a.total, 0) + free.reduce((t, x) => t + x[1], 0), freeSum = free.reduce((t, x) => t + x[1], 0);
   const paid = T.filter(a => a.total > 0).length, pct = Math.round(paid / T.length * 100);
@@ -1025,6 +1025,9 @@ function fuelAdmin() {
     '<label class="btn graph" style="cursor:pointer">' + ic('plus', '#F2C12E', 18) + 'Завантажити виписку банки (CSV)<input type="file" accept=".csv,text/csv" style="display:none" onchange="importCsv(this)"></label>' +
     '<div class="sub" style="font-weight:500;line-height:1.45">' + (imp.at ? 'Остання виписка: ' + ago(imp.at) + ' · нових платежів ' + imp.added : 'Виписку ще не завантажували') +
     '<br>monobank → банка → ⋯ → Виписка → CSV. Можна завантажувати повторно — дублів не буде.</div>' +
+    '<label class="btn ghost" style="cursor:pointer">' + ic('plus', null, 18) + 'Завантажити таблицю внесків (xlsx / csv)<input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="fuelTableFile(this)"></label>' +
+    '<div class="sub" style="font-weight:500;line-height:1.45">Таблиця «квартира → сума за місяць» — це підсумок. Якщо за випискою квартира внесла менше, різниця додається відміткою «з таблиці». Нова таблиця замінює попередню.</div>' +
+    fuelTableNote(a) +
     '<div class="grid3"><div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + f.paidCount + '</span><span class="k">кв. внесли</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + a.unpaid.length + '</span><span class="k">зареєстр. ще ні</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + unk.length + '</span><span class="k">без квартири</span></div></div>' +
@@ -1126,7 +1129,7 @@ function fuelAptDetail(o) {
   h += o.pays.length ? o.pays.map(p => '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(p.sum) + ' грн</span><span class="sub" style="font-weight:500">' + esc(payDate(p.date)) + '</span></div>' +
     '<div class="who">' + esc(p.sender || (p.source === 'готівка / вручну' ? 'Готівка / вручну' : 'Відправник прихований')) + '</div>' +
     '<div class="what">' + esc(p.comment || 'без коментаря') + ' · ' + esc(p.source || '') + '</div>' +
-    '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(p.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelUnassign(this.dataset.t,this.dataset.a)">' + (p.source === 'готівка / вручну' ? 'Видалити відмітку' : 'Відвʼязати') + '</button></div>').join('')
+    '<button class="btn sm ghost" style="align-self:flex-start" data-t="' + esc(p.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelUnassign(this.dataset.t,this.dataset.a)">' + (p.source === 'готівка / вручну' || p.source === 'таблиця' ? 'Видалити відмітку' : 'Відвʼязати') + '</button></div>').join('')
     : '<div class="sub" style="font-weight:500">Платежів за цей місяць немає</div>';
   if (cands.length) h += '<div style="font-weight:700;margin-top:4px">Може підійти з нерозпізнаних</div>' + cands.map(u =>
     '<div class="hint"><span>' + fmtMoney(u.sum) + ' грн · ' + esc(u.sender || 'прихований') + ' · ' + esc(payDate(u.date)) + '</span><button class="btn sm graph" data-t="' + esc(u.tx) + '" data-a="' + esc(o.apt) + '" onclick="fuelAssignTo(this.dataset.t,this.dataset.a)">Сюди</button></div>').join('');
@@ -1161,6 +1164,52 @@ function importCsv(input) {
 function copyUnpaid() { const f = D.fuel; copyText('Ще не внесли на пальне за ' + monthName(f.month) + ' (' + f.admin.unpaid.length + '):\n' + f.admin.unpaid.join(', '), 'Список скопійовано'); }
 async function fuelManual() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } if (await run('fuelManual', { apt: ui.fuelApt }, 'Внесок відмічено')) { ui.fuelApt = ''; render(); } }
 function fuelUnmark() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } ask('Зняти ручну відмітку для кв.\u00a0' + ui.fuelApt + '?', ok => { if (ok) run('fuelUnmark', { apt: ui.fuelApt }, 'Відмітку знято'); }); }
+function fuelTableNote(a) {
+  const t = a.lastTable || {};
+  if (!t.at) return '';
+  let h = '<div class="note" style="display:flex;flex-direction:column;gap:6px"><b>Таблиця ' + ago(t.at) + ': ' + t.rows + ' кв.</b>' +
+    '<span>Додано з таблиці: ' + t.added + ' кв. на ' + fmtMoney(t.addSum) + ' грн · збігається з випискою: ' + t.same + '</span>';
+  if (t.over && t.over.length) h += '<span>За випискою більше, ніж у таблиці: ' + t.over.map(o => 'кв. ' + esc(o[0]) + ' (' + fmtMoney(o[2]) + ' замість ' + fmtMoney(o[1]) + ')').join(', ') + '</span>';
+  if (t.skipped && t.skipped.length) h += '<span>Пропущено, бо це не номер квартири: ' + t.skipped.map(esc).join(', ') + '</span>';
+  const free = (a.unknown || []).filter(u => !u.month || u.month === D.fuel.month);
+  if (free.length) h += '<span>Без квартири за цей місяць лишилось ' + free.length + ' платежів на ' + fmtMoney(free.reduce((x, u) => x + u.sum, 0)) + ' грн. Якщо Миша вже розніс їх у таблиці, приберіть їх зі списку — вони перейдуть у «Відкладені».</span>' +
+    '<button class="btn sm graph" style="align-self:flex-start" onclick="fuelInTable(' + free.length + ')">Позначити ' + free.length + ' як враховані в таблиці</button>';
+  return h + '</div>';
+}
+function loadXlsxLib() {
+  if (window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'; sc.onload = () => ok(window.XLSX); sc.onerror = () => no(new Error('Не вдалося завантажити модуль для xlsx. Збережіть таблицю як CSV і спробуйте ще раз.')); document.head.appendChild(sc); });
+}
+// з таблиці беремо 1-шу колонку (квартира) і суму: колонку G, якщо в таблиці 7+ колонок, інакше 2-гу
+function tableRows(grid) {
+  const wide = grid.some(r => r && r.length >= 7);
+  return grid.filter(r => r && r[0] !== undefined && r[0] !== null && String(r[0]).trim() !== '').map(r => [String(r[0]).trim(), wide ? r[6] : r[1]])
+    .filter(r => !/^(кв|квартира|№|внески|разом|всього)/i.test(r[0]));
+}
+function fuelTableFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  input.value = '';
+  const isCsv = /\.csv$/i.test(file.name);
+  const r = new FileReader();
+  r.onerror = () => toast('Не вдалося прочитати файл');
+  r.onload = async () => {
+    try {
+      let grid;
+      if (isCsv) grid = String(r.result).split(/\r?\n/).map(l => l.split(/[;,\t]/));
+      else { const X = await loadXlsxLib(); const wb = X.read(r.result, { type: 'array' }); grid = X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]], { header: 1, raw: true }); }
+      const rows = tableRows(grid);
+      if (!rows.length) { toast('У таблиці не знайдено квартир'); return; }
+      if (await run('fuelTable', { rows: rows })) {
+        const t = D.tableResult || {};
+        toast('Таблиця: ' + t.rows + ' кв. · додано ' + t.added + ' на ' + fmtMoney(t.addSum) + ' грн');
+        ui.fuelTab = 'apts'; haptic('ok'); render();
+      }
+    } catch (e) { toast(e.message || 'Не вдалося розібрати таблицю'); }
+  };
+  if (isCsv) r.readAsText(file, 'utf-8'); else r.readAsArrayBuffer(file);
+}
+function fuelInTable(n) { ask('Позначити ' + n + ' платежів без квартири за цей місяць як уже враховані в таблиці? Їх можна буде повернути з «Відкладених».', ok => { if (ok) run('fuelInTable', {}, 'Перенесено у «Відкладені»'); }); }
 async function fuelAssignTo(tx, apt) { haptic(); if (await run('fuelAssign', { txId: tx, apt: apt }, 'Платіж привʼязано до кв.\u00a0' + apt)) { delete ui.fuelTx[tx]; render(); } }
 function fuelUnassign(tx, apt) { ask('Відвʼязати цей платіж від кв.\u00a0' + apt + '? Він перейде у «Відкладені», і наступні виписки не привʼяжуть його знову.', ok => { if (ok) run('fuelUnassign', { txId: tx }, 'Платіж відвʼязано'); }); }
 function fuelIgnore(tx, on) { haptic(); run('fuelIgnore', { txId: tx, on: on }, on ? 'Перенесено у «Відкладені»' : 'Повернуто в нерозпізнані'); }
@@ -1301,6 +1350,14 @@ function demoFuelAct(db, action, d, now) {
   if (action === 'fuelAssign') { const p = take(a.unknown, d.txId); if (p) { p.apt = String(d.apt).trim(); p.source = 'привʼязано вручну'; a.pays.push(p); } }
   if (action === 'fuelUnassign') { const p = take(a.pays, d.txId); if (p && p.source !== 'готівка / вручну') { p.apt = ''; p.source = 'відвʼязано вручну'; a.ignored.unshift(p); } }
   if (action === 'fuelIgnore') { if (d.on) { const p = take(a.unknown, d.txId); if (p) { p.source = 'не внесок'; a.ignored.unshift(p); } } else { const p = take(a.ignored, d.txId); if (p) { p.source = 'виписка'; a.unknown.unshift(p); } } }
+  if (action === 'fuelTable') {
+    a.pays = a.pays.filter(p => p.source !== 'таблиця');
+    const have = {}; a.pays.forEach(p => { have[p.apt] = (have[p.apt] || 0) + p.sum; });
+    let added = 0, addSum = 0, same = 0; const over = [];
+    d.rows.forEach(r => { const apt = String(r[0]).trim(), w = Number(r[1]) || 0; if (!w) return; const x = w - (have[apt] || 0); if (x > 0.5) { a.pays.push({ tx: 't' + apt, apt: apt, sum: x, date: now, comment: 'з таблиці внесків', sender: '', source: 'таблиця' }); added++; addSum += x; } else if (x < -0.5) over.push([apt, w, have[apt]]); else same++; });
+    a.lastTable = { at: now, rows: d.rows.length, added: added, addSum: addSum, same: same, over: over, skipped: [] }; db.tableResult = a.lastTable;
+  }
+  if (action === 'fuelInTable') { a.unknown.forEach(u => { u.source = 'враховано в таблиці'; a.ignored.unshift(u); }); a.unknown = []; }
   if (action === 'fuelManual') a.pays.push({ tx: 'm' + now, apt: String(d.apt).trim(), sum: 1500, date: now, comment: 'відмітив адміністратор', sender: '', source: 'готівка / вручну' });
   if (action === 'fuelUnmark') { const i = a.pays.map(p => p.apt === String(d.apt).trim() && p.source === 'готівка / вручну').lastIndexOf(true); if (i < 0) throw new Error('Ручних відміток за цей місяць немає'); a.pays.splice(i, 1); }
   demoFuelRecalc(db);
@@ -1352,7 +1409,7 @@ function demoApi(action, d) {
     };
   }
   const db = DEMO_DB;
-  delete db.invite; delete db.importResult; delete db.osbbImportResult;
+  delete db.invite; delete db.importResult; delete db.osbbImportResult; delete db.tableResult;
   const L = db.light.sections;
   if (action === 'light') { const s = L[db.me.entrance], dd = d.on ? 'on' : 'off'; db.light.mine = dd; if (s.status === 'unknown' || s.status === dd) { s.status = dd; s.at = now; if (!s.since) s.since = now; delete s.pending; } else if (s.pending && s.pending.dir === dd) { s.status = dd; s.since = now; s.at = now; s.by = 'neighbors'; delete s.pending; } else s.pending = { dir: dd, at: now }; }
   if (action === 'osbbSet' && db.osbb) { const a = db.osbb.apts.find(x => x[0] === d.apt); if (a) a[3] = d.sum; }
@@ -1373,7 +1430,7 @@ function demoApi(action, d) {
   if (action === 'closePoll') db.polls.find(x => x.id === d.id).open = false;
   if (action === 'deletePoll') db.polls = db.polls.filter(x => x.id !== d.id);
   const f = db.me.flat;
-  if (db.fuel && db.fuel.admin && /^fuel(Manual|Assign|Unassign|Ignore|Unmark)$/.test(action)) demoFuelAct(db, action, d, now);
+  if (db.fuel && db.fuel.admin && /^fuel(Manual|Assign|Unassign|Ignore|Unmark|Table|InTable)$/.test(action)) demoFuelAct(db, action, d, now);
   if (action === 'fuelClaim') db.fuel.key = 'claimed';
   if (action === 'importCsv') { db.importResult = { added: 12, known: 10, unknown: 2 }; db.fuel.admin.lastImport = { at: now, added: 12 }; }
   if (action === 'invite') { if (!f.left) return Promise.reject(new Error('На квартиру вже додано або запрошено 3 людини')); f.openInvites++; f.left--; db.invite = 'https://t.me/budynok10_bot?start=inv_' + Math.random().toString(16).slice(2, 14); }

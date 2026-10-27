@@ -217,6 +217,17 @@ body{text-wrap:pretty}
 .cmt .del{margin-left:auto;border:none;background:none;color:var(--muted);font:inherit;font-size:12px;font-weight:600;padding:4px;position:relative}
 .cmt .del::before{content:"";position:absolute;inset:-10px}
 .cmtlink{align-self:flex-start;border:none;background:none;padding:6px 0;color:var(--ink);font:inherit;font-size:13px;font-weight:700;text-decoration:underline;text-underline-offset:3px}
+/* ===== ОСББ: внески (адмін) ===== */
+.fl{display:grid;grid-template-columns:26px repeat(8,minmax(0,1fr));gap:3px;align-items:stretch}
+.fl .f{font-size:11px;font-weight:700;color:var(--muted);display:flex;align-items:center;justify-content:center;font-variant-numeric:tabular-nums}
+.fl .a{border:none;font:inherit;color:inherit;border-radius:7px;background:var(--bg);padding:3px 1px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:34px;font-variant-numeric:tabular-nums}
+.fl .a b{font-size:11px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}
+.fl .a i{font-style:normal;font-size:10px;font-weight:700}
+.fl .a.p{background:var(--ok-bg);color:var(--ok)}
+.fl .a.hit,.fl .a.sel{outline:2px solid var(--ink);outline-offset:1px}
+.fl .a.l{box-shadow:inset 0 -3px 0 var(--yellow-d)}
+.osed{background:var(--bg);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.flwrap{overflow-x:auto;display:flex;flex-direction:column;gap:3px}
 /* ===== Пальне: адмін ===== */
 [hidden]{display:none!important}
 .tag.bad{background:var(--bad-bg);color:var(--bad)}
@@ -259,7 +270,7 @@ let D = null;
 let route = 'home';
 let stack = [];
 let busy = false;
-const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', cmt: {}, cmtOpen: {}, fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30, fuelS: '' };
+const ui = { all: false, ptab: 'open', form: { cat: 'Ліфт', whole: false, place: '', text: '' }, poll: { q: '', opts: '', owners: true, multi: false }, urgent: { text: '', ent: 0 }, lsec: 0, sel: {}, editing: {}, invite: '', cmt: {}, cmtOpen: {}, fuelTx: {}, fuelApt: '', fuelTab: 'unknown', fuelQ: '', fuelF: 'all', fuelOpen: '', fuelMore: 30, fuelS: '', osSec: 1, osQ: '', osNo: false, osSel: '', osSum: '', osLink: {}, osPick: false };
 try { ui.all = localStorage.getItem('b10_all') === '1'; } catch (e) {}
 
 const ICON = {
@@ -355,7 +366,7 @@ function save() { try { const c = Object.assign({}, D); delete c.invite; localSt
 
 // ---------- навігація ----------
 function go(r) {
-  if (['new', 'useful', 'admin', 'fuel'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
+  if (['new', 'useful', 'admin', 'fuel', 'osbb'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
   else { stack = []; ui.anim = r === route ? '' : 'tab'; }
   route = r; render(); window.scrollTo(0, 0);
 }
@@ -369,7 +380,7 @@ function syncBack() {
 function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
-  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen }[route] || home;
+  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen }[route] || home;
   let scr = document.getElementById('scr');
   if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
   const anim = ui.anim; ui.anim = '';
@@ -406,7 +417,7 @@ function openBot() {
 }
 
 const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me' }[route] || route; }
+function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me' }[route] || route; }
 function tabs() {
   const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
   const cur = tabCur();
@@ -821,6 +832,140 @@ async function fuelClaim() {
   });
 }
 
+// ---------- внески на ОСББ (дані приходять лише адміністратору) ----------
+function osbbTotals() {
+  const o = D.osbb, linked = {};
+  o.nonum.forEach(x => { if (x[4]) linked[x[4]] = (linked[x[4]] || 0) + x[1]; });
+  return o.apts.map(a => ({ apt: a[0], sec: a[1], floor: a[2], base: a[3], link: linked[a[0]] || 0, total: a[3] + (linked[a[0]] || 0) }));
+}
+function osbbEntry() {
+  const o = D.me.isAdmin && D.osbb;
+  if (!o) return '';
+  const paid = o.apts.length ? osbbTotals().filter(a => a.total > 0).length : 0;
+  const sum = o.apts.reduce((t, a) => t + a[3], 0) + o.nonum.reduce((t, x) => t + x[1], 0);
+  return '<button class="card" style="flex-direction:row;align-items:center;justify-content:space-between;border:none;text-align:left;font:inherit;color:inherit" onclick="go(\'osbb\')">' +
+    '<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:16px">Внески на ОСББ</span><span class="sub" style="font-weight:500">' +
+    (o.apts.length ? paid + ' з ' + o.apts.length + ' кв. · ' + fmtMoney(sum) + ' грн' : 'Дані ще не завантажені в таблицю') + '</span></span><span class="tag info">лише адмін</span></button>';
+}
+function osbbScreen() {
+  const o = D.me.isAdmin && D.osbb;
+  if (!o) return '<div class="empty">Немає доступу</div>';
+  const head = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Внески на ОСББ</div></div>' +
+    '<div class="note">Бачать лише адміністратори. Натисніть на квартиру, щоб змінити суму або привʼязати платіж без номеру.</div>' +
+    (D.osbb ? '<div class="card" style="gap:8px"><label class="btn graph" style="cursor:pointer">' + ic('plus', '#F2C12E', 18) + 'Завантажити виписку банки ОСББ (CSV)<input type="file" accept=".csv,text/csv" style="display:none" onchange="osbbImportFile(this)"></label>' +
+      '<div class="sub" style="font-weight:500;line-height:1.45">Платежі до ' + esc(D.osbb.from || '') + ' вже враховані в реєстрі й пропускаються. Нові привʼязуються за коментарем, решта — у «без номеру». Повторне завантаження дублів не створює.' +
+      (D.osbb.lastImport && D.osbb.lastImport.at ? '<br>Остання виписка: ' + ago(D.osbb.lastImport.at) + ' · нових ' + D.osbb.lastImport.added : '') + '</div></div>' : '');
+  if (!o.apts.length) return head + '<div class="card"><div class="empty">У таблиці ще немає листа «ОСББ внески». Імпортуйте файл з реєстром, і дані зʼявляться тут.</div></div>';
+  const T = osbbTotals(), free = o.nonum.filter(x => !x[4]);
+  const all = T.reduce((t, a) => t + a.total, 0) + free.reduce((t, x) => t + x[1], 0), freeSum = free.reduce((t, x) => t + x[1], 0);
+  const paid = T.filter(a => a.total > 0).length, pct = Math.round(paid / T.length * 100);
+  let h = head + '<div class="card" style="gap:10px"><div class="grid3">' +
+    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + fmtMoney(all) + '</span><span class="k">грн усього</span></div>' +
+    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + paid + '</span><span class="k">кв. з ' + T.length + ' внесли</span></div>' +
+    '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + fmtMoney(freeSum) + '</span><span class="k">грн без квартири · ' + free.length + '</span></div></div>' +
+    '<div class="bar" style="height:8px"><i style="width:' + pct + '%;background:var(--ok)"></i></div>' +
+    '<div class="sub" style="font-weight:500">' + pct + '% квартир внесли</div></div>';
+  h += '<input class="input" id="osQ" type="search" aria-label="Пошук квартири" autocomplete="off" placeholder="Знайти квартиру, напр. 474-1…" value="' + esc(ui.osQ) + '" oninput="ui.osQ=this.value;osbbFind()">' +
+    '<div id="osFind">' + osbbFindHtml() + '</div>';
+  const secs = [1, 2, 3, 4].map(n => { const l = T.filter(a => a.sec === n); return { n: n, cnt: l.filter(a => a.total > 0).length, all: l.length, sum: l.reduce((t, a) => t + a.total, 0) }; });
+  h += '<div class="seg" role="tablist">' + secs.map(x => '<button role="tab" aria-selected="' + (ui.osSec === x.n) + '" class="' + (ui.osSec === x.n ? 'on' : '') + '" onclick="ui.osSec=' + x.n + ';ui.osSel=\'\';render()">Секція ' + x.n + '</button>').join('') + '</div>';
+  const cur = secs[ui.osSec - 1];
+  const sel = ui.osSel && T.find(a => a.apt === ui.osSel && a.sec === ui.osSec);
+  h += '<div class="card" style="gap:8px"><div class="row"><span style="font-weight:800">Секція ' + cur.n + '</span><span class="sub" style="font-weight:600">' + cur.cnt + ' з ' + cur.all + ' кв. · ' + fmtMoney(cur.sum) + ' грн</span></div>' +
+    (sel ? osbbEditor(sel) : '') +
+    '<div class="flwrap" id="osGrid">' + osbbGridHtml(ui.osSec) + '</div>' +
+    '<div class="sub" style="font-weight:500"><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:var(--ok-bg);vertical-align:-1px"></span> внесли · <span style="display:inline-block;width:10px;height:3px;background:var(--yellow-d);vertical-align:2px"></span> є привʼязаний платіж без номеру</div>' +
+    '<button class="btn sm ghost" style="align-self:flex-start" onclick="osbbCopy()">' + ic('copy', null, 16) + 'Скопіювати, хто вніс у секції ' + cur.n + '</button></div>';
+  h += '<button class="cmtlink" onclick="ui.osNo=!ui.osNo;render()">' + (ui.osNo ? 'Сховати' : 'Показати') + ' платежі без номеру квартири · ' + o.nonum.length + (free.length ? ' (не привʼязано ' + free.length + ')' : '') + '</button>';
+  if (ui.osNo) h += osbbNoNumHtml();
+  return h;
+}
+function osbbEditor(a) {
+  const o = D.osbb, mine = o.nonum.filter(x => x[4] === a.apt), free = o.nonum.filter(x => !x[4]);
+  const v = ui.osSum !== '' ? ui.osSum : String(a.base);
+  let h = '<div class="osed"><div class="row"><span><b style="font-size:16px">Кв. ' + esc(a.apt) + '</b><span class="sub" style="font-weight:500"> · ' + a.floor + ' поверх</span></span>' +
+    '<span class="tag ' + (a.total > 0 ? 'ok' : 'bad') + '">' + (a.total > 0 ? fmtMoney(a.total) + ' грн' : 'ще ні') + '</span></div>' +
+    '<div class="field">Внесок за реєстром, грн<div class="row" style="gap:8px"><input class="input" id="osSum" style="flex:1;min-width:0" type="text" inputmode="decimal" autocomplete="off" value="' + esc(v) + '" oninput="ui.osSum=this.value">' +
+    '<button class="btn sm graph" style="height:48px" data-a="' + esc(a.apt) + '" onclick="osbbSave(this.dataset.a)">Зберегти</button></div></div>' +
+    '<div class="chips">' + [0, 100, 300, 500].map(n => '<button class="chip" style="height:32px;font-size:12px;padding:0 12px" data-a="' + esc(a.apt) + '" onclick="ui.osSum=\'' + n + '\';osbbSave(this.dataset.a)">' + (n ? n + ' грн' : 'Обнулити') + '</button>').join('') + '</div>';
+  if (mine.length) h += '<div style="font-weight:700">Привʼязані платежі без номеру</div>' + mine.map(x =>
+    '<div class="hint"><span>' + fmtMoney(x[1]) + ' грн · ' + esc(x[0]) + '</span><button class="btn sm ghost" onclick="osbbLink(' + x[3] + ',\'\')">Відвʼязати</button></div>').join('');
+  if (free.length) {
+    h += '<button class="cmtlink" onclick="ui.osPick=!ui.osPick;render()">' + (ui.osPick ? 'Сховати' : 'Привʼязати сюди платіж без номеру') + ' · ' + free.length + '</button>';
+    if (ui.osPick) h += free.map(x => '<div class="hint"><span>' + fmtMoney(x[1]) + ' грн · ' + esc(x[0]) + (x[2] ? ' · ' + esc(x[2]) : '') + '</span><button class="btn sm graph" data-a="' + esc(a.apt) + '" onclick="osbbLink(' + x[3] + ',this.dataset.a)">Сюди</button></div>').join('');
+  }
+  return h + '<button class="cmtlink" onclick="ui.osSel=\'\';render()">Закрити</button></div>';
+}
+function osbbGridHtml(sec) {
+  const l = osbbTotals().filter(a => a.sec === sec), floors = {};
+  l.forEach(a => { (floors[a.floor] = floors[a.floor] || []).push(a); });
+  const q = ui.osQ.trim().toLowerCase().replace(/\s+/g, '').replace(/^кв\.?/, '');
+  return Object.keys(floors).map(Number).sort((x, y) => y - x).map(f => '<div class="fl"><span class="f">' + f + '</span>' +
+    floors[f].map(a => '<button class="a' + (a.total > 0 ? ' p' : '') + (a.link ? ' l' : '') + (q && a.apt.toLowerCase() === q ? ' hit' : '') + (ui.osSel === a.apt ? ' sel' : '') + '" data-a="' + esc(a.apt) + '" onclick="osbbPick(this.dataset.a)" aria-label="Квартира ' + esc(a.apt) + (a.total > 0 ? ', внесли ' + a.total + ' грн' : ', не вносили') + '"><b>' + esc(a.apt) + '</b>' + (a.total > 0 ? '<i>' + fmtMoney(a.total) + '</i>' : '') + '</button>').join('') + '</div>').join('');
+}
+function osbbPick(apt) { ui.osSel = ui.osSel === apt ? '' : apt; ui.osSum = ''; ui.osPick = false; haptic(); render(); }
+function osbbNoNumHtml() {
+  const o = D.osbb;
+  if (!o.nonum.length) return '<div class="card"><div class="empty">Немає</div></div>';
+  const free = o.nonum.filter(x => !x[4]), done = o.nonum.filter(x => x[4]);
+  const row = x => '<div class="pay"><div class="row"><span class="amt">' + fmtMoney(x[1]) + ' грн</span>' + (x[4] ? '<span class="tag ok">кв. ' + esc(x[4]) + '</span>' : '<span class="sub" style="font-weight:500">' + esc(x[0]) + '</span>') + '</div>' +
+    (x[5] ? '<div class="who">' + esc(x[5]) + '</div>' : '') +
+    (x[4] ? '<div class="what">' + esc(x[0]) + (x[2] ? ' · ' + esc(x[2]) : '') + (x[6] ? ' · ' + esc(x[6]) : '') + '</div><button class="btn sm ghost" style="align-self:flex-start" onclick="osbbLink(' + x[3] + ',\'\')">Відвʼязати</button>'
+      : (x[2] ? '<div class="what">' + esc(x[2]) + '</div>' : '') +
+        '<div class="row" style="gap:8px"><input class="input" style="flex:1;min-width:0;height:40px" aria-label="Квартира для платежу ' + fmtMoney(x[1]) + ' грн від ' + esc(x[0]) + '" autocomplete="off" placeholder="Номер квартири…" value="' + esc(ui.osLink[x[3]] || '') + '" oninput="ui.osLink[' + x[3] + ']=this.value">' +
+        '<button class="btn sm graph" onclick="osbbLink(' + x[3] + ',ui.osLink[' + x[3] + ']||\'\',true)">Привʼязати</button></div>') + '</div>';
+  return (free.length ? '<div class="label">Не привʼязані · ' + free.length + '</div><div class="card" style="gap:0">' + free.map(row).join('') + '</div>' : '') +
+    (done.length ? '<div class="label">Привʼязані · ' + done.length + '</div><div class="card" style="gap:0">' + done.map(row).join('') + '</div>' : '');
+}
+function osbbImportFile(input) {
+  const file = input.files && input.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = async () => {
+    input.value = '';
+    if (await run('osbbImport', { csv: r.result })) {
+      const x = D.osbbImportResult || {};
+      toast('Нових платежів: ' + (x.added || 0) + ' · за коментарем ' + (x.linked || 0) + ' · без номеру ' + (x.free || 0));
+      if (x.free) ui.osNo = true;
+      haptic('ok'); render();
+    }
+  };
+  r.onerror = () => toast('Не вдалося прочитати файл');
+  r.readAsText(file, 'utf-8');
+}
+async function osbbSave(apt) {
+  const v = String(ui.osSum !== '' ? ui.osSum : (document.getElementById('osSum') || {}).value || '').replace(',', '.').replace(/\s/g, '');
+  if (!/^\d+(\.\d+)?$/.test(v)) { toast('Вкажіть суму цифрами, наприклад 300'); return; }
+  haptic();
+  if (await run('osbbSet', { apt: apt, sum: Number(v) }, 'Кв. ' + apt + ': ' + fmtMoney(Number(v)) + ' грн')) { ui.osSum = ''; render(); }
+}
+async function osbbLink(row, apt, typed) {
+  apt = String(apt || '').trim().replace(/\s+/g, '').replace(/^кв\.?/i, '');
+  if (typed && !apt) { toast('Вкажіть номер квартири'); return; }
+  if (apt && !D.osbb.apts.some(a => a[0] === apt)) { toast('Квартири ' + apt + ' немає в реєстрі'); return; }
+  haptic();
+  if (await run('osbbLink', { row: row, apt: apt }, apt ? 'Платіж привʼязано до кв. ' + apt : 'Платіж відвʼязано')) { delete ui.osLink[row]; ui.osPick = false; render(); }
+}
+function osbbFindHtml() {
+  const q = ui.osQ.trim().toLowerCase().replace(/\s+/g, '').replace(/^кв\.?/, '');
+  if (!q) return '';
+  const a = osbbTotals().find(x => x.apt.toLowerCase() === q);
+  if (!a) return '<div class="sub" style="font-weight:500">Квартири ' + esc(ui.osQ) + ' у реєстрі немає</div>';
+  return '<button class="card" style="flex-direction:row;align-items:center;justify-content:space-between;border:none;text-align:left;font:inherit;color:inherit" data-a="' + esc(a.apt) + '" onclick="ui.osSec=' + a.sec + ';ui.osSel=this.dataset.a;ui.osSum=\'\';render()"><span><b>Кв. ' + esc(a.apt) + '</b><span class="sub" style="font-weight:500"> · секція ' + a.sec + ', ' + a.floor + ' поверх</span></span>' +
+    (a.total > 0 ? '<span class="tag ok">внесли ' + fmtMoney(a.total) + ' грн</span>' : '<span class="tag bad">ще ні</span>') + '</button>';
+}
+function osbbFind() {
+  const q = ui.osQ.trim().toLowerCase().replace(/\s+/g, '').replace(/^кв\.?/, '');
+  const a = q && D.osbb.apts.find(x => x[0].toLowerCase() === q);
+  if (a && a[1] !== ui.osSec) { ui.osSec = a[1]; ui.osSel = ''; render(); const i = document.getElementById('osQ'); if (i) { i.focus(); i.setSelectionRange(i.value.length, i.value.length); } return; }
+  const f = document.getElementById('osFind'), g = document.getElementById('osGrid');
+  if (f) f.innerHTML = osbbFindHtml();
+  if (g) g.innerHTML = osbbGridHtml(ui.osSec);
+}
+function osbbCopy() {
+  const l = osbbTotals().filter(a => a.sec === ui.osSec && a.total > 0);
+  copyText('Внески на ОСББ, секція ' + ui.osSec + ' (' + l.length + ' кв.):\n' + l.map(a => a.apt + ' — ' + a.total + ' грн').join('\n'), 'Список скопійовано');
+}
 function fuelEntry() {
   const f = D.fuel;
   if (!f || !f.admin) return '';
@@ -1050,7 +1195,7 @@ function admin() {
   const ents = []; for (let i = 1; i <= D.entrances; i++) ents.push(i);
   const chipSel = (on) => on ? 'background:var(--yellow);color:var(--ink);border-color:var(--yellow)' : 'background:transparent;color:#fff;border-color:#6B7079';
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Керування</div></div>' +
-    fuelEntry() +
+    fuelEntry() + osbbEntry() +
     '<div class="grid3"><div class="tile"><span class="v" style="font-size:22px">' + fresh.length + '</span><span class="k">потребують уваги</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.problems.filter(p => p.status === 'В роботі').length + '</span><span class="k">в роботі</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.polls.filter(p => p.open).length + '</span><span class="k">опитування</span></div></div>' +
     '<div class="label">Світло (ручне виправлення)</div><div class="card"><div class="chips">' + [0].concat(ents).map(e => '<button class="chip' + (ui.lsec === e ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="ui.lsec=' + e + ';render()">' + (e ? 'Секція ' + e : 'Усі секції') + '</button>').join('') + '</div>' +
     '<div class="grid2"><button class="btn yellow" onclick="run(\'lightSet\',{on:true,section:ui.lsec},\'Світло: є\')">Світло є</button><button class="btn graph" onclick="run(\'lightSet\',{on:false,section:ui.lsec},\'Світло: немає\')">Світла немає</button></div></div>' +
@@ -1119,6 +1264,16 @@ async function start() {
 
 // ---------- демо-режим (?demo=1; &admin=1, &family=1, &state=pending) ----------
 // ---------- демо: пальне в адмінці ----------
+function demoOsbb() {
+  const apts = [], secs = [[1, 1, 160, 154], [2, 161, 320, 314], [3, 321, 480, 474], [4, 481, 595, 591]];
+  let seed = 7; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  secs.forEach(s => {
+    let n = s[1];
+    for (let f = 3; f <= 25; f++) { const per = f === 3 ? (s[0] === 4 ? 5 : 6) : (s[0] === 4 ? 5 : 7); for (let k = 0; k < per && n <= s[2]; k++, n++) apts.push([String(n), s[0], f, rnd() < .18 ? (rnd() < .1 ? 500 : 300) : 0]); }
+    for (let m = s[3]; m <= (s[0] === 1 ? 160 : s[0] === 2 ? 320 : s[0] === 3 ? 480 : 595); m++) apts.push([m + '-1', s[0], 26, rnd() < .18 ? 300 : 0]);
+  });
+  return { from: '14.06.2026', lastImport: {}, apts: apts, nonum: [['02.06.2026 15:05', 1000, '', 2, '', '', ''], ['03.06.2026 11:05', 500, '', 3, '', '', ''], ['06.06.2026 18:41', 300, 'Поповнення рахунку Банки', 4, '', 'Анаїта С.', '']] };
+}
 function demoFuelAdmin(now, H) {
   const pay = (tx, apt, sum, h, sender, comment, source) => ({ tx: tx, apt: apt, sum: sum, date: now - h * H, month: '', comment: comment, sender: sender, source: source || 'виписка: коментар' });
   const pays = [pay('p1', '276', 30, 1, '', 'Кв 276 на додаток до 1470'), pay('p2', '319', 1500, 3, '', 'Кв. 319'), pay('p3', '475-1', 1500, 6, 'Роман Лящук', 'Кв 475-1'),
@@ -1192,13 +1347,17 @@ function demoApi(action, d) {
       fuel: { month: new Date().toISOString().slice(0, 7), amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
         sum: /fuel=part/.test(q) ? 1000 : /fuel=on/.test(q) ? 1500 : 0, key: (q.match(/fuel=(\w+)/) || [0, 'off'])[1], lastPay: { date: now - 30 * 24 * H, sum: 1500 },
         admin: /admin=1/.test(q) ? demoFuelAdmin(now, H) : null },
-      totalApts: 619, entrances: 4, now: now
+      osbb: /admin=1/.test(q) ? demoOsbb() : undefined,
+      totalApts: 624, entrances: 4, now: now
     };
   }
   const db = DEMO_DB;
-  delete db.invite; delete db.importResult;
+  delete db.invite; delete db.importResult; delete db.osbbImportResult;
   const L = db.light.sections;
   if (action === 'light') { const s = L[db.me.entrance], dd = d.on ? 'on' : 'off'; db.light.mine = dd; if (s.status === 'unknown' || s.status === dd) { s.status = dd; s.at = now; if (!s.since) s.since = now; delete s.pending; } else if (s.pending && s.pending.dir === dd) { s.status = dd; s.since = now; s.at = now; s.by = 'neighbors'; delete s.pending; } else s.pending = { dir: dd, at: now }; }
+  if (action === 'osbbSet' && db.osbb) { const a = db.osbb.apts.find(x => x[0] === d.apt); if (a) a[3] = d.sum; }
+  if (action === 'osbbImport' && db.osbb) { db.osbb.nonum.unshift(['17.06.2026 12:19', 300, 'Квартира 292', 90, '292', 'Микола Д.', 'виписка: коментар'], ['18.06.2026 10:39', 500, 'Поповнення рахунку Банки', 91, '', 'Олена Б.', '']); db.osbbImportResult = { added: 2, linked: 1, free: 1 }; db.osbb.lastImport = { at: now, added: 2 }; }
+  if (action === 'osbbLink' && db.osbb) { const x = db.osbb.nonum.find(n => n[3] === d.row); if (x) x[4] = d.apt || ''; }
   if (action === 'comment') { const p = db.problems.find(x => x.id === d.id); (p.comments = p.comments || []).push({ id: 'c' + now, t: now, who: db.me.isAdmin ? 'Адміністратор' : p.own ? 'Автор заявки' : 'Власник', text: d.text, mine: true }); }
   if (action === 'delComment') db.problems.forEach(p => { p.comments = (p.comments || []).filter(c => c.id !== d.cid); });
   if (action === 'metoo') { const p = db.problems.find(x => x.id === d.id); p.mine = !p.mine; p.count += p.mine ? 1 : -1; }

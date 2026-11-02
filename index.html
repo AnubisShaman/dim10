@@ -256,11 +256,69 @@ body.loading::after{content:"";position:fixed;top:0;left:0;right:0;height:3px;z-
 .aptrow .n{font-weight:800;font-size:16px;min-width:64px}
 .aptrow .s{margin-left:auto;font-weight:700;font-size:14px}
 .aptopen{background:var(--bg);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:8px;margin:2px 0 8px}
+
+/* ===== Світло: фасад, поверхи, генератор ===== */
+.facadec{background:linear-gradient(180deg,#F7F8FA 0%,#E9ECF0 100%);border-radius:22px;padding:14px 10px 10px;box-shadow:inset 0 0 0 1px rgba(35,38,43,.06);position:relative;transition:box-shadow 400ms ease}
+.facadec.gen{box-shadow:inset 0 0 0 1.5px rgba(46,160,103,.45),0 0 0 4px rgba(46,160,103,.08)}
+.lfac{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.tower{border:none;font:inherit;color:inherit;text-align:center;border-radius:10px 10px 4px 4px;background:linear-gradient(180deg,#D9DDE3,#CDD2D9);padding:6px 5px 5px;display:flex;flex-direction:column;gap:3px;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 1px 2px rgba(35,38,43,.08)}
+.tower.me{box-shadow:inset 0 0 0 2px var(--ink)}
+.tower .nm{font-size:11px;font-weight:800;color:#5F6670;letter-spacing:.04em;margin-bottom:2px}
+.frw{display:flex;gap:2px;height:9px;border-radius:2px}
+.frw .w{flex:1;border-radius:1.5px;background:#4A4F57}
+.frw.on .w{background:#FFCF4A;box-shadow:0 0 5px rgba(242,193,46,.75)}
+.frw.on .w:nth-child(3n){background:#F7B733}
+.frw.on.inf .w{background:#F7DE8C;box-shadow:none}
+.frw.unknown .w{background:repeating-linear-gradient(135deg,#C3C8CF 0 2px,transparent 2px 4px)}
+.frw.pd{outline:1px dashed #B88A00;outline-offset:1px}
+.frw.mine{outline:1.5px solid var(--ink);outline-offset:1px}
+.tower .base{height:8px;margin-top:5px;border-radius:3px;background:#B9BFC7}
+.tower .cnt{font-size:11px;font-weight:800;color:#3A3F47;margin-top:5px}
+@keyframes ignite{0%{background:#4A4F57;box-shadow:none}55%{background:#FFF3C4;box-shadow:0 0 12px rgba(255,210,90,.95)}100%{}}
+.ign .frw.on .w{animation:ignite 520ms var(--spring) backwards;animation-delay:calc(var(--d) * 1ms)}
+.genp{display:flex;align-items:center;gap:10px;border-radius:16px;padding:10px 12px;font-weight:700;font-size:14px}
+.genp.on{background:#DCEFE5;color:#1E6B4A}
+.genp.off{background:var(--bg);color:var(--muted)}
+.genp .dot{width:10px;height:10px;border-radius:50%;background:#9AA1AB;flex-shrink:0}
+.genp.on .dot{background:#2EA067;box-shadow:0 0 0 4px rgba(46,160,103,.18),0 0 12px rgba(46,160,103,.8)}
+.genp small{font-weight:600;opacity:.8;margin-left:auto;white-space:nowrap}
+@keyframes genon{0%{transform:scale(.96);box-shadow:0 0 0 0 rgba(46,160,103,.5)}60%{box-shadow:0 0 0 10px rgba(46,160,103,0)}100%{transform:none}}
+.genp.on.flash{animation:genon 700ms var(--spring)}
+.flist{display:flex;flex-direction:column;gap:3px}
+.flr{display:grid;grid-template-columns:34px 1fr 86px;align-items:center;gap:8px;padding:6px 6px;border-radius:12px;border:none;background:none;font:inherit;color:inherit;text-align:left;width:100%}
+.flr .n{font-weight:800;font-size:14px;color:var(--muted)}
+.fapts{display:grid;gap:3px}
+.fa{height:22px;border-radius:5px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;letter-spacing:-.02em;background:var(--bg);color:var(--muted);white-space:nowrap;overflow:hidden}
+.fa.s{font-size:8px;letter-spacing:-.04em}
+.flr.on .fa{background:#FFF3C4;color:#6B5300}
+.flr.on.inf .fa{background:#FBF4DA;color:#8A7A44}
+.flr.off .fa{background:#4A4F57;color:#D5D9DE}
+.flr.unknown .fa{background:repeating-linear-gradient(135deg,var(--line) 0 4px,transparent 4px 8px)}
+.flst{font-size:11px;font-weight:700;text-align:right;line-height:1.25}
+.flst em{display:block;font-style:normal;font-weight:600;color:var(--muted);font-size:10px}
+.flst.on{color:var(--ok)} .flst.off{color:var(--bad)} .flst.unknown{color:var(--muted)}
+.hrow{display:grid;grid-template-columns:30px 1fr;gap:8px;align-items:center;font-size:12px;font-weight:700;color:var(--muted)}
+.hbar{height:12px;border-radius:6px;overflow:hidden;display:flex;background:var(--line)}
+.hbar i{display:block;height:100%}
+.hbar i.on{background:linear-gradient(#FFCF4A,#F2B21E)} .hbar i.off{background:#4A4F57} .hbar i.unknown{background:var(--line2)}
+.hbar.g i.on{background:linear-gradient(#5CC68E,#2EA067)}
+.hax{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-weight:600;padding-left:38px}
+.scrim2{position:fixed;inset:0;background:rgba(10,12,16,.36);opacity:0;pointer-events:none;transition:opacity 260ms ease;z-index:40}
+.scrim2.show{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:41;background:var(--card);border-radius:24px 24px 0 0;padding:8px max(16px,env(safe-area-inset-left,0px)) calc(20px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-right,0px));box-shadow:0 -10px 40px rgba(0,0,0,.18);transform:translateY(110%);visibility:hidden;max-width:560px;margin:0 auto;touch-action:none;will-change:transform;display:flex;flex-direction:column;gap:10px}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line2);margin:4px auto 4px}
+.bigst{display:flex;align-items:center;gap:12px;padding:12px;border-radius:16px}
+.bigst.on{background:#FFF3C4;color:#6B5300} .bigst.off{background:#4A4F57;color:#F2F3F5} .bigst.unknown{background:var(--bg);color:var(--muted)}
+.bigst .bl{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:rgba(255,255,255,.35)}
+.bigst.on .bl{background:#FFCF4A;box-shadow:0 0 20px rgba(242,193,46,.8)}
+@media (prefers-reduced-motion:reduce){.ign .frw .w{animation:none!important}.genp.on.flash{animation:none}.sheet,.scrim2{transition:opacity 200ms ease!important}}
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
 <div id="toast" role="status" aria-live="polite"></div>
+<div class="scrim2" id="scrim2"></div>
+<div class="sheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fshT"><div class="grab"></div><div id="fshBody" style="display:flex;flex-direction:column;gap:10px"></div></div>
 <div class="edge" aria-hidden="true"></div>
 
 <script>
@@ -352,7 +410,7 @@ async function api(action, data) {
   const res = await fetch(CONFIG.API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-    body: JSON.stringify(Object.assign({ action: action, initData: tg ? tg.initData : '' }, data || {}))
+    body: JSON.stringify(Object.assign({ action: action, initData: tg ? tg.initData : '', fm: ui.fMonth || '' }, data || {}))
   });
   const j = await res.json();
   if (j.error) throw new Error(j.error);
@@ -377,7 +435,7 @@ function save() { try { const c = Object.assign({}, D, { _t: Date.now() }); dele
 
 // ---------- навігація ----------
 function go(r) {
-  if (['new', 'useful', 'admin', 'fuel', 'osbb'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
+  if (['new', 'useful', 'admin', 'fuel', 'osbb', 'light'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
   else { stack = []; ui.anim = r === route ? '' : 'tab'; }
   route = r; render(); window.scrollTo(0, 0);
 }
@@ -391,7 +449,7 @@ function syncBack() {
 function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
-  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen }[route] || home;
+  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen }[route] || home;
   let scr = document.getElementById('scr');
   if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
   const anim = ui.anim; ui.anim = '';
@@ -428,7 +486,7 @@ function openBot() {
 }
 
 const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me' }[route] || route; }
+function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me', light: 'home' }[route] || route; }
 function tabs() {
   const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
   const cur = tabCur();
@@ -468,51 +526,171 @@ function sinceTxt(t) {
   if (d.toDateString() === y.toDateString()) return 'з учора, ' + hm;
   return 'з ' + d.toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' }) + ', ' + hm;
 }
+// ---------- світло: схема будинку ----------
+const LSECS = [{ n: 1, from: 1, to: 160, dup: [154, 160] }, { n: 2, from: 161, to: 320, dup: [314, 320] }, { n: 3, from: 321, to: 480, dup: [474, 480] }, { n: 4, from: 481, to: 595, dup: [591, 595] }];
+const LFLOORS = []; for (let f = 26; f >= 3; f--) LFLOORS.push(f);
+const _lay = {};
+function secLayout(sn) {
+  if (_lay[sn]) return _lay[sn];
+  const s = LSECS[sn - 1], fl = {}, per = sn === 4 ? 5 : 7, first = sn === 4 ? 5 : 6; let n = s.from;
+  for (let f = 3; f <= 25; f++) { fl[f] = []; const c = f === 3 ? first : per; for (let k = 0; k < c && n <= s.to; k++) fl[f].push(String(n++)); }
+  fl[26] = sn === 4 ? ['591-1', '592-1', '592-2', '593-1', '593-2', '594-1', '595-1', '595-2'] : (() => { const a = []; for (let m = s.dup[0]; m <= s.dup[1]; m++) a.push(m + '-1'); return a; })();
+  return (_lay[sn] = fl);
+}
+// статус поверху: власний або за секцією (inf)
+function floorSt(sn, f) {
+  const own = D.light && D.light.floors && D.light.floors[sn + ':' + f];
+  const sec = (D.light && D.light.sections && D.light.sections[sn]) || { status: 'unknown' };
+  if (own) return Object.assign({ inf: false }, own);
+  return { status: sec.status, at: sec.at, since: sec.since, n: 0, inf: true };
+}
+function lightCounts(sn) {
+  let on = 0, all = 0;
+  (sn ? [sn] : [1, 2, 3, 4]).forEach(x => LFLOORS.forEach(f => { all++; if (floorSt(x, f).status === 'on') on++; }));
+  return { on, all };
+}
+function genPill() {
+  const g = D.light && D.light.gen;
+  if (!g || !g.state) return '';
+  const flash = ui.prevGen && ui.prevGen !== g.state && g.state === 'on';
+  ui.prevGen = g.state;
+  return '<div class="genp ' + g.state + (flash ? ' flash' : '') + '" role="status"><span class="dot"></span>' + (g.state === 'on' ? 'Генератор працює' : 'Генератор вимкнено') + '<small>' + (g.at ? 'з ' + hhmm(g.at) : '') + '</small></div>';
+}
+function hhmm(t) { const d = new Date(t), today = new Date().toDateString() === d.toDateString(); return (today ? '' : d.getDate() + ' ' + MONTH_GEN[d.getMonth()] + ', ') + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
+function facadeHtml(animate) {
+  const me = D.me, mf = D.light && D.light.myFloor;
+  const g = D.light && D.light.gen;
+  let h = '<div class="facadec' + (g && g.state === 'on' ? ' gen' : '') + (animate ? ' ign' : '') + '"><div class="lfac">';
+  [1, 2, 3, 4].forEach(sn => {
+    const k = lightCounts(sn);
+    h += '<button class="tower' + (me.entrance === sn ? ' me' : '') + '" onclick="openLight(' + sn + ')" aria-label="Секція ' + sn + ': світло на ' + k.on + ' з ' + k.all + ' поверхів"><span class="nm">С' + sn + '</span>';
+    LFLOORS.forEach((f, i) => {
+      const x = floorSt(sn, f), d = (25 - i) * 36 + sn * 55;
+      h += '<span class="frw ' + x.status + (x.inf ? ' inf' : '') + (x.pending ? ' pd' : '') + (me.entrance === sn && mf === f ? ' mine' : '') + '" style="--d:' + d + '">' + secLayout(sn)[f].map(() => '<i class="w"></i>').join('') + '</span>';
+    });
+    h += '<span class="base"></span><span class="cnt">' + k.on + '/' + k.all + '</span></button>';
+  });
+  return h + '</div></div>';
+}
 function lightCard() {
   const L = (D.light && D.light.sections) || {};
-  const me = D.me, n = D.entrances || 4;
-  let on = 0, known = 0;
-  const nextLight = {};
-  const cols = [];
-  for (let s = 1; s <= n; s++) {
-    const x = L[s] || { status: 'unknown' };
-    if (x.status === 'on') on++;
-    if (x.status !== 'unknown') known++;
-    const isMe = s === me.entrance;
-    const prevSt = ui.prevLight && ui.prevLight[s];
-    const chg = !!prevSt && prevSt !== x.status;
-    nextLight[s] = x.status;
-    const word = x.status === 'on' ? 'світло є' : x.status === 'off' ? 'світла немає' : 'ще не відмічали';
-    cols.push('<div class="sec' + (isMe ? ' me' : '') + '"><div class="col ' + x.status + (isMe ? ' me' : '') + (chg ? ' changed' : '') + '" role="img" aria-label="Секція ' + s + ': ' + word + '">' +
-      (x.pending ? '<i class="pend ' + x.pending.dir + '" title="очікує підтвердження"></i>' : '') +
-      (x.status === 'on' ? ic('bulb', '#23262B', 20) : x.status === 'off' ? ic('nobulb', '#C6CBD1', 18) : '') + '</div>' +
-      '<span class="lb">Секц. ' + s + '</span><span class="age">' + (x.status === 'unknown' ? '—' : shortAgo(x.at)) + '</span></div>');
-  }
-  ui.prevLight = nextLight;
-  const title = known ? on + ' з ' + n + ' секцій зі світлом' : 'Поки невідомо';
-  let h = '<div class="lightc' + (ui.stale ? ' stale' : '') + '"><div style="display:flex;flex-direction:column;gap:4px"><div class="label">Світло в будинку</div><div class="h2" role="heading" aria-level="2" aria-live="polite">' + (ui.stale ? 'Оновлюю статус…' : title) + '</div></div>' +
-    '<div class="secs">' + cols.join('') + '</div>' +
-    '<div class="legend"><span><i style="background:#F2C12E"></i>є світло</span><span><i style="background:#4A4F57"></i>немає</span><span><i style="background:#D5D9DE"></i>ще не відмічали</span><span><i class="pdot"></i>чекає підтвердження</span></div>';
-  if (me.entrance) {
-    const my = L[me.entrance] || { status: 'unknown' };
+  const me = D.me, mf = D.light && D.light.myFloor;
+  const k = lightCounts();
+  const sig = JSON.stringify([L, D.light && D.light.floors]);
+  const animate = !ui.stale && ui.lightSig !== sig; ui.lightSig = sig;
+  const title = k.on ? k.on + ' з ' + k.all + ' поверхів зі світлом' : (Object.values(L).some(x => x.status !== 'unknown') ? 'Світла немає' : 'Поки невідомо');
+  let h = '<div class="lightc' + (ui.stale ? ' stale' : '') + '"><div class="row"><div style="display:flex;flex-direction:column;gap:4px"><div class="label">Світло в будинку</div><div class="h2" role="heading" aria-level="2" aria-live="polite">' + (ui.stale ? 'Оновлюю статус…' : title) + '</div></div>' +
+    '<button class="cmtlink" onclick="openLight(' + (me.entrance || 1) + ')">Детально</button></div>' +
+    genPill() + facadeHtml(animate) +
+    '<div class="legend"><span><i style="background:#FFCF4A"></i>є світло</span><span><i style="background:#4A4F57"></i>немає</span><span><i style="background:#C3C8CF"></i>не відмічали</span><span><i class="pdot"></i>чекає підтвердження</span></div>';
+  if (me.entrance && mf) {
+    const x = floorSt(me.entrance, mf);
     const mine = ui.myLight || (D.light && D.light.mine);
-    let sub;
-    if (my.status === 'unknown') sub = 'Ще ніхто не відмітився. Будьте першим!';
-    else sub = (my.status === 'on' ? 'Світло є ' : 'Світла немає ') + sinceTxt(my.since) + ' · ' +
-      (my.by === 'admin' ? 'оновив адміністратор ' + ago(my.at) : 'підтверджено ' + ago(my.at));
+    let sub = x.status === 'unknown' ? 'Ще ніхто не відмітився. Будьте першим!' :
+      (x.status === 'on' ? 'Світло є ' : 'Світла немає ') + sinceTxt(x.since) + (x.inf ? ' · за даними секції' : ' · підтверджено ' + ago(x.at));
     let pend = '';
-    if (my.pending) {
-      const pw = my.pending.dir === 'on' ? '«світло є»' : '«світла немає»';
-      pend = '<div class="pendbox">' + (mine === my.pending.dir
-        ? 'Вашу відмітку ' + pw + ' враховано. Статус зміниться, щойно це підтвердить ще одна квартира.'
-        : 'Сусід ' + ago(my.pending.at) + ' відмітив ' + pw + '. Якщо у вас так само — натисніть, і статус зміниться.') + '</div>';
+    if (x.pending) {
+      const pw = x.pending.dir === 'on' ? '«світло є»' : '«світла немає»';
+      pend = '<div class="pendbox">' + (mine === x.pending.dir ? 'Вашу відмітку ' + pw + ' враховано. Статус поверху зміниться, щойно це підтвердить ще одна квартира.' : 'Сусід з поверху ' + ago(x.pending.at) + ' відмітив ' + pw + '. Якщо у вас так само — натисніть.') + '</div>';
     }
-    h += '<div class="mark"><div style="font-size:14px">Як у вас у <b>секції ' + me.entrance + '</b> зараз?</div>' +
+    h += '<div class="mark"><div style="font-size:14px">Як у вас на <b>' + mf + ' поверсі</b> зараз?</div>' +
       '<div class="grid2"><button class="btn' + (mine === 'on' ? ' pon' : '') + '" onclick="markLight(true)">' + ic('bulb', null, 18) + 'Світло є</button>' +
       '<button class="btn' + (mine === 'off' ? ' poff' : '') + '" onclick="markLight(false)">' + ic('nobulb', null, 18) + 'Нема</button></div>' +
       '<div class="sub" style="font-weight:500">' + esc(sub) + '</div>' + pend + '</div>';
   }
   return h + '</div>';
+}
+// ---------- екран «Світло по поверхах» ----------
+function openLight(sn) { ui.lsecV = sn; go('light'); }
+function lightScreen() {
+  const sn = ui.lsecV || D.me.entrance || 1, k = lightCounts(sn), me = D.me, mf = D.light && D.light.myFloor;
+  let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Світло по поверхах</div></div>' +
+    genPill() + facadeHtml(false) +
+    '<div class="seg" role="tablist">' + [1, 2, 3, 4].map(n => '<button role="tab" aria-selected="' + (sn === n) + '" class="' + (sn === n ? 'on' : '') + '" onclick="ui.lsecV=' + n + ';render()">Секція ' + n + '</button>').join('') + '</div>';
+  h += '<div class="card" style="gap:8px"><div class="row"><div><div style="font-weight:800;font-size:17px">Секція ' + sn + '</div><div class="sub" style="font-weight:600">світло є на ' + k.on + ' з ' + k.all + ' поверхів</div></div></div><div class="flist">';
+  const cols = sn === 4 ? 8 : 7;
+  LFLOORS.forEach(f => {
+    const x = floorSt(sn, f), apts = secLayout(sn)[f];
+    const word = x.status === 'on' ? 'Є світло' : x.status === 'off' ? 'Немає' : 'Немає даних';
+    h += '<button class="flr ' + x.status + (x.inf ? ' inf' : '') + '" onclick="openFloor(' + sn + ',' + f + ')" aria-label="Поверх ' + f + ': ' + word + '"><span class="n">' + f + (me.entrance === sn && mf === f ? ' •' : '') + '</span>' +
+      '<span class="fapts" style="grid-template-columns:repeat(' + cols + ',minmax(0,1fr))">' + apts.map(a => '<span class="fa' + (a.length > 4 ? ' s' : '') + '">' + a + '</span>').join('') + '</span>' +
+      '<span class="flst ' + x.status + '">' + word + (x.pending ? ' · ?' : '') + '<em>' + (x.inf ? (x.status === 'unknown' ? '—' : 'за секцією') : ago(x.at)) + '</em></span></button>';
+  });
+  h += '</div><div class="sub" style="font-weight:500">Блідіше — з поверху ще мало відміток, показано за секцією. • — ваш поверх.</div></div>';
+  h += histHtml();
+  h += '<div class="card"><b>Як рахується</b><div class="sub" style="font-weight:500;line-height:1.5">Статус поверху змінюється, коли 2 різні квартири з цього поверху відмітили одне й те саме. Поки відміток з поверху немає, він показує статус своєї секції. Генератор показуємо за даними бота запуску.</div></div>';
+  return h;
+}
+function histHtml() {
+  const H = (D.light && D.light.hist) || [];
+  if (!H.length) return '';
+  const end = Date.now(), start = end - 12 * 3600e3;
+  const bar = kind => {
+    const ev = H.filter(x => x[0] === kind).sort((a, b) => a[2] - b[2]);
+    let st = 'unknown'; ev.forEach(x => { if (x[2] <= start) st = x[1]; });
+    const seg = []; let t = start;
+    ev.filter(x => x[2] > start).forEach(x => { seg.push([st, x[2] - t]); st = x[1]; t = x[2]; });
+    seg.push([st, end - t]);
+    return seg.map(x => '<i class="' + x[0] + '" style="width:' + (x[1] / (end - start) * 100).toFixed(2) + '%"></i>').join('');
+  };
+  const hasGen = H.some(x => x[0] === 'gen');
+  const hrs = [12, 8, 4, 0].map(n => n ? hhmm(end - n * 3600e3).slice(-5) : 'зараз');
+  return '<div class="card" style="gap:8px"><div class="row"><b>Останні 12 годин</b><span class="sub" style="font-weight:600">по секціях</span></div>' +
+    (hasGen ? '<div class="hrow">Ген<div class="hbar g">' + bar('gen') + '</div></div>' : '') +
+    [1, 2, 3, 4].map(n => '<div class="hrow">С' + n + '<div class="hbar">' + bar('s' + n) + '</div></div>').join('') +
+    '<div class="hax">' + hrs.map(x => '<span>' + x + '</span>').join('') + '</div></div>';
+}
+// ---------- шторка поверху (пружина + перетягування) ----------
+const FS = { y: 9999, v: 0, target: 9999, raf: 0, drag: null };
+function fsEl() { return document.getElementById('fsheet'); }
+function fsStep() {
+  const el = fsEl(), k = 320, c = 2 * Math.sqrt(k), dt = 1 / 60;
+  FS.v += (-k * (FS.y - FS.target) - c * FS.v) * dt; FS.y += FS.v * dt;
+  el.style.transform = 'translateY(' + Math.max(-40, FS.y) + 'px)';
+  if (Math.abs(FS.y - FS.target) > .5 || Math.abs(FS.v) > 5) FS.raf = requestAnimationFrame(fsStep);
+  else { FS.y = FS.target; el.style.transform = 'translateY(' + FS.y + 'px)'; FS.raf = 0; if (FS.target > 0) el.style.visibility = 'hidden'; }
+}
+function fsTo(t, vel) {
+  const el = fsEl(); FS.target = t; if (vel !== undefined) FS.v = vel; el.style.visibility = 'visible';
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { FS.y = t; el.style.transform = 'translateY(' + t + 'px)'; if (t > 0) el.style.visibility = 'hidden'; return; }
+  if (!FS.raf) FS.raf = requestAnimationFrame(fsStep);
+}
+function fsOpen() { const el = fsEl(); el.style.visibility = 'visible'; if (FS.y > 0) FS.y = el.offsetHeight + 40; document.getElementById('scrim2').classList.add('show'); fsTo(0, 0); }
+function fsClose(vel) { document.getElementById('scrim2').classList.remove('show'); fsTo(fsEl().offsetHeight + 40, vel); }
+function fsInit() {
+  const el = fsEl(), sc = document.getElementById('scrim2');
+  if (!el || el._init) return; el._init = 1;
+  sc.onclick = () => fsClose();
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') fsClose(); });
+  el.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; FS.drag = { y0: e.clientY - FS.y, h: [[e.clientY, e.timeStamp]] }; el.setPointerCapture(e.pointerId); cancelAnimationFrame(FS.raf); FS.raf = 0; });
+  el.addEventListener('pointermove', e => {
+    if (!FS.drag) return;
+    let ny = e.clientY - FS.drag.y0; if (ny < 0) ny = -(-ny * 120 * .55) / (120 + .55 * -ny);
+    FS.y = ny; el.style.transform = 'translateY(' + ny + 'px)';
+    FS.drag.h.push([e.clientY, e.timeStamp]); if (FS.drag.h.length > 5) FS.drag.h.shift();
+  });
+  el.addEventListener('pointerup', () => {
+    if (!FS.drag) return;
+    const h = FS.drag.h, a = h[0], b = h[h.length - 1], vel = b[1] > a[1] ? (b[0] - a[0]) / ((b[1] - a[1]) / 1000) : 0;
+    FS.drag = null;
+    const proj = FS.y + (vel / 1000) * .99 / (1 - .99);
+    if (proj > el.offsetHeight * .45) fsClose(vel); else fsTo(0, vel);
+  });
+}
+function openFloor(sn, f) {
+  fsInit();
+  const x = floorSt(sn, f), apts = secLayout(sn)[f], mine = D.me.entrance === sn && D.light && D.light.myFloor === f;
+  const word = x.status === 'on' ? 'Є світло' : x.status === 'off' ? 'Немає світла' : 'Немає даних';
+  let h = '<div class="row"><div><div class="sub">Секція ' + sn + (mine ? ' · ваш поверх' : '') + '</div><div class="h2" id="fshT">' + f + ' поверх</div></div><span class="sub">' + apts.length + ' квартир</span></div>' +
+    '<div class="bigst ' + x.status + '"><div class="bl">' + ic(x.status === 'off' ? 'nobulb' : 'bulb', x.status === 'off' ? '#F2F3F5' : '#6B5300', 22) + '</div><div><div style="font-weight:800;font-size:17px">' + word + (x.pending ? ' · ?' : '') + '</div><div style="font-size:13px;opacity:.85">' +
+    (x.status === 'unknown' ? 'Ще ніхто не відмічав' : x.inf ? 'З поверху ще немає відміток — показуємо статус секції' : (x.since ? sinceTxt(x.since) + ' · ' : '') + 'останнє підтвердження ' + ago(x.at)) + '</div></div></div>';
+  if (!x.inf && x.n) h += '<div class="sub" style="font-weight:500">За останні 3 години відмітились ' + x.n + ' ' + plural(x.n, 'квартира', 'квартири', 'квартир') + ' з поверху. Які саме — не показуємо.</div>';
+  if (x.pending) h += '<div class="pendbox">' + ago(x.pending.at) + ' одна квартира відмітила «' + (x.pending.dir === 'on' ? 'світло є' : 'світла немає') + '». Чекаємо підтвердження ще від однієї.</div>';
+  h += '<div class="fapts" style="grid-template-columns:repeat(' + (apts.length > 7 ? 8 : 7) + ',minmax(0,1fr))">' + apts.map(a => '<span class="fa' + (a.length > 4 ? ' s' : '') + '" style="height:30px;font-size:' + (a.length > 4 ? 9 : 12) + 'px;' + (x.status === 'on' ? 'background:#FFF3C4;color:#6B5300' : x.status === 'off' ? 'background:#4A4F57;color:#D5D9DE' : '') + (a === D.me.apt ? ';outline:2px solid var(--ink);outline-offset:-2px' : '') + '">' + a + '</span>').join('') + '</div>';
+  if (mine) h += '<div style="font-weight:700">Як у вас зараз?</div><div class="grid2"><button class="btn yellow" onclick="fsClose();markLight(true)">' + ic('bulb', '#23262B', 18) + 'Світло є</button><button class="btn graph" onclick="fsClose();markLight(false)">' + ic('nobulb', '#fff', 18) + 'Нема</button></div>';
+  else h += '<div class="sub" style="font-weight:500">Відмічати можна лише свій поверх.</div>';
+  document.getElementById('fshBody').innerHTML = h;
+  haptic(); fsOpen();
 }
 function markLight(on) {
   if (busy) return;
@@ -790,25 +968,24 @@ function cabinet() {
 }
 // ---------- паливо / ключ від ліфта (добровільний внесок) ----------
 const MONTH_IN = ['січні', 'лютому', 'березні', 'квітні', 'травні', 'червні', 'липні', 'серпні', 'вересні', 'жовтні', 'листопаді', 'грудні'];
+const MONTH_GEN = ['січня', 'лютого', 'березня', 'квітня', 'травня', 'червня', 'липня', 'серпня', 'вересня', 'жовтня', 'листопада', 'грудня'];
+function fmtUpd(t) { const d = new Date(t); return d.getDate() + ' ' + MONTH_GEN[d.getMonth()] + ' о ' + String(d.getHours()).padStart(2, '0') + ':' + String(d.getMinutes()).padStart(2, '0'); }
 function monthIn(k) { const m = Number(String(k).slice(5, 7)); return MONTH_IN[m - 1] || monthName(k); }
 function monthName(k) { try { return new Date(k + '-01T12:00:00').toLocaleDateString('uk-UA', { month: 'long' }); } catch (e) { return k; } }
 function fuelState() { const f = D.fuel; return f && D.me.apt ? f.key : null; }
 function payFuel() {
   const f = D.fuel; haptic();
-  const u = f.link + (f.link.indexOf('?') >= 0 ? '&' : '?') + 'a=' + f.amount + '&t=' + encodeURIComponent('кв ' + D.me.apt);
+  const u = f.link + (f.link.indexOf('?') >= 0 ? '&' : '?') + 'a=' + (f.key === 'on' ? f.amount : (f.needAmount || f.amount)) + '&t=' + encodeURIComponent('кв ' + D.me.apt);
   if (tg && tg.openLink && tg.initData) tg.openLink(u); else window.open(u, '_blank');
 }
 function copyText(t, ok) { try { navigator.clipboard.writeText(t).then(() => toast(ok || 'Скопійовано'), () => toast('Не вдалося скопіювати')); } catch (e) { toast('Не вдалося скопіювати'); } }
-const KEY_TXT = {
-  on: ['Ключ від ліфта активний', 'Внесок за {m} зараховано'],
-  claimed: ['Оплату заявлено', 'Ключ працює. Чекаємо звірки з випискою банки'],
-  grace: ['Ключ працює до {d} числа', 'Внесок за {m} ще не надійшов'],
-  part: ['Ключ від ліфта неактивний', 'Внесено {s} з {a} грн за {m}'],
-  off: ['Ключ від ліфта неактивний', 'Внесок за {m} ще не надійшов']
-};
 function keyTxt(i) {
-  const f = D.fuel;
-  return KEY_TXT[f.key][i].replace('{m}', monthName(f.month)).replace('{d}', f.due).replace('{s}', Math.round(f.sum || 0)).replace('{a}', f.amount);
+  const f = D.fuel, k = f.key, mn = m => monthName(m);
+  if (k === 'on') return i ? (f.keyMonth === f.month ? 'Внесок за ' + mn(f.month) + ' зараховано' : 'Діє до ' + f.until + ' · внесок за ' + mn(f.keyMonth) + ' зараховано') : 'Ключ від ліфта активний';
+  if (k === 'grace') return i ? 'Внесок за ' + mn(f.need) + ' ще не надійшов' : 'Ключ працює до ' + f.until;
+  if (k === 'claimed') return i ? 'Ключ працює. Чекаємо звірки оплати' : 'Оплату заявлено';
+  if (k === 'part') return i ? 'Внесено ' + fmtMoney(f.sum) + ' з ' + fmtMoney(f.needAmount) + ' грн за ' + mn(f.need) : 'Ключ від ліфта неактивний';
+  return i ? 'Внесок за ' + mn(f.need) + ' ще не надійшов' : 'Ключ від ліфта неактивний';
 }
 function fuelBanner() {
   const k = fuelState();
@@ -819,28 +996,36 @@ function fuelBanner() {
 }
 function fuelCard() {
   const f = D.fuel, k = fuelState();
+  if (f && f.soon && !D.me.isAdmin) return typeof fuelSoonCard === 'function' ? fuelSoonCard() : '';
   if (!k) return '';
   const cls = k === 'on' ? 'on' : (k === 'claimed' || k === 'grace') ? 'grace' : 'off';
+  const amt = f.needAmount || f.amount;
   let h = '<div class="label">Пальне для генератора · кв.\u00a0' + esc(D.me.apt) + '</div><div class="fuel ' + cls + '">' +
     '<div class="keyrow"><div class="keyic">' + ic('key', cls === 'on' ? '#1E6B4A' : cls === 'off' ? '#8A2E12' : '#23262B', 24) + '</div>' +
     '<div><div style="font-size:17px;font-weight:800">' + esc(keyTxt(0)) + '</div><div class="sub" style="font-weight:500;color:' + (cls === 'off' ? 'var(--bad)' : 'var(--muted)') + '">' + esc(keyTxt(1)) + '</div></div></div>';
-  if (k === 'part') h += '<div class="bar" style="height:8px;background:#fff"><i style="width:' + Math.min(100, Math.round(f.sum / f.amount * 100)) + '%;background:var(--yellow-d)"></i></div>';
+  if (k === 'part') h += '<div class="bar" style="height:8px;background:#fff"><i style="width:' + Math.min(100, Math.round(f.sum / amt * 100)) + '%;background:var(--yellow-d)"></i></div>';
+  // активний за минулий місяць — нагадати про поточний
+  if (k === 'on' && f.keyMonth !== f.month) h += '<div style="font-size:13px;line-height:1.45;color:var(--graph)">Щоб ключ працював і далі, внесіть <b>' + fmtMoney(f.amount) + ' грн</b> за ' + monthName(f.month) + ' до ' + esc(f.dueCur) + '.</div>' +
+    (f.link ? '<button class="btn ghost" onclick="payFuel()">Внести за ' + monthName(f.month) + '</button>' : '');
   if (k !== 'on') {
-    const left = Math.max(0, f.amount - Math.round(f.sum || 0));
-    h += '<div style="font-size:13px;line-height:1.45;color:var(--graph)">Добровільний внесок на пальне — <b>' + f.amount + ' грн</b> з квартири на місяць.</div>';
-    if (f.link) h += '<button class="btn yellow" onclick="payFuel()">Внести ' + (k === 'part' ? left : f.amount) + ' грн у банку</button>';
+    const left = Math.max(0, amt - Math.round(f.sum || 0));
+    h += '<div style="font-size:13px;line-height:1.45;color:var(--graph)">Добровільний внесок на пальне — <b>' + fmtMoney(amt) + ' грн</b> з квартири на місяць.</div>';
+    if (f.link) h += '<button class="btn yellow" onclick="payFuel()">Внести ' + fmtMoney(k === 'part' ? left : amt) + ' грн у банку</button>';
     if (f.card) h += '<div style="background:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="sub" style="font-weight:500">Або переказом на картку</div>' +
       '<div style="font-weight:800;letter-spacing:.04em">' + esc(f.card) + '</div></div><button class="btn sm ghost" onclick="copyText(\'' + esc(f.card.replace(/\s/g, '')) + '\',\'Номер картки скопійовано\')">' + ic('copy', null, 16) + '</button></div>';
     h += '<div style="background:#fff;border-radius:14px;padding:10px 12px;display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div class="sub" style="font-weight:500">Обовʼязково вкажіть у коментарі</div>' +
       '<div style="font-weight:800">кв ' + esc(D.me.apt) + '</div></div><button class="btn sm ghost" onclick="copyText(\'кв ' + esc(D.me.apt) + '\',\'Скопійовано\')">' + ic('copy', null, 16) + '</button></div>';
     if (k !== 'claimed') h += '<button class="btn ghost" onclick="fuelClaim()">Я вже оплатив(ла)</button>';
-    h += '<div style="font-size:12px;line-height:1.45;color:var(--graph)">Статус оновлюється після звірки з випискою банки' + (f.updated ? ' (остання — ' + ago(f.updated) + ')' : '') + '.</div>';
   }
-  if (f.paidCount) h += '<div class="sub" style="font-weight:500">У ' + monthIn(f.month) + ' вже долучились ' + f.paidCount + ' ' + plural(f.paidCount, 'квартира', 'квартири', 'квартир') + ' 💛</div>';
+  // скільки долучились
+  const gm = monthName(f.gov || f.month);
+  h += '<div class="sub" style="font-weight:500;line-height:1.5">За ' + gm + ' внесли: ' + (f.sec ? 'у вашій секції ' + f.sec.n + ' — <b>' + f.sec.paid + ' з ' + f.sec.all + '</b>, ' : '') + 'у будинку — <b>' + f.paidCount + ' з ' + (f.houseAll || D.totalApts) + '</b> 💛' +
+    (f.gov && f.gov !== f.month && f.curPaidCount ? '<br>За ' + monthName(f.month) + ' вже внесли ' + f.curPaidCount + ' ' + plural(f.curPaidCount, 'квартира', 'квартири', 'квартир') : '') + '</div>';
+  if (f.updated) h += '<div style="font-size:11px;color:var(--muted)">Оплати оновлено ' + esc(fmtUpd(f.updated)) + '</div>';
   return h + '</div>';
 }
 async function fuelClaim() {
-  ask('Підтвердіть, що ви вже внесли ' + D.fuel.amount + ' грн за кв.\u00a0' + D.me.apt + '. Адміністратор звірить з випискою банки.', async ok => {
+  ask('Підтвердіть, що ви вже внесли ' + (D.fuel.needAmount || D.fuel.amount) + ' грн за кв.\u00a0' + D.me.apt + '. Адміністратор звірить з випискою банки.', async ok => {
     if (ok) await run('fuelClaim', {}, 'Дякуємо! Оплату буде звірено');
   });
 }
@@ -993,12 +1178,14 @@ function osbbCopy() {
   const l = osbbTotals().filter(a => a.sec === ui.osSec && a.total > 0);
   copyText('Внески на ОСББ, секція ' + ui.osSec + ' (' + l.length + ' кв.):\n' + l.map(a => a.apt + ' — ' + a.total + ' грн').join('\n'), 'Список скопійовано');
 }
+function fMon() { return (D.fuel.admin && D.fuel.admin.month) || D.fuel.month; }
+function fAmt() { return (D.fuel.admin && D.fuel.admin.amount) || D.fuel.amount; }
 function fuelEntry() {
   const f = D.fuel;
   if (!f || !f.admin) return '';
   const all = (f.admin.all || []).length || D.totalApts;
   return '<button class="card" style="flex-direction:row;align-items:center;justify-content:space-between;border:none;text-align:left;font:inherit;color:inherit" onclick="go(\'fuel\')">' +
-    '<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:16px">Пальне: ' + esc(monthName(f.month)) + '</span><span class="sub" style="font-weight:500">' +
+    '<span style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:800;font-size:16px">Пальне: ' + esc(monthName(fMon())) + '</span><span class="sub" style="font-weight:500">' +
     f.paidCount + ' з ' + all + ' кв. · ' + fmtMoney(f.admin.total) + ' грн</span></span><span class="tag ok">' + Math.round(f.paidCount / all * 100) + '%</span></button>';
 }
 function fuelScreen() {
@@ -1006,7 +1193,8 @@ function fuelScreen() {
   const f = D.fuel, a = f.admin, list = fuelApts(), allN = list.length || 1;
   const paid = list.filter(o => o.st === 'paid' || o.st === 'over').length, pct = Math.round(paid / allN * 100);
   const part = list.filter(o => o.st === 'part').length;
-  let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Пальне · ' + esc(monthName(f.month)) + '</div></div>';
+  let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Пальне · ' + esc(monthName(fMon())) + '</div></div>' +
+    (a.months ? '<div class="seg" role="tablist">' + a.months.map(m => '<button role="tab" aria-selected="' + (fMon() === m) + '" class="' + (fMon() === m ? 'on' : '') + '" onclick="fuelMonth(\'' + m + '\')">' + esc(cap(monthName(m))) + '</button>').join('') + '</div>' : '');
   h += '<div class="card" style="gap:10px"><div class="grid3">' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + fmtMoney(a.total) + '</span><span class="k">грн зібрано</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + paid + '</span><span class="k">з ' + allN + ' кв.</span></div>' +
@@ -1016,6 +1204,14 @@ function fuelScreen() {
     '<div style="display:flex;flex-direction:column;gap:8px">' + [1, 2, 3, 4].map(n => { const l = list.filter(o => fuelSecOf(o.apt) === n), p = l.filter(o => o.st === 'paid' || o.st === 'over').length, pc = l.length ? Math.round(p / l.length * 100) : 0;
       return '<button class="cmtlink" style="text-decoration:none;padding:0;display:flex;flex-direction:column;gap:4px;width:100%" onclick="ui.fSec=' + n + ';ui.fSel=\'\';render()"><span class="row" style="width:100%"><span style="font-weight:700;font-size:14px">Секція ' + n + '</span><span class="sub" style="font-weight:600">' + p + ' з ' + l.length + ' · ' + pc + '% · ' + fmtMoney(l.reduce((t, o) => t + o.sum, 0)) + ' грн</span></span>' +
         '<span class="bar" style="height:6px;width:100%;display:block"><i style="width:' + pc + '%;background:var(--ok)"></i></span></button>'; }).join('') + '</div></div>';
+  // налаштування
+  const cf = a.cfg || { prevDay: 4, curDay: 16 };
+  h += '<details class="card" style="gap:10px"' + (ui.fCfgOpen ? ' open' : '') + ' ontoggle="ui.fCfgOpen=this.open"><summary style="font-weight:700;cursor:pointer">Налаштування: внесок ' + fmtMoney(fAmt()) + ' грн · ключ ' + cf.prevDay + ' / ' + cf.curDay + ' числа</summary>' +
+    '<label class="field">Внесок за ' + esc(monthName(fMon())) + ', грн<input class="input" id="cfAmt" type="text" inputmode="numeric" autocomplete="off" value="' + fAmt() + '"></label>' +
+    '<label class="field">З якого числа без внеску за минулий місяць ключ вимикається<input class="input" id="cfPrev" type="text" inputmode="numeric" autocomplete="off" value="' + cf.prevDay + '"></label>' +
+    '<label class="field">З якого числа потрібен внесок за поточний місяць<input class="input" id="cfCur" type="text" inputmode="numeric" autocomplete="off" value="' + cf.curDay + '"></label>' +
+    '<div class="sub" style="font-weight:500;line-height:1.45">Наприклад, 4 і 16: з 4-го не їздять ті, хто не вніс за минулий місяць; до 16-го їздять усі, хто вніс за минулий; з 16-го потрібен внесок за поточний.</div>' +
+    '<button class="btn graph" onclick="fuelSaveCfg()">Зберегти налаштування</button></details>';
   // пошук
   h += '<input class="input" id="fQ" type="search" aria-label="Знайти квартиру" autocomplete="off" placeholder="Знайти квартиру, напр. 276…" value="' + esc(ui.fQ) + '" oninput="ui.fQ=this.value;fuelFind()">';
   // секції
@@ -1023,7 +1219,7 @@ function fuelScreen() {
   const sel = ui.fSel && list.find(o => o.apt === ui.fSel);
   h += '<div class="card" style="gap:8px">' + (sel ? fuelEditor(sel) : '') +
     '<div class="flwrap" id="fGrid">' + fuelGridHtml(ui.fSec, list) + '</div>' +
-    '<div class="lg"><span><i style="background:var(--ok-bg)"></i>внесли</span><span><i style="background:var(--yel-bg)"></i>частково</span><span><i style="background:var(--info-bg)"></i>більше ніж ' + f.amount + '</span><span><i style="background:var(--bg);box-shadow:inset 0 0 0 1px var(--line2)"></i>ще ні</span></div>' +
+    '<div class="lg"><span><i style="background:var(--ok-bg)"></i>внесли</span><span><i style="background:var(--yel-bg)"></i>частково</span><span><i style="background:var(--info-bg)"></i>більше ніж ' + fAmt() + '</span><span><i style="background:var(--bg);box-shadow:inset 0 0 0 1px var(--line2)"></i>ще ні</span></div>' +
     '<button class="btn sm ghost" style="align-self:flex-start" onclick="fuelCopySec()">' + ic('copy', null, 16) + 'Скопіювати, хто ще ні в секції ' + ui.fSec + '</button></div>';
   // нежитлові
   const nr = list.filter(o => !fuelSecOf(o.apt));
@@ -1032,7 +1228,7 @@ function fuelScreen() {
   const t = a.lastTable || {};
   h += '<div class="label">Дані за місяць</div><div class="card" style="gap:10px">' +
     '<label class="btn graph" style="cursor:pointer">' + ic('plus', '#F2C12E', 18) + 'Завантажити таблицю внесків (xlsx / csv)<input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="fuelTableFile(this)"></label>' +
-    '<div class="sub" style="font-weight:500;line-height:1.45">Таблиця «квартира → сума» за ' + esc(monthName(f.month)) + '. Нова таблиця повністю замінює попередню. Окремі квартири можна поправити натиском у сітці.</div>' +
+    '<div class="sub" style="font-weight:500;line-height:1.45">Таблиця «квартира → сума» за ' + esc(monthName(fMon())) + '. Нова таблиця повністю замінює попередню. Окремі квартири можна поправити натиском у сітці.</div>' +
     (t.at ? '<div class="row"><span class="sub" style="font-weight:600">Таблиця: ' + ago(t.at) + ' · ' + t.rows + ' кв. · ' + fmtMoney(t.sum) + ' грн</span><button class="btn sm ghost" style="color:var(--bad)" onclick="fuelTableClear()">Видалити</button></div>' : '') +
     (t.skipped && t.skipped.length ? '<div class="sub" style="font-weight:500">Пропущено в таблиці (не номер квартири): ' + t.skipped.map(esc).join(', ') + '</div>' : '') + '</div>';
   return h;
@@ -1074,13 +1270,21 @@ function fuelEditor(o) {
   const f = D.fuel, st = FUEL_ST[o.st], v = ui.fSum !== '' ? ui.fSum : String(o.sum || 0);
   let h = '<div class="osed"><div class="row"><span><b style="font-size:16px">Кв. ' + esc(o.apt) + '</b><span class="sub" style="font-weight:500"> · ' + (fuelSecOf(o.apt) ? 'секція ' + fuelSecOf(o.apt) + ', ' + fuelFloorOf(o.apt) + ' поверх' : 'нежитлове') + '</span></span>' +
     '<span class="tag ' + st[0] + '">' + (o.sum ? fmtMoney(o.sum) + ' грн' : st[1]) + '</span></div>' +
-    '<div class="field">Внесок за ' + esc(monthName(f.month)) + ', грн<div class="row" style="gap:8px"><input class="input" id="fSum" style="flex:1;min-width:0" type="text" inputmode="decimal" autocomplete="off" value="' + esc(v) + '" oninput="ui.fSum=this.value">' +
+    '<div class="field">Внесок за ' + esc(monthName(fMon())) + ', грн<div class="row" style="gap:8px"><input class="input" id="fSum" style="flex:1;min-width:0" type="text" inputmode="decimal" autocomplete="off" value="' + esc(v) + '" oninput="ui.fSum=this.value">' +
     '<button class="btn sm graph" style="height:48px" data-a="' + esc(o.apt) + '" onclick="fuelSave(this.dataset.a)">Зберегти</button></div></div>' +
-    '<div class="chips">' + [[0, 'Обнулити'], [f.amount, f.amount + ' грн'], [f.amount * 2, f.amount * 2 + ' грн']].map(x => '<button class="chip" style="height:32px;font-size:12px;padding:0 12px" data-a="' + esc(o.apt) + '" onclick="ui.fSum=\'' + x[0] + '\';fuelSave(this.dataset.a)">' + x[1] + '</button>').join('') + '</div>';
+    '<div class="chips">' + [[0, 'Обнулити'], [fAmt(), fAmt() + ' грн'], [fAmt() * 2, fAmt() * 2 + ' грн']].map(x => '<button class="chip" style="height:32px;font-size:12px;padding:0 12px" data-a="' + esc(o.apt) + '" onclick="ui.fSum=\'' + x[0] + '\';fuelSave(this.dataset.a)">' + x[1] + '</button>').join('') + '</div>';
   if (o.claim && o.st !== 'paid' && o.st !== 'over') h += '<div class="note">Мешканці натиснули «Я оплатив(ла)», але в даних оплати немає.</div>';
   if (o.pays.length) h += '<div style="font-weight:700">З чого складається</div>' + o.pays.map(p => '<div class="hint" style="background:var(--card);color:var(--ink)"><span>' + fmtMoney(p.sum) + ' грн · ' + esc(p.source === 'таблиця' ? 'таблиця' : (p.sender || p.comment || p.source || 'платіж')) + ' · ' + esc(payDate(p.date)) + '</span>' +
     '<button class="btn sm ghost" style="color:var(--bad)" data-t="' + esc(p.tx) + '" onclick="fuelDelete(this.dataset.t,\'' + (p.source === 'таблиця' ? 'суму з таблиці' : 'цей платіж') + '\')">Видалити</button></div>').join('');
   return h + '<button class="cmtlink" onclick="ui.fSel=\'\';render()">Закрити</button></div>';
+}
+async function fuelMonth(m) { if (m === fMon()) return; ui.fMonth = m; ui.fSel = ''; haptic(); await run('load'); }
+async function fuelSaveCfg() {
+  const g = id => String((document.getElementById(id) || {}).value || '').replace(/\s/g, '');
+  const amt = g('cfAmt'), pd = g('cfPrev'), cd = g('cfCur');
+  if (!/^\d+$/.test(amt) || !/^\d+$/.test(pd) || !/^\d+$/.test(cd)) { toast('Вкажіть числа'); return; }
+  haptic();
+  if (await run('fuelSettings', { amount: Number(amt), prevDay: Number(pd), curDay: Number(cd) }, 'Налаштування збережено')) render();
 }
 async function fuelSave(apt) {
   const v = String(ui.fSum !== '' ? ui.fSum : (document.getElementById('fSum') || {}).value || '').replace(',', '.').replace(/\s/g, '');
@@ -1090,7 +1294,7 @@ async function fuelSave(apt) {
 }
 function fuelCopySec() {
   const l = fuelApts().filter(o => fuelSecOf(o.apt) === ui.fSec && o.st !== 'paid' && o.st !== 'over').map(o => o.apt + (o.sum ? ' (' + o.sum + ')' : ''));
-  copyText('Пальне за ' + monthName(D.fuel.month) + ', секція ' + ui.fSec + ', ще не внесли (' + l.length + '):\n' + l.join(', '), 'Список скопійовано');
+  copyText('Пальне за ' + monthName(fMon()) + ', секція ' + ui.fSec + ', ще не внесли (' + l.length + '):\n' + l.join(', '), 'Список скопійовано');
 }
 // пошук по всіх платежах: без квартири, привʼязаних і відкладених
 function fuelSearchHtml() {
@@ -1133,7 +1337,7 @@ function fuelAdmin() {
   const pct = Math.round(f.paidCount / allN * 100);
   const unk = a.unknown || [], ign = a.ignored || [];
   const avg = f.paidCount ? Math.round(a.total / f.paidCount) : 0;
-  let h = '<div class="label">Пальне · ' + esc(monthName(f.month)) + '</div><div class="card" style="gap:12px">' +
+  let h = '<div class="label">Пальне · ' + esc(monthName(fMon())) + '</div><div class="card" style="gap:12px">' +
     '<div class="grid3"><div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + fmtMoney(a.total) + '</span><span class="k">грн зібрано</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + f.paidCount + '</span><span class="k">з ' + allN + ' кв.</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + pct + '%</span><span class="k">будинку</span></div></div>' +
@@ -1167,8 +1371,8 @@ function fuelApts() {
   (a.claims || []).forEach(c => { get(c.apt).claim = true; });
   return Object.keys(by).map(k => {
     const o = by[k];
-    o.need = Math.max(0, Math.round((f.amount - o.sum) * 100) / 100);
-    o.st = o.sum >= f.amount + 100 ? 'over' : o.sum >= f.amount - 0.01 ? 'paid' : o.sum > 0 ? 'part' : o.claim ? 'claim' : 'none';
+    o.need = Math.max(0, Math.round((fAmt() - o.sum) * 100) / 100);
+    o.st = o.sum >= fAmt() + 100 ? 'over' : o.sum >= fAmt() - 0.01 ? 'paid' : o.sum > 0 ? 'part' : o.claim ? 'claim' : 'none';
     o.pays.sort((x, y) => y.date - x.date);
     return o;
   }).sort((x, y) => parseInt(x.apt, 10) - parseInt(y.apt, 10) || x.apt.localeCompare(y.apt));
@@ -1278,7 +1482,7 @@ function importCsv(input) {
   r.onerror = () => toast('Не вдалося прочитати файл');
   r.readAsText(file, 'utf-8');
 }
-function copyUnpaid() { const l = fuelApts().filter(o => o.st === 'none').map(o => o.apt); copyText('Ще не внесли на пальне за ' + monthName(D.fuel.month) + ' (' + l.length + '):\n' + l.join(', '), 'Список скопійовано'); }
+function copyUnpaid() { const l = fuelApts().filter(o => o.st === 'none').map(o => o.apt); copyText('Ще не внесли на пальне за ' + monthName(fMon()) + ' (' + l.length + '):\n' + l.join(', '), 'Список скопійовано'); }
 async function fuelManual() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } if (await run('fuelManual', { apt: ui.fuelApt }, 'Внесок відмічено')) { ui.fuelApt = ''; render(); } }
 function fuelUnmark() { if (!ui.fuelApt.trim()) { toast('Вкажіть квартиру'); return; } ask('Зняти ручну відмітку для кв.\u00a0' + ui.fuelApt + '?', ok => { if (ok) run('fuelUnmark', { apt: ui.fuelApt }, 'Відмітку знято'); }); }
 function fuelTableNote(a) {
@@ -1361,6 +1565,7 @@ function admin() {
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Керування</div></div>' +
     fuelEntry() + osbbEntry() +
     '<div class="grid3"><div class="tile"><span class="v" style="font-size:22px">' + fresh.length + '</span><span class="k">потребують уваги</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.problems.filter(p => p.status === 'В роботі').length + '</span><span class="k">в роботі</span></div><div class="tile"><span class="v" style="font-size:22px">' + D.polls.filter(p => p.open).length + '</span><span class="k">опитування</span></div></div>' +
+    '<div class="label">Генератор (якщо бот мовчить)</div><div class="card"><div class="grid2"><button class="btn green" onclick="run(\'genSet\',{on:true},\'Генератор: працює\')">Працює</button><button class="btn graph" onclick="run(\'genSet\',{on:false},\'Генератор: вимкнено\')">Вимкнено</button></div></div>' +
     '<div class="label">Світло (ручне виправлення)</div><div class="card"><div class="chips">' + [0].concat(ents).map(e => '<button class="chip' + (ui.lsec === e ? ' on' : '') + '" style="height:32px;font-size:12px;padding:0 10px" onclick="ui.lsec=' + e + ';render()">' + (e ? 'Секція ' + e : 'Усі секції') + '</button>').join('') + '</div>' +
     '<div class="grid2"><button class="btn yellow" onclick="run(\'lightSet\',{on:true,section:ui.lsec},\'Світло: є\')">Світло є</button><button class="btn graph" onclick="run(\'lightSet\',{on:false,section:ui.lsec},\'Світло: немає\')">Світла немає</button></div></div>' +
     '<div class="label">Ліфти · тап перемикає</div><div class="card" style="gap:0">' +
@@ -1448,7 +1653,8 @@ function demoFuelAdmin(now, H) {
     pay('p9', '248', 503, 200, 'Катерина Годлевська', 'Поповнення рахунку Банки', 'виписка: відправник (памʼять)'), pay('p10', '317-1', 1500, 30, '', 'кв 317-1'), pay('p11', '12', 1500, 100, 'Юлія Бех', 'квартира 12')];
   const unknown = [pay('u1', '', 1470, 9, 'Kuliba Mihaylo', '', 'виписка'), pay('u2', '', 1500, 4, 'Kulyba Mykhailo', '', 'виписка'), pay('u3', '', 1500, 30, 'Наталія Черненко', 'Поповнення рахунку Банки', 'виписка'),
     pay('u4', '', 3000, 120, 'Андрій Варченко', 'Поповнення рахунку Банки', 'виписка'), pay('u5', '', 1000, 170, '', 'Нежитлове приміщення 639', 'виписка'), pay('u6', '', 1000, 190, 'Оксана Моспан', 'Поповнення рахунку Банки', 'виписка')];
-  const a = { regCount: 0, total: 0, lastImport: { at: now - 3 * H, added: 270, known: 199, unknown: 71 }, reg: ['12', '45', '101', '158-1', '204', '248', '276', '289', '317-1', '319', '389', '402', '448', '475-1', '477-1', '494', '512', '593-2'],
+  const cm = new Date().toISOString().slice(0, 7), pd = new Date(); pd.setDate(1); pd.setMonth(pd.getMonth() - 1);
+  const a = { month: cm, months: [pd.toISOString().slice(0, 7), cm], amount: 1500, cfg: { prevDay: 4, curDay: 16 }, regCount: 0, total: 0, lastImport: { at: now - 3 * H, added: 270, known: 199, unknown: 71 }, reg: ['12', '45', '101', '158-1', '204', '248', '276', '289', '317-1', '319', '389', '402', '448', '475-1', '477-1', '494', '512', '593-2'],
     pays: pays, unknown: unknown, ignored: [], claims: [{ apt: '204' }], unpaid: [], partial: [] };
   demoFuelRecalc({ fuel: { amount: 1500, admin: a } });
   return a;
@@ -1478,6 +1684,7 @@ function demoFuelAct(db, action, d, now) {
     a.lastTable = { at: now, rows: Object.keys(m).length, sum: Object.values(m).reduce((t, x) => t + x, 0), skipped: [] }; db.tableResult = a.lastTable;
   }
   if (action === 'fuelSetApt') { a.pays = a.pays.filter(p => p.apt !== d.apt); if (d.sum > 0) a.pays.push({ tx: 'tbl:' + d.apt, apt: d.apt, sum: d.sum, date: now, comment: 'таблиця внесків', sender: '', source: 'таблиця' }); }
+  if (action === 'fuelSettings') { a.cfg = { prevDay: d.prevDay, curDay: d.curDay }; a.amount = d.amount; }
   if (action === 'fuelTableClear') { a.pays = a.pays.filter(p => p.source !== 'таблиця'); a.lastTable = {}; a.covered = 0; }
   if (action === 'fuelDelete') { a.pays = a.pays.filter(p => p.tx !== d.txId); a.unknown = a.unknown.filter(p => p.tx !== d.txId); }
   if (action === 'fuelInTable') { a.unknown.forEach(u => { u.source = 'враховано в таблиці'; a.ignored.unshift(u); }); a.unknown = []; }
@@ -1524,7 +1731,7 @@ function demoApi(action, d) {
         { section: 'Контакти', name: 'Аварійна служба УК', desc: 'цілодобово', phone: '[номер]' },
         { section: 'Контакти', name: 'Гаряча лінія міста', desc: 'скарги на комунальні служби', phone: '1551' }
       ],
-      fuel: { month: new Date().toISOString().slice(0, 7), amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
+      fuel: { month: new Date().toISOString().slice(0, 7), prev: '2026-10', gov: '2026-10', keyMonth: '2026-10', until: '15 листопада', dueCur: '15 листопада', need: '2026-10', needAmount: 1500, curPaidCount: 12, houseAll: 625, sec: { n: 2, paid: 82, all: 167 }, amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
         sum: /fuel=part/.test(q) ? 1000 : /fuel=on/.test(q) ? 1500 : 0, key: (q.match(/fuel=(\w+)/) || [0, 'off'])[1], lastPay: { date: now - 30 * 24 * H, sum: 1500 },
         admin: /admin=1/.test(q) ? demoFuelAdmin(now, H) : null },
       osbb: /admin=1/.test(q) ? demoOsbb() : undefined,
@@ -1532,8 +1739,24 @@ function demoApi(action, d) {
     };
   }
   const db = DEMO_DB;
+  if (!db.light.floors) {
+    const F = {}, H = 3600e3;
+    [1, 2, 3, 4].forEach(sn => { for (let f = 3; f <= 26; f++) {
+      let st = null;
+      if (sn === 2 && f >= 20) st = 'off'; else if (sn === 2 && f % 3 === 0) st = 'on';
+      if (sn === 3 && f <= 8) st = 'on';
+      if (sn === 1 && f % 4 === 1) st = 'on';
+      if (st) F[sn + ':' + f] = { status: st, since: now - (2 + f % 5) * H, at: now - (5 + f * 3) * 60000, n: 2 + f % 3 };
+    } });
+    F['2:19'] = { status: 'on', since: now - 3 * H, at: now - 12 * 60000, n: 2, pending: { dir: 'off', at: now - 6 * 60000 } };
+    db.light.floors = F; db.light.myFloor = 19;
+    db.light.gen = { state: 'on', at: now - 95 * 60000 };
+    db.light.hist = [['s1', 'on', now - 20 * H], ['s1', 'off', now - 7 * H], ['s1', 'on', now - 6 * H], ['s2', 'on', now - 20 * H], ['s2', 'off', now - 9 * H], ['s2', 'on', now - 3 * H], ['s3', 'off', now - 20 * H], ['s3', 'on', now - 8 * H], ['s3', 'off', now - 2 * H], ['s4', 'on', now - 20 * H], ['gen', 'off', now - 20 * H], ['gen', 'on', now - 9 * H], ['gen', 'off', now - 6 * H], ['gen', 'on', now - 95 * 60000]];
+  }
   delete db.invite; delete db.importResult; delete db.osbbImportResult; delete db.tableResult; delete db.osbbTableResult;
   const L = db.light.sections;
+  if (action === 'genSet') { db.light.gen = { state: d.on ? 'on' : 'off', at: now }; db.light.hist.push(['gen', d.on ? 'on' : 'off', now]); }
+  if (action === 'light' && db.light.floors) { const k = db.me.entrance + ':' + db.light.myFloor; const x = db.light.floors[k]; const dd = d.on ? 'on' : 'off'; if (x && x.pending && x.pending.dir === dd) { db.light.floors[k] = { status: dd, since: now, at: now, n: (x.n || 0) + 1 }; } else if (x && x.status !== dd) x.pending = { dir: dd, at: now }; else db.light.floors[k] = Object.assign(x || { status: dd, since: now }, { at: now, n: ((x && x.n) || 0) + 1 }); }
   if (action === 'light') { const s = L[db.me.entrance], dd = d.on ? 'on' : 'off'; db.light.mine = dd; if (s.status === 'unknown' || s.status === dd) { s.status = dd; s.at = now; if (!s.since) s.since = now; delete s.pending; } else if (s.pending && s.pending.dir === dd) { s.status = dd; s.since = now; s.at = now; s.by = 'neighbors'; delete s.pending; } else s.pending = { dir: dd, at: now }; }
   if (action === 'osbbSet' && db.osbb) { const a = db.osbb.apts.find(x => x[0] === d.apt); if (a) a[3] = d.sum; }
   if (action === 'osbbTable' && db.osbb) { const m = {}; d.rows.forEach(r => { m[String(r[0]).trim()] = Number(r[1]) || 0; }); db.osbb.apts.forEach(a => { a[3] = m[a[0]] || 0; }); const l = Object.keys(m).filter(k => m[k] > 0); db.osbb.lastTable = { at: now, rows: l.length, sum: l.reduce((t, k) => t + m[k], 0), skipped: [] }; db.osbbTableResult = db.osbb.lastTable; }
@@ -1554,7 +1777,7 @@ function demoApi(action, d) {
   if (action === 'closePoll') db.polls.find(x => x.id === d.id).open = false;
   if (action === 'deletePoll') db.polls = db.polls.filter(x => x.id !== d.id);
   const f = db.me.flat;
-  if (db.fuel && db.fuel.admin && /^fuel(Manual|Assign|Unassign|Ignore|Unmark|Table|InTable|TableClear|Delete|SetApt)$/.test(action)) demoFuelAct(db, action, d, now);
+  if (db.fuel && db.fuel.admin && /^fuel(Manual|Assign|Unassign|Ignore|Unmark|Table|InTable|TableClear|Delete|SetApt|Settings)$/.test(action)) demoFuelAct(db, action, d, now);
   if (action === 'fuelClaim') db.fuel.key = 'claimed';
   if (action === 'importCsv') { db.importResult = { added: 12, known: 10, unknown: 2 }; db.fuel.admin.lastImport = { at: now, added: 12 }; }
   if (action === 'invite') { if (!f.left) return Promise.reject(new Error('На квартиру вже додано або запрошено 3 людини')); f.openInvites++; f.left--; db.invite = 'https://t.me/budynok10_bot?start=inv_' + Math.random().toString(16).slice(2, 14); }

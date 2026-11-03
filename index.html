@@ -604,6 +604,27 @@ html{transition:background-color 300ms ease}
 .shaft .bdg{position:absolute;right:6px;top:6px;z-index:3;font-size:11px;font-weight:800;background:#7A5AF0;color:#fff;border-radius:999px;padding:2px 7px}
 .shaft:active .well{transform:scale(.97)}
 @media (prefers-reduced-motion:reduce){.shaft .cab,.sig .ob::after,.sighd .live{animation:none!important}}
+
+.iconbtn.xtg{position:relative}
+.iconbtn.xtg svg .st{transform-origin:12px 2.6px;transition:transform 500ms var(--spring)}
+.iconbtn.xtg:active svg .st{transform:rotate(72deg) scale(1.3)}
+.iconbtn.xtg.on{background:linear-gradient(135deg,#1F4A3A,#4A1F1E);box-shadow:0 0 0 1.5px rgba(244,197,66,.55),0 0 16px rgba(244,197,66,.35)}
+.iconbtn.xtg.on svg .b1,.iconbtn.xtg.on svg .b2,.iconbtn.xtg.on svg .b3{animation:twk 1.6s ease-in-out infinite}
+.iconbtn.xtg.on svg .b2{animation-delay:-.5s}.iconbtn.xtg.on svg .b3{animation-delay:-1s}
+/* ---------- ліфти: мінімалістичні капсули ---------- */
+.pod.k-lift{--hue:#7A5AF0;--tint:rgba(122,90,240,.13)}
+:root[data-theme="dark"] .pod.k-lift{--hue:#A68EFF}
+.pod.k-lift.ok .orb{animation:lglow 3.2s ease-in-out infinite}
+@keyframes lglow{50%{box-shadow:0 0 0 5px var(--tint),0 0 18px var(--tint)}}
+.pod.k-lift .au{animation:lup 2.4s ease-in-out infinite}
+.pod.k-lift .ad{animation:ldn 2.4s ease-in-out infinite}
+@keyframes lup{0%,100%{transform:translateY(0);opacity:1}50%{transform:translateY(-1.6px);opacity:.55}}
+@keyframes ldn{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(1.6px);opacity:1}}
+.pod.k-lift.bad .au,.pod.k-lift.bad .ad{animation:none;opacity:.5}
+.pod.k-lift.bad,:root[data-theme="dark"] .pod.k-lift.bad{--hue:var(--muted);--tint:var(--soft)}
+.pod.k-lift.mine .orb{box-shadow:0 0 0 2px var(--hue)}
+.pod .bdg{position:absolute;top:8px;right:8px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#E0453F;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;z-index:2}
+@media (prefers-reduced-motion:reduce){.pod.k-lift .orb,.pod.k-lift .au,.pod.k-lift .ad,.iconbtn.xtg svg *{animation:none!important}}
 </style>
 </head>
 <body>
@@ -704,6 +725,11 @@ function themeCard() {
 }
 
 // ---------- Різдво ----------
+const XTREE_IC = '<svg width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5l-5 7h2.6L5.5 16h4.2L7 20.5h10L14.3 16h4.2l-4.1-5.5H17z" fill="#2E9B5F"/><path d="M12 3.5l-5 7h2.6L5.5 16h4.2L7 20.5h5z" fill="#3DB572"/><rect x="10.8" y="20.3" width="2.4" height="2.4" rx=".6" fill="#8A5A34"/><circle class="b1" cx="10" cy="13.5" r="1" fill="#FF5A4F"/><circle class="b2" cx="14.2" cy="12" r="1" fill="#F4C542"/><circle class="b3" cx="12.4" cy="17.6" r="1" fill="#6FB2FF"/><path class="st" d="M12 .6l.8 1.7 1.9.2-1.4 1.3.4 1.8-1.7-.9-1.7.9.4-1.8-1.4-1.3 1.9-.2z" fill="#F4C542"/></svg>';
+function xmasToggle() {
+  if (xmasOn()) { let p = 'auto'; try { p = localStorage.getItem('b10_prevTheme') || 'auto'; } catch (e) {} setTheme(p); }
+  else { try { localStorage.setItem('b10_prevTheme', themePref()); } catch (e) {} setTheme('xmas'); }
+}
 function xmasOn() { return themePref() === 'xmas'; }
 function xmasSeason(d) { d = d || new Date(); const m = d.getMonth(), day = d.getDate(); return (m === 11) || (m === 0 && day <= 15); }
 function xmasLine() {
@@ -1199,7 +1225,7 @@ function utilHtml(list) {
     return '<button class="pod k-' + k + ' ' + tone + '" role="listitem" onclick="utilTap(' + JSON.stringify(nm).replace(/"/g, '&quot;') + ',' + JSON.stringify(String(s.value)).replace(/"/g, '&quot;') + ',' + (s.updated || 0) + ')" aria-label="' + esc(nm + ': ' + s.value) + '">' +
       '<span class="orb" aria-hidden="true">' + fx + '<svg viewBox="0 0 24 24">' + icon + '</svg></span>' +
       '<span class="nm">' + esc(nm) + '</span><span class="vl">' + esc(s.value) + '</span>' +
-      (s.updated ? '<span class="ag">' + esc(ago(s.updated)) + '</span>' : '') + '</button>';
+      '</button>';
   }).join('') + '</div>';
 }
 function utilTap(n, v, t) { haptic('soft'); toast(n + ': ' + String(v).toLowerCase() + (t ? ' · оновлено ' + ago(t) : '')); }
@@ -1221,14 +1247,14 @@ function home() {
   const me = D.me;
   const st = D.statuses.filter(s => !isLift(s) && (!s.entrance || s.entrance === me.entrance));
   const myLifts = D.statuses.filter(s => isLift(s) && me.entrance && s.entrance === me.entrance);
-  const liftCard = myLifts.length ? '<div class="card" style="gap:12px"><div class="row"><span style="font-weight:700">Ліфти · секція ' + me.entrance + '</span><span class="sub" style="font-weight:500">натисніть, якщо стоїть</span></div>' + liftShafts(myLifts) + '</div>' : '';
+  const liftCard = liftPods(myLifts);
   const tiles = st.map(s => '<div class="tile"><span class="k">' + esc(s.name + (s.entrance ? ' с. ' + s.entrance : '')) + '</span><span class="v t-' + esc(s.tone) + '">' + esc(s.value) + '</span></div>').join('');
   const feed = [].concat(
     D.news.filter(n => visible(n.entrance)).map(n => ({ t: n.time, html: '<div class="card" style="gap:6px"><div class="row"><span class="tag ' + (n.entrance ? 'soft' : 'yel') + '">' + (n.entrance ? entName(n.entrance) : 'Оголошення') + '</span><span class="sub" style="font-weight:500">' + ago(n.time) + '</span></div><div style="font-weight:700;white-space:pre-line">' + esc(n.text) + '</div></div>' })),
     D.problems.filter(p => p.status !== 'Вирішено' && visible(p.entrance)).map(p => ({ t: p.created, html: '<div class="card" style="gap:6px" role="button" tabindex="0" onkeydown="if(event.keyCode===13||event.keyCode===32){this.click();return false}" onclick="go(\'problems\')"><div class="row"><span class="tag ' + (p.entrance === me.entrance && p.entrance ? 'info' : p.entrance ? 'soft' : 'bad') + '">' + entName(p.entrance) + '</span><span class="sub" style="font-weight:500">' + ago(p.created) + '</span></div><div style="font-weight:700">' + esc(p.category) + ': ' + esc(p.text) + '</div><div class="sub" style="font-weight:500">' + p.count + ' ' + plural(p.count, 'квартира', 'квартири', 'квартир') + ' · ' + esc(String(p.status).toLowerCase()) + '</div></div>' }))
   ).sort((a, b) => b.t - a.t).slice(0, 5);
   return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">' + esc(greeting().hi) + '</div>' + (greeting().line ? '<div class="greet">' + esc(greeting().line) + '</div>' : '') + (xmasOn() ? '<div class="xchip">' + esc(xmasLine()) + '</div>' : '') + '</div>' +
-    '<button class="iconbtn" aria-label="Корисне" onclick="go(\'useful\')">' + ic('phone', '#23262B', 20) + '</button></div>' +
+    '<button class="iconbtn xtg' + (xmasOn() ? ' on' : '') + '" aria-label="Різдвяне оформлення" aria-pressed="' + xmasOn() + '" onclick="xmasToggle()">' + XTREE_IC + '</button></div>' +
     confirmCards() + sigBlock() + xmasOffer() + fuelBanner() + lightCard() +
     utilHtml(st) + liftCard +
     '<div class="row"><div style="font-size:16px;font-weight:700">Що відбувається</div>' + scopeBtn() + '</div>' +
@@ -1346,7 +1372,7 @@ const SIG_T = {
 const SIG_REPLIES = ['Знаємо, вже займаємось', 'Генератор запускається', 'Планове відключення', 'Вже має працювати'];
 function sigSvg(t) { return '<svg viewBox="0 0 24 24" aria-hidden="true">' + (SIG_T[t] || SIG_T.other)[1] + '</svg>'; }
 function sigTitle(g) { return (SIG_T[g.type] || SIG_T.other)[0] + (g.det ? ' · ' + g.det : ''); }
-function sigVisible() { return (D.signals || []).filter(g => g.own || visible(g.sec)); }
+function sigVisible() { return (D.signals || []).filter(g => (g.type !== 'lift' || D.me.isAdmin || g.own || g.too) && (g.own || g.too || visible(g.sec))); }
 function leftTxt(g) { const m = Math.max(0, Math.round((g.act + 3 * 3600e3 - Date.now()) / 60000)); return m >= 60 ? 'зникне за ' + Math.floor(m / 60) + ' год' : 'зникне за ' + m + ' хв'; }
 function sigCard(g) {
   const closed = !!g.closed;
@@ -1408,25 +1434,33 @@ function modeSeg() {
     '<button role="tab" aria-selected="' + (m === 'sig') + '" class="' + (m === 'sig' ? 'on' : '') + '" onclick="ui.nmode=\'sig\';haptic(\'sel\');render()"><b>' + ic('chat', null, 18) + 'Сигнал</b><span>Щось сталося зараз: ліфт став, зникла вода. Швидко, без опису</span></button>' +
     '<button role="tab" aria-selected="' + (m === 'ticket') + '" class="' + (m === 'ticket' ? 'on' : '') + '" onclick="ui.nmode=\'ticket\';haptic(\'sel\');render()"><b>' + ic('tool', null, 18) + 'Заявка</b><span>Щось треба полагодити. Лишається, доки не вирішать</span></button></div>';
 }
-// ---------- ЛІФТИ: шахти ----------
-function liftShafts(myLifts) {
-  const sig = (D.signals || []).filter(g => g.type === 'lift' && !g.closed && g.sec === D.me.entrance);
-  return '<div class="shafts">' + myLifts.map((s, i) => {
-    const nm = liftName(s), low = nm.toLowerCase(), bad = s.tone !== 'ok';
-    const sg = sig.find(g => g.det === low) || sig.find(g => !g.det || g.det === 'усі');
-    const cls = bad ? 'bad' : sg ? 'sus' : 'ok';
-    const st = bad ? esc(s.value || 'Не працює') : sg ? 'сусіди: стоїть' : 'працює';
-    return '<button class="shaft ' + cls + '" onclick="liftTap(' + JSON.stringify(low).replace(/"/g, '&quot;') + ',' + (bad ? 1 : 0) + ',' + (sg ? sg.id : 0) + ')" aria-label="Ліфт ' + esc(nm) + ': ' + st + '">' +
-      '<span class="well">' + (cls === 'ok' ? '<span class="arr" aria-hidden="true">' + (i % 2 ? '▼' : '▲') + '</span>' : '') + (sg ? '<span class="bdg">' + sg.n + '</span>' : '') +
-      '<span class="cab" style="--dur:' + (6.5 + i * 1.7).toFixed(1) + 's;--dl:-' + (i * 2.3).toFixed(1) + 's"></span>' + (bad ? '<i class="hz"></i>' : '') + '</span>' +
-      '<span class="nm">' + esc(nm) + '</span><span class="st">' + st + '</span></button>';
+// ---------- ЛІФТИ: світні капсули ----------
+// Мешканець торкається ліфта → тихий сигнал «стоїть». Бачить його лише адміністратор.
+const LIFT_IC = '<path d="M5.5 3h13A1.5 1.5 0 0 1 20 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5v-15A1.5 1.5 0 0 1 5.5 3z" fill="currentColor" opacity=".18"/><path d="M5.5 3h13A1.5 1.5 0 0 1 20 4.5v15a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 19.5v-15A1.5 1.5 0 0 1 5.5 3z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 3v18" stroke="currentColor" stroke-width="1.5"/>' +
+  '<path class="au" d="M6.8 10l1.7-2.4 1.7 2.4z" fill="currentColor"/><path class="ad" d="M13.8 14l1.7 2.4 1.7-2.4z" fill="currentColor"/>';
+function liftSig(low) { return (D.signals || []).find(g => g.type === 'lift' && !g.closed && g.sec === D.me.entrance && (g.det === low || !g.det || g.det === 'усі')); }
+function liftPods(myLifts) {
+  if (!myLifts.length) return '';
+  return '<div class="utl" role="list">' + myLifts.map(s => {
+    const nm = liftName(s), low = nm.toLowerCase(), bad = s.tone !== 'ok', g = liftSig(low);
+    const mine = g && (g.own || g.too);
+    const adm = D.me.isAdmin && g;
+    return '<button class="pod k-lift ' + (bad ? 'bad' : 'ok') + (mine && !D.me.isAdmin ? ' mine' : '') + '" role="listitem" onclick="liftTap(' + JSON.stringify(low).replace(/"/g, '&quot;') + ',' + (bad ? 1 : 0) + ')" aria-label="Ліфт ' + esc(nm) + ': ' + (bad ? 'не працює' : 'працює') + '">' +
+      (adm ? '<span class="bdg" aria-label="' + g.n + ' квартир кажуть, що стоїть">' + g.n + '</span>' : '') +
+      '<span class="orb" aria-hidden="true"><svg viewBox="0 0 24 24">' + LIFT_IC + '</svg></span>' +
+      '<span class="nm">Ліфт ' + esc(low) + '</span><span class="vl">' + (bad ? 'Стоїть' : 'Працює') + '</span></button>';
   }).join('') + '</div>';
 }
-function liftTap(name, bad, sid) {
+function liftTap(name, bad) {
   haptic('soft');
-  if (sid) { const g = (D.signals || []).find(x => x.id === sid); if (g && !g.own && !g.too) { ask('Сусіди вже повідомили, що ліфт «' + name + '» стоїть. У вас так само?', ok => { if (ok) sigMe(sid, false); }); return; } toast('Ви вже позначили цей ліфт'); return; }
-  if (bad) { toast('Адміністратор уже знає, що ліфт «' + name + '» не працює'); return; }
-  ask('Ліфт «' + name + '» стоїть? Надішлемо швидкий сигнал сусідам і адміністратору.', ok => { if (ok) sendSignal('lift', name, false); });
+  const g = liftSig(name);
+  if (D.me.isAdmin) {
+    toast(g ? 'Ліфт ' + name + ': стоїть — кажуть ' + g.n + ' ' + plural(g.n, 'квартира', 'квартири', 'квартир') + ' · ' + ago(g.t) : 'Ліфт ' + name + ': скарг немає');
+    return;
+  }
+  if (bad) { toast('Адміністратор уже знає'); return; }
+  if (g && (g.own || g.too)) { toast('Ви вже позначили, дякуємо'); return; }
+  ask('Ліфт ' + name + ' не працює?', ok => { if (!ok) return; run('signal', { type: 'lift', det: name }, '').then(r => { if (r) { toast('Дякуємо, адміністратор побачить'); haptic('ok'); } }); });
 }
 
 // ---------- голосування ----------
@@ -1591,7 +1625,7 @@ function cabinet() {
     fuelCard() +
     (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
     flatCard() + themeCard() +
-    '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
+    '<div class="chips">' + chatBtn('general', 'Чат будинку') + '<button class="chip" onclick="go(\'useful\')">' + ic('phone', null, 16) + 'Корисні контакти</button></div>' +
     '<div class="label">Мої заявки</div>' +
     (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№\u00a0' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +
     '<div style="font-size:12px;color:var(--muted);line-height:1.5">Телефон і ПІБ бачить лише адміністратор. Змінити квартиру чи статус можна через адміністратора. Сповіщення про ваші заявки приходять у чат із ботом.</div>';

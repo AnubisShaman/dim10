@@ -363,6 +363,69 @@ body.loading::after{content:"";position:fixed;top:0;left:0;right:0;height:3px;z-
 @keyframes cntpop{0%{transform:scale(1)}40%{transform:scale(1.18)}100%{transform:none}}
 .in-bars .cnt-win{display:inline-block;animation:cntpop 420ms var(--spring) 480ms backwards}
 @media (prefers-reduced-motion:reduce){.sky .cl,.sky .drop,.sky .flake,.genbox .gn i,.genbox .puff,.greet,.in-bars .bar i.win::after,.in-bars .cnt-win{animation:none!important}.sky .drop,.sky .flake,.genbox .puff{display:none}}
+
+/* ===== Темна тема ===== */
+:root{--sky-end:#F7F8FA;--fac1:#F7F8FA;--fac2:#E9ECF0;--tw1:#D9DDE3;--tw2:#CDD2D9;--twbase:#B9BFC7;--twtxt:#5F6670;--twcnt:#3A3F47}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#111317; --card:#1B1E24; --ink:#ECEEF1; --muted:#9AA1AB; --line:#2A2E36; --line2:#3A404A;
+  --graph:#363C47; --grey:#6B7079; --yellow:#F2C12E; --yellow-d:#E2B01F;
+  --ok-bg:#163326; --ok:#5FD39C; --bad-bg:#3A1C14; --bad:#FF9A7A; --info-bg:#262A31; --info:#C9CDD2; --soft:#20242B; --yel-bg:#3A3216; --yel-ink:#F2D27A;
+  --glass:rgba(27,30,36,.72);
+  --shadow-1:0 1px 2px rgba(0,0,0,.4); --shadow-2:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); --shadow-3:0 2px 4px rgba(0,0,0,.45),0 14px 36px rgba(0,0,0,.5);
+  --sky-end:#1C2028;--fac1:#1C2028;--fac2:#15181D;--tw1:#2B3039;--tw2:#242931;--twbase:#3A404A;--twtxt:#AEB4BD;--twcnt:#D5D9DE;
+}
+html{transition:background-color 300ms ease}
+:root[data-theme="dark"] .btn.yellow,:root[data-theme="dark"] nav.tabs button.on,:root[data-theme="dark"] .iconbtn[style*="--yellow"]{color:#23262B}
+:root[data-theme="dark"] .btn.graph{background:#363C47;color:#fff}
+:root[data-theme="dark"] [style*="color:var(--graph)"]{color:#B4BAC3!important}
+:root[data-theme="dark"] nav.tabs button{color:var(--muted)}
+:root[data-theme="dark"] nav.tabs button.on{color:#23262B}
+:root[data-theme="dark"] .btn.ghost{background:var(--card);border-color:var(--line2)}
+:root[data-theme="dark"] nav.tabs{box-shadow:var(--shadow-3),inset 0 0 0 1px rgba(255,255,255,.06)}
+:root[data-theme="dark"] .edge{background:linear-gradient(to top,rgba(17,19,23,.94),rgba(17,19,23,0))}
+:root[data-theme="dark"] [style*="background:#fff"]{background:var(--soft)!important}
+:root[data-theme="dark"] .input{background:var(--soft);border-color:var(--line2);color:var(--ink)}
+:root[data-theme="dark"] .chip{background:var(--card);border-color:var(--line2)}
+:root[data-theme="dark"] .chip.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:root[data-theme="dark"] .fl .a{background:var(--soft)}
+:root[data-theme="dark"] .flr.on .fa,:root[data-theme="dark"] .fl .a.p{filter:saturate(.9)}
+:root[data-theme="dark"] .flr.on.inf .fa{background:#4A4430;color:#E9D79A}
+:root[data-theme="dark"] .flr.unknown .fa{background:repeating-linear-gradient(135deg,var(--line2) 0 4px,transparent 4px 8px)}
+:root[data-theme="dark"] .toast{background:rgba(236,238,241,.92);color:#111317}
+:root[data-theme="dark"] .scrim2{background:rgba(0,0,0,.55)}
+:root[data-theme="dark"] .frw.unknown .w{background:repeating-linear-gradient(135deg,#4A505B 0 2px,transparent 2px 4px)}
+:root[data-theme="dark"] .frw.on.inf .w{background:#8C7B3E;box-shadow:none}
+.facadec{background:linear-gradient(180deg,var(--fac1) 0%,var(--fac2) 100%)}
+.tower{background:linear-gradient(180deg,var(--tw1),var(--tw2))}
+.tower .nm{color:var(--twtxt)} .tower .base{background:var(--twbase)} .tower .cnt{color:var(--twcnt)}
+.sky.dawn{background:linear-gradient(180deg,#F6C9A8 0%,#F9E2C8 55%,var(--sky-end) 100%)}
+.sky.day{background:linear-gradient(180deg,#9FD0F2 0%,#CFE8F8 60%,var(--sky-end) 100%)}
+.sky.dusk{background:linear-gradient(180deg,#8E7CC3 0%,#E9A48A 55%,var(--sky-end) 100%)}
+.sky.night{background:linear-gradient(180deg,#1E2A44 0%,#3B4A69 60%,var(--sky-end) 100%)}
+.sky.wx-cloud.day{background:linear-gradient(180deg,#B9C6D2 0%,#DCE3EA 60%,var(--sky-end) 100%)}
+.sky.wx-rain.day,.sky.wx-storm.day{background:linear-gradient(180deg,#8E9BA8 0%,#C6CFD8 60%,var(--sky-end) 100%)}
+.themesw{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;padding:4px;background:var(--line);border-radius:14px}
+.themesw button{height:38px;border:none;border-radius:10px;background:transparent;font-weight:700;font-size:13px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+.themesw button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+/* ===== Картка квартири ===== */
+.aptc{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;padding:16px;border-radius:24px;background:linear-gradient(135deg,var(--card) 0%,var(--soft) 100%);box-shadow:var(--shadow-2);border:none;width:100%;text-align:left;font:inherit;color:inherit;cursor:pointer;position:relative;overflow:hidden}
+.aptc .mini{width:74px;padding:5px 4px 4px;border-radius:8px 8px 3px 3px;background:linear-gradient(180deg,var(--tw1),var(--tw2));display:flex;flex-direction:column;gap:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.aptc .mr{display:flex;gap:1.5px;height:5px}
+.aptc .mr i{flex:1;border-radius:1px;background:#4A4F57}
+.aptc .mr.on i{background:#FFCF4A}
+.aptc .mr.on.inf i{background:#F7DE8C}
+.aptc .mr.unknown i{background:#C3C8CF;opacity:.6}
+.aptc .mr i.me{background:var(--ink)!important;box-shadow:0 0 0 1.5px var(--card),0 0 8px 2px rgba(242,193,46,.9);animation:mepulse 2.4s ease-in-out infinite}
+@keyframes mepulse{50%{box-shadow:0 0 0 1.5px var(--card),0 0 2px 0 rgba(242,193,46,.4)}}
+.aptc .big{font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.aptc .meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.aptc .meta span{font-size:12px;font-weight:700;background:var(--bg);border-radius:999px;padding:4px 10px;color:var(--muted)}
+.aptc .lt{margin-top:10px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
+.aptc .lt i{width:8px;height:8px;border-radius:50%;background:#9AA1AB}
+.aptc .lt.on i{background:#F2C12E;box-shadow:0 0 8px rgba(242,193,46,.9)} .aptc .lt.off i{background:#4A4F57}
+.aptc .go{position:absolute;right:14px;top:14px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.aptc .mr i.me{animation:none}}
 </style>
 </head>
 <body>
@@ -399,6 +462,7 @@ const ICON = {
   vote: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
   user: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
   phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
+  chev: '<path d="M9 6l6 6-6 6"/>',
   bulb: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/>',
   nobulb: '<path d="M3 3l18 18"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 4.6A7 7 0 0 1 19 9c0 1.5-.5 2.9-1.4 4"/><path d="M8.5 14.5c.4.5.5 1 .5 1.5h6"/>',
   swap: '<path d="M7 16V4"/><path d="M3 8l4-4 4 4"/><path d="M17 8v12"/><path d="M21 16l-4 4-4-4"/>',
@@ -411,6 +475,7 @@ const ICON = {
   shield: '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>'
 };
 function ic(name, color, size) {
+  if (color === '#23262B' && document.documentElement.getAttribute('data-theme') === 'dark') color = 'currentColor';
   return '<svg width="' + (size || 22) + '" height="' + (size || 22) + '" viewBox="0 0 24 24" fill="none" stroke="' + (color || 'currentColor') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + ICON[name] + '</svg>';
 }
 function openChat(key) {
@@ -435,6 +500,25 @@ function ago(t) {
   const y = new Date(n); y.setDate(n.getDate() - 1);
   if (d.toDateString() === y.toDateString()) return 'вчора, ' + hm;
   return d.toLocaleDateString('uk-UA', { day: 'numeric', month: 'short' });
+}
+// ---------- тема ----------
+function themePref() { try { return localStorage.getItem('b10_theme') || 'auto'; } catch (e) { return 'auto'; } }
+function themeResolved() {
+  const p = themePref();
+  if (p === 'light' || p === 'dark') return p;
+  if (tg && tg.colorScheme) return tg.colorScheme === 'dark' ? 'dark' : 'light';
+  return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+function applyTheme() {
+  const t = themeResolved();
+  document.documentElement.setAttribute('data-theme', t);
+  const bg = t === 'dark' ? '#111317' : '#F2F3F5';
+  try { tg && tg.setHeaderColor && tg.setHeaderColor(bg); tg && tg.setBackgroundColor && tg.setBackgroundColor(bg); tg && tg.setBottomBarColor && tg.setBottomBarColor(bg); } catch (e) {}
+}
+function setTheme(p) { try { localStorage.setItem('b10_theme', p); } catch (e) {} applyTheme(); haptic('sel'); render(); }
+function themeCard() {
+  const p = themePref(), o = [['light', 'Світла', 'sun'], ['dark', 'Темна', 'moon'], ['auto', 'Як у Telegram', '']];
+  return '<div class="label">Оформлення</div><div class="themesw" role="radiogroup" aria-label="Тема">' + o.map(x => '<button role="radio" aria-checked="' + (p === x[0]) + '" class="' + (p === x[0] ? 'on' : '') + '" onclick="setTheme(\'' + x[0] + '\')">' + x[1] + '</button>').join('') + '</div>';
 }
 function haptic(type) {
   try {
@@ -1070,10 +1154,23 @@ function removeMember(id, name) {
   ask('Прибрати ' + name + ' з квартири? Людина втратить доступ до застосунку.', ok => { if (ok) run('removeMember', { id: id }, 'Прибрано'); });
 }
 
+function aptCard() {
+  const me = D.me;
+  if (!me.apt || !me.entrance || typeof secLayout !== 'function') return '';
+  const sn = me.entrance, lay = secLayout(sn), mf = (D.light && D.light.myFloor) || LFLOORS.find(f => lay[f].indexOf(me.apt) >= 0) || 0;
+  const mini = LFLOORS.map(f => { const x = floorSt(sn, f); return '<span class="mr ' + x.status + (x.inf ? ' inf' : '') + '">' + lay[f].map(a => '<i' + (a === me.apt ? ' class="me"' : '') + '></i>').join('') + '</span>'; }).join('');
+  const x = mf ? floorSt(sn, mf) : { status: 'unknown' };
+  const lt = x.status === 'on' ? 'На вашому поверсі є світло' : x.status === 'off' ? 'На вашому поверсі немає світла' : 'Про світло на поверсі ще невідомо';
+  return '<button class="aptc" onclick="openLight(' + sn + ');setTimeout(function(){openFloor(' + sn + ',' + mf + ')},350)" aria-label="Квартира ' + esc(me.apt) + ', секція ' + sn + ', ' + mf + ' поверх. Відкрити поверх">' +
+    '<span class="mini" aria-hidden="true">' + mini + '</span>' +
+    '<span><span class="sub" style="font-weight:600">Ваша квартира</span><span class="big" style="display:block">' + esc(me.apt) + '</span>' +
+    '<span class="meta"><span>Секція ' + sn + '</span>' + (mf ? '<span>' + mf + ' поверх</span>' : '') + '<span>' + esc(cap(me.role || '')) + '</span></span>' +
+    '<span class="lt ' + x.status + '"><i></i>' + lt + '</span></span><span class="go" aria-hidden="true">' + ic('chev', null, 18) + '</span></button>';
+}
 function cabinet() {
   const me = D.me;
   const mine = D.problems.filter(p => p.own);
-  return '<div class="h1" role="heading" aria-level="1">Мій кабінет</div>' + confirmCards() +
+  return '<div class="h1" role="heading" aria-level="1">Мій кабінет</div>' + confirmCards() + aptCard() +
     '<div class="card" style="gap:14px;padding:18px;border-radius:24px"><div style="display:flex;align-items:center;gap:12px">' +
     '<div class="av y" style="width:52px;height:52px;border-radius:26px;font-size:18px">' + esc(initials(me.name)) + '</div>' +
     '<div><div style="font-size:17px;font-weight:700">' + esc(me.name) + '</div><div class="sub" style="font-weight:500">' + (me.username ? '@' + esc(me.username) : '') + '</div></div></div>' +
@@ -1082,7 +1179,7 @@ function cabinet() {
     '</div>' +
     fuelCard() +
     (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
-    flatCard() +
+    flatCard() + themeCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
     '<div class="label">Мої заявки</div>' +
     (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№\u00a0' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +
@@ -1735,7 +1832,7 @@ async function start() {
   if (tg) {
     try {
       tg.ready(); tg.expand();
-      tg.setHeaderColor && tg.setHeaderColor('#F2F3F5');
+      applyTheme(); tg.onEvent && tg.onEvent('themeChanged', () => { if (themePref() === 'auto') { applyTheme(); render(); } });
       tg.setBackgroundColor && tg.setBackgroundColor('#F2F3F5');
       tg.BackButton && tg.BackButton.onClick(back);
     } catch (e) {}
@@ -1910,6 +2007,7 @@ function demoApi(action, d) {
 }
 
 setInterval(() => { if ((route === 'home' || route === 'light') && !document.hidden && !busy && !document.querySelector('.osed,.sheet[style*="visible"]')) { const p = dayPhase(); if (ui.lastPhase && ui.lastPhase !== p) render(); ui.lastPhase = p; } }, 60000);
+try { applyTheme(); } catch (e) {}
 start();
 </script>
 </body>

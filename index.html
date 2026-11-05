@@ -769,6 +769,9 @@ a.urow:active{opacity:.6}
 .gtt button.x{color:#2F7FD8}.gtt button.o{color:#E0583A}
 .gtt button.w{background:var(--yel-bg,#FFF3CF)}
 .gmsg{text-align:center;font-weight:800;font-size:17px;min-height:24px}
+.fpc.ok .rg b{color:var(--ok)}
+.fpc.ok .t::after{content:" ✓";color:var(--ok)}
+.fpc .rg b svg,.fph .rg .c svg{transform:none}
 </style>
 </head>
 <body>
@@ -806,6 +809,7 @@ const ICON = {
   user: '<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.5a3.5 3.5 0 0 1 0 7"/><path d="M18 14.5a6.5 6.5 0 0 1 3.5 5.5"/>',
   phone: '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.18 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.9.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/>',
   chev: '<path d="M9 6l6 6-6 6"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
   bulb: '<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.3h6c0-1 .4-1.8 1-2.3A7 7 0 0 0 12 2z"/>',
   nobulb: '<path d="M3 3l18 18"/><path d="M9 18h6"/><path d="M10 22h4"/><path d="M8.2 4.6A7 7 0 0 1 19 9c0 1.5-.5 2.9-1.4 4"/><path d="M8.5 14.5c.4.5.5 1 .5 1.5h6"/>',
@@ -1401,7 +1405,7 @@ function home() {
   return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">' + esc(greeting().hi) + '</div>' + (xmasOn() ? '<div class="xchip">' + esc(xmasLine()) + '</div>' : '') + '</div>' +
     '<button class="iconbtn xtg' + (xmasOn() ? ' on' : '') + '" aria-label="Різдвяне оформлення" aria-pressed="' + xmasOn() + '" onclick="xmasToggle()">' + XTREE_IC + '</button></div>' +
     lightCard() + fuelBanner() + xmasOffer() +
-    utilHtml(st) + liftCard + fpubCard() + usefulEntry() + gamesEntry() +
+    utilHtml(st) + liftCard + fpubCard() + usefulEntry() +
     confirmCards() + sigBlock() +
     '<div class="row"><div style="font-size:16px;font-weight:700">Що відбувається</div>' + scopeBtn() + '</div>' +
     (feed.length ? feed.map(f => f.html).join('') : '<div class="empty">' + (xmasOn() ? 'Усе спокійно, як у Святвечір ✨' : 'Усе спокійно') + '</div>') +
@@ -1650,22 +1654,27 @@ function ring(pct, size, w) {
     '<circle class="vl" cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke-width="' + w + '" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - Math.min(1, pct / 100))).toFixed(1) + '"/></svg>';
 }
 function fpubOk() { return D.fuel && D.fuel.pub && D.fuel.public !== false; }
-function fpubM() { const P = D.fuel.pub, sk = P.skip || {}, def = sk[D.fuel.month] ? P.months[0] : D.fuel.month, m = ui.fpm && P[ui.fpm] ? ui.fpm : def; return P[m] ? m : P.months[1]; }
+function fpubM() { const P = D.fuel.pub, sk = P.skip || {}, def = D.fuel.month, m = ui.fpm && P[ui.fpm] ? ui.fpm : def; return P[m] ? m : P.months[1]; }
 // компактна картка на головній
 function fpubCard() {
   if (!fpubOk()) return '';
-  const sk = D.fuel.pub.skip || {}, cm = sk[D.fuel.month] ? D.fuel.pub.months[0] : D.fuel.month;
-  const x = D.fuel.pub[cm]; if (!x) return '';
+  const sk = D.fuel.pub.skip || {};
+  if (sk[D.fuel.month]) return '<button class="fpc ok" onclick="ui.fpm=\'\';go(\'fpub\')"><span class="rg">' + ring(100, 52, 6) + '<b>' + ic('check', null, 20) + '</b></span><span style="min-width:0"><span class="t" style="display:block">Пальне · ' + esc(monthName(D.fuel.month)) + '</span>' +
+    '<span class="s" style="display:block">Коштів достатньо · вносити не потрібно</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+  const x = D.fuel.pub[D.fuel.month]; if (!x) return '';
   const pct = x.all ? Math.round(x.paid / x.all * 100) : 0;
   return '<button class="fpc" onclick="ui.fpm=\'\';go(\'fpub\')"><span class="rg">' + ring(pct, 52, 6) + '<b>' + pct + '%</b></span><span style="min-width:0"><span class="t" style="display:block">Пальне · ' + esc(monthName(x.month)) + '</span>' +
-    '<span class="s" style="display:block">' + (cm !== D.fuel.month ? 'за ' + esc(monthName(D.fuel.month)) + ' не збираємо' : fmtMoney(x.total) + ' грн · ' + x.paid + ' з ' + x.all + ' кв.') + '</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+    '<span class="s" style="display:block">' + fmtMoney(x.total) + ' грн · ' + x.paid + ' з ' + x.all + ' кв.</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
 }
 function fpubScreen() {
   if (!fpubOk()) return '<div class="empty">Збір ще не почався</div>';
   const P = D.fuel.pub, m = fpubM(), x = P[m], pct = x.all ? Math.round(x.paid / x.all * 100) : 0;
   let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Збір на пальне</div></div>' +
     '<div class="seg" role="tablist">' + P.months.map(k => '<button role="tab" aria-selected="' + (m === k) + '" class="' + (m === k ? 'on' : '') + '" onclick="ui.fpm=\'' + k + '\';haptic(\'sel\');render()">' + esc(cap(monthName(k))) + '</button>').join('') + '</div>';
-  if ((P.skip || {})[m]) h += '<div class="fbal" style="background:var(--info-bg);color:var(--ink)"><span>За ' + esc(monthName(m)) + ' збір не проводиться — коштів вистачає</span><b>✓</b></div>';
+  if ((P.skip || {})[m]) return h + '<div class="fph"><div class="rg">' + ring(100, 132, 12) + '<div class="c"><b style="color:var(--ok)">' + ic('check', null, 40) + '</b><span>достатньо</span></div></div><div class="kv">' +
+    '<div><b style="font-size:20px">Коштів достатньо</b><span>за ' + esc(monthName(m)) + ' вносити не потрібно</span></div>' +
+    '<div><span style="font-size:13px;line-height:1.45">Ключ від ліфта працює в тих, хто вніс за ' + esc(monthName(P.months[0])) + '. Коли знову знадобиться збір, тут зʼявиться оголошення.</span></div></div></div>' +
+    '<button class="btn ghost" onclick="ui.fpm=\'' + P.months[0] + '\';render()">Подивитись ' + esc(monthName(P.months[0])) + ' ›</button>';
   // головне
   h += '<div class="fph"><div class="rg">' + ring(pct, 132, 12) + '<div class="c"><b>' + pct + '%</b><span>квартир</span></div></div><div class="kv">' +
     '<div><b>' + fmtMoney(x.total) + ' грн</b><span>зібрано за ' + esc(monthName(m)) + '</span></div>' +
@@ -1714,12 +1723,12 @@ const GAMES = [
 ];
 const GAME_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="#fff"/><path d="M7 10.5v4M5 12.5h4" stroke="#7A4CE8" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.3" r="1.3" fill="#FF5A4F"/><circle cx="18" cy="13.7" r="1.3" fill="#F4C542"/></svg>';
 function gamesEntry() {
-  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Косинка, 2048, сапер — працюють без інтернету</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Косинка, 2048, сапер, хрестики-нулики</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
 }
 function gamesScreen() {
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Ігри</div></div>' +
     '<div class="glist">' + GAMES.map(g => '<button class="gcard" onclick="ui.game=\'' + g[0] + '\';go(\'game\')"><span class="gi" style="background:' + g[4] + ';color:#fff;font-size:' + (g[3].length > 2 ? '15px' : '26px') + '">' + g[3] + '</span><b>' + g[1] + '</b><span>' + g[2] + '</span></button>').join('') + '</div>' +
-    '<div class="note">Ігри зберігають прогрес на телефоні. Коли застосунок відкритий, інтернет для гри не потрібен — зручно під час відключень.</div>';
+    '';
 }
 function gameScreen() {
   const g = GAMES.find(x => x[0] === ui.game) || GAMES[0];
@@ -2099,7 +2108,7 @@ function cabinet() {
     '</div>' +
     fuelCard() +
     (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
-    flatCard() + usefulEntry() + homeRow() + themeCard() +
+    flatCard() + usefulEntry() + gamesEntry() + homeRow() + themeCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
     '<div class="label">Мої заявки</div>' +
     (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№\u00a0' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +

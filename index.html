@@ -687,6 +687,22 @@ html{transition:background-color 300ms ease}
 .ffl .fr .c{font-size:13px;font-weight:800;white-space:nowrap}
 .ffl .fr.full .c{color:var(--ok)}
 .ffl .fr.me .n{color:var(--ink)}
+
+.urow{display:flex;align-items:center;gap:12px;padding:11px 0}
+.urow.bd{border-bottom:1px solid var(--line)}
+.urow .ub{min-width:42px;height:42px;padding:0 6px;border-radius:14px;display:grid;place-items:center;font-weight:800;font-size:14px;letter-spacing:-.01em;flex:none;background:var(--tint);color:var(--hue)}
+.urow .um{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.urow .um b{font-size:15px}.urow .um span{font-size:12.5px;color:var(--muted);font-weight:500;line-height:1.35}
+.u-r{--hue:#D8433B;--tint:rgba(216,67,59,.12)} .u-b{--hue:#2F7FD8;--tint:rgba(47,127,216,.13)} .u-y{--hue:#B88400;--tint:rgba(242,193,46,.2)} .u-o{--hue:#D9731A;--tint:rgba(242,140,40,.15)} .u-g{--hue:#2E9B5F;--tint:rgba(46,155,95,.13)}
+:root[data-theme="dark"] .u-r{--hue:#FF8A80} :root[data-theme="dark"] .u-b{--hue:#74B4FF} :root[data-theme="dark"] .u-y{--hue:#F2C12E} :root[data-theme="dark"] .u-o{--hue:#FFB15A} :root[data-theme="dark"] .u-g{--hue:#6FD3A0}
+.howto{display:flex;flex-direction:column;gap:8px}
+.howto details{padding:0;gap:0}
+.howto summary{list-style:none;cursor:pointer;padding:14px 16px;font-weight:700;display:flex;align-items:center;justify-content:space-between}
+.howto summary::-webkit-details-marker{display:none}
+.howto summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform 250ms var(--spring);margin-right:4px}
+.howto details[open] summary::after{transform:rotate(-135deg)}
+.howto details>div{padding:0 16px 14px;font-size:14px;line-height:1.5;color:var(--muted)}
+.howto details>div b{color:var(--ink)}
 </style>
 </head>
 <body>
@@ -2361,16 +2377,54 @@ function toggleLift(row) {
   run('setStatus', { row: row, value: o.value, tone: o.tone }, liftName(s) + ', секція ' + s.entrance + ': ' + o.value.toLowerCase());
 }
 
+// ---------- КОРИСНЕ: довідник (номери перевірено на kyivcity.gov.ua, листопад 2026) ----------
+// [назва, опис, номер для дзвінка з мобільного або посилання, колір, короткий номер]
+const USEFUL_BASE = [
+  ['Екстрені', [
+    ['112', 'Єдиний номер екстрених служб', '112', 'r'],
+    ['Пожежна, ДСНС', 'пожежа, задимлення, завали', '101', 'r'],
+    ['Поліція', '', '102', 'b'],
+    ['Швидка допомога', '', '103', 'r'],
+    ['Газ — аварійна служба', 'запах газу, пошкодження труби', '104', 'y']
+  ]],
+  ['Світло', [
+    ['ДТЕК Київські електромережі', 'аварії й відключення · цілодобово', '(044) 202-15-88', 'y', '1588'],
+    ['Графік відключень', 'сайт ДТЕК: черги й адреси', 'https://www.dtek-kem.com.ua/ua/shutdowns', 'y']
+  ]],
+  ['Вода і тепло', [
+    ['Київводоканал — аварійна', 'прорив, немає води в районі · цілодобово', '(044) 200-73-01', 'b', '15-81'],
+    ['Тепло і гаряча вода', 'центральна служба ЖКГ', '(044) 500-15-57', 'o', '1557'],
+    ['Київтеплоенерго', 'консультації, показники лічильників', '(044) 247-40-40', 'o']
+  ]],
+  ['Місто', [
+    ['Контактний центр Києва', 'скарги на будь-які міські служби', '1551', 'g'],
+    ['Київ Цифровий', 'відключення, тривоги, звернення в одному застосунку', 'https://kyiv.digital', 'g']
+  ]]
+];
+// коротко: що робити, якщо…
+const USEFUL_HOWTO = [
+  ['Пахне газом', 'Не вмикайте і не вимикайте світло, не запалюйте вогонь. Відчиніть вікна, вийдіть з квартири і вже на вулиці дзвоніть <b>104</b>. Попередьте сусідів стуком, не дзвінком.'],
+  ['Зникло світло', 'Подивіться у застосунку, чи є світло на вашому поверсі і в сусідів, та чи працює генератор. Якщо світла немає лише у вас — перевірте автомати в щитку. Якщо в усьому будинку і не за графіком — ДТЕК, <b>(044) 202-15-88</b>.'],
+  ['Немає води', 'Перевірте сигнали у застосунку — можливо, сусіди вже повідомили. Аварія в районі — Водоканал, <b>(044) 200-73-01</b>. Якщо лише в будинку — надішліть сигнал «Немає води».'],
+  ['Холодні батареї', 'Надішліть сигнал «Холодні батареї», щоб побачити, чи так у сусідів. Якщо холодно в усьому будинку — <b>(044) 500-15-57</b>.'],
+  ['Затопило', 'Перекрийте воду в квартирі, знеструмте мокру зону, сфотографуйте сліди. Підніміться до сусідів зверху і надішліть сигнал «Протікає».']
+];
+function usefulRow(u, i, n) {
+  const ph = String(u[2] || ''), link = /^https?:/.test(ph), tel = !link && /^[+\d\s()-]{3,}$/.test(ph) ? 'tel:' + ph.replace(/[^\d+]/g, '') : '';
+  const short = u[4] || (!link && /^\d{3,4}$/.test(ph) ? ph : ''), big = !!short;
+  return '<div class="urow' + (i < n - 1 ? ' bd' : '') + '"><span class="ub u-' + (u[3] || 'g') + '">' + (big ? esc(short) : link ? ic('chev', null, 16) : ic('phone', null, 16)) + '</span>' +
+    '<span class="um"><b>' + esc(u[0]) + '</b>' + (u[1] ? '<span>' + esc(u[1]) + '</span>' : '') + (u[4] || (!big && !link && ph) ? '<span>' + esc(ph) + '</span>' : '') + '</span>' +
+    (tel ? '<a class="iconbtn" style="background:var(--yellow)" aria-label="Подзвонити ' + esc(u[0]) + '" href="' + esc(tel) + '" onclick="haptic();return openLink(this.href)">' + ic('phone', '#23262B', 18) + '</a>'
+      : link ? '<a class="iconbtn" aria-label="Відкрити ' + esc(u[0]) + '" href="' + esc(ph) + '" onclick="haptic();return openLink(this.href)">' + ic('chev', '#23262B', 18) + '</a>' : '') + '</div>';
+}
 function useful() {
-  const secs = [];
-  D.useful.forEach(u => { if (secs.indexOf(u.section) < 0) secs.push(u.section); });
+  // свої записи з листа «Корисне» (крім незаповнених шаблонів і того, що тут не потрібно)
+  const own = (D.useful || []).filter(u => u.name && !/\[/.test(String(u.desc) + String(u.phone)) && !/^(Укриття|Ліфти при відключенні|Пункт незламності|Аварійна служба УК|Ліфтова служба|Гаряча лінія міста)$/.test(u.name));
+  const secs = USEFUL_BASE.map(x => [x[0], x[1].slice()]);
+  own.forEach(u => { const k = u.section || 'Будинок'; let sx = secs.find(x => x[0] === k); if (!sx) { sx = [k, []]; secs.unshift(sx); } sx[1].push([u.name, u.desc, u.phone, 'g']); });
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Корисне</div></div>' +
-    secs.map((s, si) => '<div class="label">' + esc(s) + '</div><div class="card' + (si === 0 ? ' dark' : '') + '" style="gap:0;padding:4px 16px">' +
-      D.useful.filter(u => u.section === s).map((u, i, arr) => {
-        const tel = u.phone && /^[+\d\s()-]{3,}$/.test(u.phone) ? 'tel:' + u.phone.replace(/[^\d+]/g, '') : (/^https?:/.test(u.phone) ? u.phone : '');
-        return '<div class="row" style="padding:10px 0;' + (i < arr.length - 1 ? 'border-bottom:1px solid ' + (si === 0 ? '#353940' : 'var(--line)') : '') + '"><div><div style="font-weight:700">' + esc(u.name) + '</div><div style="font-size:13px;opacity:.75">' + esc(u.desc) + (u.phone && !tel ? ' · ' + esc(u.phone) : '') + '</div></div>' +
-          (tel ? '<a class="iconbtn" style="background:var(--yellow)" aria-label="Звʼязатися" href="' + esc(tel) + '" onclick="return openLink(this.href)">' + ic('phone', '#23262B', 18) + '</a>' : '') + '</div>';
-      }).join('') + '</div>').join('');
+    secs.map(sx => '<div class="label">' + esc(sx[0]) + '</div><div class="card" style="gap:0;padding:4px 14px">' + sx[1].map((u, i) => usefulRow(u, i, sx[1].length)).join('') + '</div>').join('') +
+    '<div class="label">Що робити, якщо…</div><div class="howto">' + USEFUL_HOWTO.map(h => '<details class="card"><summary>' + esc(h[0]) + '</summary><div>' + h[1] + '</div></details>').join('') + '</div>';
 }
 function openLink(h) { if (/^https?:/.test(h) && tg && tg.openLink) { tg.openLink(h); return false; } return true; }
 

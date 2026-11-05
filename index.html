@@ -834,6 +834,43 @@ body.gamemode .edge{display:none}
 .pwl button i{font-style:normal;font-weight:900;width:30px;height:30px;border-radius:10px;display:grid;place-items:center}
 .pwl button i.y{background:var(--ok-bg);color:var(--ok)}.pwl button i.n{background:var(--bad-bg);color:var(--bad)}
 .pnote{font-size:13.5px;color:var(--muted);line-height:1.45;text-align:center}
+
+/* ---------- дошка оголошень ---------- */
+.bent{display:flex;align-items:center;gap:12px;padding:12px 14px 12px 12px;border-radius:22px;background:var(--card);box-shadow:var(--shadow-1);border:none;font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer}
+.bent .ic{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#FFB561,#F76707 60%,#D9480F);box-shadow:0 6px 16px rgba(247,103,7,.32),inset 0 1px 0 rgba(255,255,255,.35)}
+.bent .t{font-weight:800;font-size:15px}.bent .s{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.bent .nw{margin-left:auto;font-size:12px;font-weight:800;background:#F76707;color:#fff;border-radius:999px;padding:3px 9px}
+.bcats{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px}
+.bcats::-webkit-scrollbar{display:none}
+.bcats button{flex:none;height:38px;border:none;border-radius:999px;padding:0 14px;font:inherit;font-weight:700;font-size:13.5px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-1);display:inline-flex;align-items:center;gap:6px}
+.bcats button.on{background:var(--ink);color:var(--bg)}
+.bcats button i{font-style:normal;font-size:11px;font-weight:800;opacity:.6}
+.adc{background:var(--card);border-radius:22px;padding:14px 16px;box-shadow:var(--shadow-1);display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden}
+.adc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--hue)}
+.adc .tp{display:flex;align-items:center;gap:8px}
+.adc .ct{font-size:11.5px;font-weight:800;letter-spacing:.03em;padding:3px 9px;border-radius:999px;background:var(--tint);color:var(--hue)}
+.adc .tm{margin-left:auto;font-size:12px;color:var(--muted);font-weight:500}
+.adc .ti{font-size:17px;font-weight:800;line-height:1.25}
+.adc .tx{font-size:14px;line-height:1.45;color:var(--muted);white-space:pre-line}
+.adc .pr{font-size:18px;font-weight:900;color:var(--ink)}
+.adc .ft{display:flex;align-items:center;gap:8px;margin-top:2px}
+.adc .au{font-size:12.5px;color:var(--muted);font-weight:600;flex:1;min-width:0}
+.adc .ft button{height:36px;border:none;border-radius:12px;padding:0 14px;font:inherit;font-weight:800;font-size:13px;background:var(--soft);color:var(--ink)}
+.adc .ft button.go{background:var(--hue);color:#fff}
+.adc .ft .mini{width:36px;padding:0;color:var(--muted)}
+.ad-sell{--hue:#2E9B5F;--tint:rgba(46,155,95,.13)} .ad-buy{--hue:#2F7FD8;--tint:rgba(47,127,216,.13)} .ad-free{--hue:#D9731A;--tint:rgba(242,140,40,.15)}
+.ad-serv{--hue:#6A52E0;--tint:rgba(106,82,224,.12)} .ad-lost{--hue:#1D9BB5;--tint:rgba(29,155,181,.14)} .ad-meet{--hue:#E64980;--tint:rgba(230,73,128,.13)}
+:root[data-theme="dark"] .ad-sell{--hue:#6FD3A0} :root[data-theme="dark"] .ad-buy{--hue:#74B4FF} :root[data-theme="dark"] .ad-free{--hue:#FFB15A} :root[data-theme="dark"] .ad-serv{--hue:#A592FF} :root[data-theme="dark"] .ad-lost{--hue:#5FD0E6} :root[data-theme="dark"] .ad-meet{--hue:#FF8CB4}
+.adpick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.adpick button{border:2px solid transparent;font:inherit;color:inherit;background:var(--card);border-radius:18px;padding:12px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12.5px;font-weight:800;box-shadow:var(--shadow-1)}
+.adpick button span{font-size:24px;line-height:1}
+.adpick button.on{border-color:var(--hue);background:var(--tint)}
+.adtog{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border-radius:16px;padding:12px 14px;box-shadow:var(--shadow-1);font-weight:700;font-size:14px}
+.adtog input{width:22px;height:22px;accent-color:var(--ink)}
+.adhero{border-radius:24px;padding:16px;color:#fff;background:linear-gradient(140deg,#F76707,#D9480F 55%,#A61E4D);box-shadow:var(--shadow-2);display:flex;gap:12px;align-items:center}
+.adhero b{display:block;font-size:17px;font-weight:900}.adhero span{font-size:13px;opacity:.85}
+.adhero button{margin-left:auto;flex:none;height:42px;border:none;border-radius:14px;padding:0 14px;font:inherit;font-weight:900;background:#fff;color:#D9480F}
+:root[data-theme="dark"] .adc .ft button.go{color:#111317}
 </style>
 </head>
 <body>
@@ -1110,7 +1147,7 @@ function save() { try { const c = Object.assign({}, D, { _t: Date.now() }); dele
 // ---------- навігація ----------
 function go(r) {
   if (r !== route) haptic('sel');
-  if (['new', 'useful', 'admin', 'fuel', 'osbb', 'light', 'fpub', 'games', 'game'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
+  if (['new', 'useful', 'admin', 'fuel', 'osbb', 'light', 'fpub', 'games', 'game', 'board', 'adnew'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
   else { stack = []; ui.anim = r === route ? '' : 'tab'; }
   route = r; render(); window.scrollTo(0, 0);
 }
@@ -1124,7 +1161,7 @@ function syncBack() {
 function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
-  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen, fpub: fpubScreen, games: gamesScreen, game: gameScreen }[route] || home;
+  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen, fpub: fpubScreen, games: gamesScreen, game: gameScreen, board: boardScreen, adnew: adNewScreen }[route] || home;
   let scr = document.getElementById('scr');
   if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
   const anim = ui.anim; ui.anim = '';
@@ -2368,6 +2405,70 @@ function fuelSkip(on) {
   const m = fMon();
   ask(on ? 'За ' + monthName(m) + ' вносити не потрібно? Нагадування і кнопки оплати зникнуть у мешканців.' : 'Відновити збір за ' + monthName(m) + '?', ok => { if (ok) run('fuelSkip', { month: m, on: on ? 1 : 0, fm: m }, on ? 'Збір на паузі' : 'Збір відновлено'); });
 }
+
+// ---------- ДОШКА ОГОЛОШЕНЬ ----------
+const AD_C = { sell: ['Продам', '🏷️'], buy: ['Куплю', '🛒'], free: ['Віддам', '🎁'], serv: ['Послуги', '🛠️'], lost: ['Загубив / знайшов', '🔎'], meet: ['Познайомлюсь', '💬'] };
+const AD_HINT = { sell: 'напр. Дитячий візок, майже новий', buy: 'напр. Шукаю павербанк 20 000', free: 'напр. Віддам книжки для дітей', serv: 'напр. Ремонт техніки, манікюр, репетитор', lost: 'напр. Знайдено ключі біля 2 секції', meet: 'напр. Шукаю компанію для пробіжок зранку' };
+const BOARD_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="3.5" fill="#fff"/><rect x="6" y="7.5" width="6" height="4" rx="1.2" fill="#F76707"/><rect x="13.5" y="7.5" width="4.5" height="1.6" rx=".8" fill="#FFB561"/><rect x="13.5" y="10" width="3.5" height="1.6" rx=".8" fill="#FFB561"/><rect x="6" y="13.5" width="12" height="1.6" rx=".8" fill="#E9ECEF"/><circle cx="19" cy="5" r="2.6" fill="#E64980" stroke="#fff" stroke-width="1.2"/></svg>';
+function boardSeen() { try { return Number(localStorage.getItem('b10_adseen') || 0); } catch (e) { return 0; } }
+function boardEntry() {
+  const fresh = (D.ads || []).filter(a => !a.own && a.t > boardSeen()).length, n = (D.ads || []).length;
+  return '<button class="bent" onclick="go(\'board\')"><span class="ic">' + BOARD_IC + '</span><span style="min-width:0"><span class="t" style="display:block">Дошка оголошень</span><span class="s" style="display:block">Продам, куплю, віддам, познайомлюсь' + (n ? ' · ' + n : '') + '</span></span>' +
+    (fresh ? '<span class="nw">+' + fresh + '</span>' : '<span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span>') + '</button>';
+}
+function adContactUrl(c) {
+  c = String(c || '').trim();
+  if (/^@[\w\d_]{4,}$/.test(c)) return 'https://t.me/' + c.slice(1);
+  if (/^https?:\/\//.test(c)) return c;
+  const d = c.replace(/[^\d+]/g, ''); if (d.length >= 9) return 'tel:' + (d[0] === '0' ? '+38' + d : d);
+  return '';
+}
+function adCard(a) {
+  const C = AD_C[a.cat] || AD_C.sell, url = adContactUrl(a.contact);
+  return '<div class="adc ad-' + esc(a.cat) + '"><div class="tp"><span class="ct">' + C[1] + ' ' + C[0] + '</span><span class="tm">' + esc(ago(a.t)) + '</span></div>' +
+    '<div class="ti">' + esc(a.title) + '</div>' + (a.text ? '<div class="tx">' + esc(a.text) + '</div>' : '') + (a.price ? '<div class="pr">' + esc(a.price) + '</div>' : '') +
+    '<div class="ft"><span class="au">' + esc(a.name) + (a.sec ? ' · секція ' + a.sec : '') + (a.apt ? ' · кв. ' + esc(a.apt) : '') + (D.me.isAdmin && a.reports ? ' · 🚩' + a.reports : '') + '</span>' +
+    (a.own ? '<button onclick="adClose(' + a.id + ')">Зняти</button>'
+      : (url ? '<a style="display:contents" href="' + esc(url) + '" onclick="haptic();return uAct(this.getAttribute(\'href\'))"><button class="go">' + (/^tel:/.test(url) ? 'Подзвонити' : 'Написати') + '</button></a>' : '<span class="au" style="flex:none">' + esc(a.contact) + '</span>') +
+        '<button class="mini" aria-label="Поскаржитися" onclick="adReport(' + a.id + ')">⋯</button>') +
+    (D.me.isAdmin && !a.own ? '<button class="mini" aria-label="Видалити" onclick="adDel(' + a.id + ')">✕</button>' : '') + '</div></div>';
+}
+function boardScreen() {
+  try { localStorage.setItem('b10_adseen', String(Date.now())); } catch (e) {}
+  const all = D.ads || [], cat = ui.adCat || 'all';
+  const list = cat === 'all' ? all : cat === 'mine' ? all.filter(a => a.own) : all.filter(a => a.cat === cat);
+  const cnt = k => all.filter(a => a.cat === k).length, mine = all.filter(a => a.own).length;
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Дошка оголошень</div></div>' +
+    '<div class="adhero"><span style="font-size:30px">📌</span><span><b>Між сусідами</b><span>Продайте, віддайте, знайдіть компанію</span></span><button onclick="ui.ad={cat:ui.adCat&&AD_C[ui.adCat]?ui.adCat:\'sell\',title:\'\',text:\'\',price:\'\',contact:\'\',showApt:false};go(\'adnew\')">+ Додати</button></div>' +
+    '<div class="bcats"><button class="' + (cat === 'all' ? 'on' : '') + '" onclick="ui.adCat=\'all\';render()">Усі <i>' + all.length + '</i></button>' +
+    Object.keys(AD_C).map(k => '<button class="' + (cat === k ? 'on' : '') + '" onclick="ui.adCat=\'' + k + '\';haptic(\'sel\');render()">' + AD_C[k][1] + ' ' + AD_C[k][0] + (cnt(k) ? ' <i>' + cnt(k) + '</i>' : '') + '</button>').join('') +
+    (mine ? '<button class="' + (cat === 'mine' ? 'on' : '') + '" onclick="ui.adCat=\'mine\';render()">Мої <i>' + mine + '</i></button>' : '') + '</div>' +
+    (cat === 'meet' ? '<div class="note">Розділ для дорослих сусідів: спільні прогулянки, спорт, настолки, нові знайомства. Будьте ввічливі — грубі оголошення адміністратор видаляє.</div>' : '') +
+    (list.length ? list.map(adCard).join('') : '<div class="empty">' + (cat === 'all' ? 'Оголошень ще немає — будьте першим!' : 'Тут поки порожньо') + '</div>') +
+    '<div class="note">Оголошення бачать лише мешканці будинку і зникають самі через 30 днів. Номер квартири показується, тільки якщо автор дозволив.</div>';
+}
+function adNewScreen() {
+  const f = ui.ad || (ui.ad = { cat: 'sell', title: '', text: '', price: '', contact: '', showApt: false });
+  const hasUser = !!D.me.username, priced = f.cat === 'sell' || f.cat === 'buy' || f.cat === 'serv';
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Нове оголошення</div></div>' +
+    '<div class="label">Розділ</div><div class="adpick">' + Object.keys(AD_C).map(k => '<button class="ad-' + k + (f.cat === k ? ' on' : '') + '" onclick="ui.ad.cat=\'' + k + '\';haptic(\'sel\');render()"><span>' + AD_C[k][1] + '</span>' + AD_C[k][0] + '</button>').join('') + '</div>' +
+    '<label class="field">Заголовок<input class="input" maxlength="70" autocomplete="off" placeholder="' + esc(AD_HINT[f.cat]) + '" value="' + esc(f.title) + '" oninput="ui.ad.title=this.value"></label>' +
+    '<label class="field">Опис (необовʼязково)<textarea class="input" maxlength="600" placeholder="Стан, деталі, коли зручно…" oninput="ui.ad.text=this.value">' + esc(f.text) + '</textarea></label>' +
+    (priced ? '<label class="field">Ціна (необовʼязково)<input class="input" maxlength="30" autocomplete="off" placeholder="напр. 500 грн або договірна" value="' + esc(f.price) + '" oninput="ui.ad.price=this.value"></label>' : '') +
+    '<label class="field">Як звʼязатися' + (hasUser ? ' (необовʼязково)' : '') + '<input class="input" maxlength="60" autocomplete="off" placeholder="' + (hasUser ? 'за замовчуванням — ваш Telegram @' + esc(D.me.username) : 'телефон або @нік у Telegram') + '" value="' + esc(f.contact) + '" oninput="ui.ad.contact=this.value"></label>' +
+    '<label class="adtog">Показати номер квартири<input type="checkbox"' + (f.showApt ? ' checked' : '') + ' onchange="ui.ad.showApt=this.checked"></label>' +
+    '<button class="btn yellow" onclick="adSend()">Опублікувати</button>';
+}
+async function adSend() {
+  const f = ui.ad;
+  if (!f.title.trim()) { toast('Додайте заголовок'); return; }
+  if (!D.me.username && !f.contact.trim()) { toast('Вкажіть телефон або @нік для звʼязку'); return; }
+  if (await run('adNew', f, 'Оголошення опубліковано')) { ui.adCat = f.cat; ui.ad = null; back(); }
+}
+function adClose(id) { ask('Зняти оголошення?', ok => { if (ok) run('adClose', { id: id }, 'Знято'); }); }
+function adDel(id) { ask('Видалити оголошення як адміністратор?', ok => { if (ok) run('adDel', { id: id }, 'Видалено'); }); }
+function adReport(id) { ask('Поскаржитися на це оголошення? Адміністратор перевірить.', ok => { if (ok) run('adReport', { id: id }, 'Дякуємо, передано адміністратору'); }); }
+
 // ---------- голосування ----------
 function polls() {
   const list = D.polls;
@@ -2529,7 +2630,7 @@ function cabinet() {
     '</div>' +
     fuelCard() +
     (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
-    flatCard() + usefulEntry() + gamesEntry() + homeRow() + themeCard() +
+    flatCard() + boardEntry() + usefulEntry() + gamesEntry() + homeRow() + themeCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
     '<div class="label">Мої заявки</div>' +
     (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№\u00a0' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +
@@ -3390,6 +3491,12 @@ function demoApi(action, d) {
         { id: 2, t: now - 14 * 60000, act: now - 5 * 60000, sec: 2, type: 'lift', det: 'вантажний', n: 4, ok: 0, own: false, too: false, myOk: false, reply: 'Генератор запускається, хвилин 10', replyAt: now - 6 * 60000, closed: '', ticket: 0, apt: '320' },
         { id: 1, t: now - 40 * 60000, act: now - 30 * 60000, sec: 0, type: 'water', det: 'гаряча', n: 7, ok: 1, own: false, too: true, myOk: false, reply: '', replyAt: 0, closed: '', ticket: 0, apt: '45' }
       ],
+      ads: [
+        { id: 4, t: now - 2 * H, cat: 'meet', title: 'Шукаю компанію для ранкових пробіжок', text: 'Бігаю по набережній о 7:00, 5 км, спокійний темп. Буду рада компанії!', price: '', contact: '@olena_run', name: 'Оксана', sec: 3, own: false, apt: '' },
+        { id: 3, t: now - 20 * H, cat: 'free', title: 'Віддам дитячі книжки', text: 'Близько 30 книжок для 3–7 років, у гарному стані.', price: '', contact: '+380671112233', name: 'Ігор', sec: 2, own: false, apt: '305' },
+        { id: 2, t: now - 40 * H, cat: 'sell', title: 'Павербанк 30 000 мА·год', text: 'Користувався місяць, повний комплект.', price: '900 грн', contact: '@olena_k', name: 'Олена', sec: 2, own: true, apt: '317-1' },
+        { id: 1, t: now - 72 * H, cat: 'serv', title: 'Репетитор з англійської', text: 'Школярі 5–11 клас, онлайн або у вас вдома.', price: '400 грн / год', contact: '@eng_teacher', name: 'Марина', sec: 1, own: false, apt: '' }
+      ],
       problems: [
         { id: 14, comments: [{ id: 'c1', t: now - 90 * 60000, who: 'Власник', text: 'Сьогодні вранці теж застряг на 7 поверсі.', mine: false, apt: '188' }, { id: 'c2', t: now - 40 * 60000, who: 'Адміністратор', text: 'Викликали ліфтову службу, обіцяють до 18:00.', mine: false }], created: now - 2 * H, entrance: 2, category: 'Ліфт', place: 'вантажний', text: 'Зупиняється між 7 і 8 поверхом', status: 'В роботі', count: 8, mine: false, own: false, authorApt: '301', authorRole: 'власник' },
         { id: 13, created: now - 5 * H, entrance: 0, category: 'Вода', place: '', text: 'Слабкий тиск холодної води вечорами', status: 'Нова', count: 23, mine: true, own: false, authorApt: '12', authorRole: 'член сімʼї' },
@@ -3449,6 +3556,8 @@ function demoApi(action, d) {
   if (action === 'sigReply') { const g = db.signals.find(x => x.id === d.id); if (g) { g.reply = d.text; g.replyAt = now; } }
   if (action === 'sigClose') { const g = db.signals.find(x => x.id === d.id); if (g) g.closed = 'закрив адміністратор'; }
   if (action === 'sigTicket') { const g = db.signals.find(x => x.id === d.id); if (g) { const id = Math.max(...db.problems.map(p => p.id)) + 1; db.problems.unshift({ id: id, created: g.t, entrance: g.sec, category: g.type === 'lift' ? 'Ліфт' : 'Інше', place: g.det, text: sigTitle(g) + ' · сигнал від ' + g.n + ' кв.', status: 'Нова', count: g.n, mine: !g.own, own: g.own, comments: [] }); g.closed = 'стало заявкою № ' + id; g.ticket = id; } }
+  if (action === 'adNew') db.ads.unshift({ id: now, t: now, cat: d.cat, title: d.title, text: d.text, price: d.price, contact: d.contact || '@' + db.me.username, name: db.me.name.split(' ')[0], sec: db.me.entrance, own: true, apt: db.me.apt });
+  if (action === 'adClose' || action === 'adDel') db.ads = db.ads.filter(a => a.id !== d.id);
   if (action === 'osbbImport' && db.osbb) { db.osbb.nonum.unshift(['17.06.2026 12:19', 300, 'Квартира 292', 90, '292', 'Микола Д.', 'виписка: коментар'], ['18.06.2026 10:39', 500, 'Поповнення рахунку Банки', 91, '', 'Олена Б.', '']); db.osbbImportResult = { added: 2, linked: 1, free: 1 }; db.osbb.lastImport = { at: now, added: 2 }; }
   if (action === 'osbbLink' && db.osbb) { const x = db.osbb.nonum.find(n => n[3] === d.row); if (x) x[4] = d.apt || ''; }
   if (action === 'comment') { const p = db.problems.find(x => x.id === d.id); (p.comments = p.comments || []).push({ id: 'c' + now, t: now, who: db.me.isAdmin ? 'Адміністратор' : p.own ? 'Автор заявки' : 'Власник', text: d.text, mine: true }); }

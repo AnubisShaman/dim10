@@ -712,9 +712,9 @@ html{transition:background-color 300ms ease}
 .ukc .hd{display:flex;gap:12px;align-items:center;margin-bottom:4px}
 .ukc .hd b{display:block;font-size:17px;font-weight:800}.ukc .hd span span{font-size:12.5px;opacity:.7;font-weight:500}
 .ukc .ln{display:flex;align-items:center;gap:8px;font-size:13.5px;opacity:.85;font-weight:500}
-.ukc .bt{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.ukc .bt{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px}
 .ukc .lk{flex:1;min-width:0;height:38px;border-radius:12px;display:grid;place-items:center;font-size:13px;font-weight:800;text-decoration:none;color:#fff;background:rgba(255,255,255,.12);white-space:nowrap}
-.ukc .lk-tg{background:#2AABEE}.ukc .lk-vb{background:#7360F2}
+.ukc .lk-tg{background:#2AABEE}.ukc .lk-vb{background:#7360F2}.ukc .lk-sec{background:#2E9B5F}
 a.urow{display:flex;align-items:center;gap:12px;padding:11px 0;text-decoration:none;color:inherit}
 a.urow.bd{border-bottom:1px solid var(--line)}
 a.urow:active{opacity:.6}
@@ -794,6 +794,46 @@ a.urow:active{opacity:.6}
 body.gamemode nav.tabs{transform:translateY(160%);transition:transform 300ms var(--spring)}
 body.gamemode .screen{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 body.gamemode .edge{display:none}
+
+/* ---------- ігри для компанії ---------- */
+.glbl{font-size:12px;font-weight:800;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:6px 2px -2px}
+.pty{display:flex;flex-direction:column;gap:12px}
+.pcard{border-radius:28px;padding:26px 20px;min-height:250px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;color:#fff;box-shadow:var(--shadow-3);position:relative;overflow:hidden;touch-action:pan-x}
+.pcard .w{font-size:clamp(28px,9vw,44px);font-weight:900;letter-spacing:-.02em;line-height:1.05;word-break:break-word}
+.pcard .h{font-size:13px;font-weight:700;opacity:.8;letter-spacing:.04em;text-transform:uppercase}
+.pcard .sub{font-size:14px;opacity:.85;color:#fff}
+.pcard.in{animation:pin 260ms var(--spring)}
+@keyframes pin{from{transform:translateY(14px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+.pcard.ok{animation:pok 260ms ease}.pcard.no{animation:pno 260ms ease}
+@keyframes pok{50%{transform:translateY(-14px)}}@keyframes pno{50%{transform:translateX(-14px)}}
+.pg-al{background:linear-gradient(150deg,#FF8A5B,#E5484D)}.pg-cr{background:linear-gradient(150deg,#51CF66,#2B8A3E)}
+.pg-sp{background:linear-gradient(150deg,#495057,#212529)}.pg-td{background:linear-gradient(150deg,#B07CFF,#6741D9)}
+.pg-tr{background:linear-gradient(150deg,#4DABF7,#1971C2)}.pg-dr{background:linear-gradient(150deg,#FF922B,#E8590C)}
+.ptm{display:flex;align-items:center;justify-content:center;gap:10px}
+.ptm .t{font-size:44px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.ptm .t.lo{color:#E5484D;animation:plo 1s ease infinite}
+@keyframes plo{50%{opacity:.4}}
+.pbt{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pbt button,.pbig{height:64px;border:none;border-radius:20px;font:inherit;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;gap:8px}
+.pbt .y{background:#2EA067;color:#fff}.pbt .n{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+.pbig{width:100%;background:var(--ink);color:var(--bg)}
+.pbig.y{background:linear-gradient(135deg,#F9D867,#EDB72F);color:#23262B}
+.pset{display:flex;flex-direction:column;gap:12px}
+.pset .rw{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--card);border-radius:18px;padding:12px 14px;box-shadow:var(--shadow-1)}
+.pset .rw b{font-size:15px}
+.pseg{display:flex;gap:4px;background:var(--soft);border-radius:12px;padding:3px}
+.pseg button{min-width:42px;height:34px;border:none;border-radius:9px;background:transparent;font:inherit;font-weight:800;font-size:14px;color:var(--muted);padding:0 10px}
+.pseg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+.pteams{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.pteam{border-radius:18px;padding:12px 14px;background:var(--card);box-shadow:var(--shadow-1);display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.pteam.cur{box-shadow:0 0 0 2px var(--yellow),var(--shadow-1)}
+.pteam .n{font-size:24px;font-weight:900}
+.pwl{display:flex;flex-direction:column;background:var(--card);border-radius:18px;padding:4px 14px;box-shadow:var(--shadow-1)}
+.pwl button{display:flex;justify-content:space-between;align-items:center;border:none;background:none;font:inherit;color:var(--ink);padding:10px 0;border-bottom:1px solid var(--line);font-size:15px;font-weight:700;text-align:left}
+.pwl button:last-child{border-bottom:none}
+.pwl button i{font-style:normal;font-weight:900;width:30px;height:30px;border-radius:10px;display:grid;place-items:center}
+.pwl button i.y{background:var(--ok-bg);color:var(--ok)}.pwl button i.n{background:var(--bad-bg);color:var(--bad)}
+.pnote{font-size:13.5px;color:var(--muted);line-height:1.45;text-align:center}
 </style>
 </head>
 <body>
@@ -1747,26 +1787,209 @@ const GAMES = [
 ];
 const GAME_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="#fff"/><path d="M7 10.5v4M5 12.5h4" stroke="#7A4CE8" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.3" r="1.3" fill="#FF5A4F"/><circle cx="18" cy="13.7" r="1.3" fill="#F4C542"/></svg>';
 function gamesEntry() {
-  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Тетріс, косинка, 2048, сапер</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Еліас, крокодил, шпигун, тетріс, косинка</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
 }
+function gCardHtml(g) { return '<button class="gcard" onclick="ui.game=\'' + g[0] + '\';go(\'game\')"><span class="gi" style="background:' + g[4] + ';color:#fff;font-size:' + (g[3].length > 2 ? '15px' : '26px') + '">' + g[3] + '</span><b>' + g[1] + '</b><span>' + g[2] + '</span></button>'; }
 function gamesScreen() {
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Ігри</div></div>' +
-    '<div class="glist">' + GAMES.map(g => '<button class="gcard" onclick="ui.game=\'' + g[0] + '\';go(\'game\')"><span class="gi" style="background:' + g[4] + ';color:#fff;font-size:' + (g[3].length > 2 ? '15px' : '26px') + '">' + g[3] + '</span><b>' + g[1] + '</b><span>' + g[2] + '</span></button>').join('') + '</div>' +
+    '<div class="glbl">Для компанії</div><div class="glist">' + PARTY.map(gCardHtml).join('') + '</div>' +
+    '<div class="glbl">Самому</div><div class="glist">' + GAMES.map(gCardHtml).join('') + '</div>' +
     '';
 }
 function gameScreen() {
-  const g = GAMES.find(x => x[0] === ui.game) || GAMES[0];
+  const g = GAMES.concat(PARTY).find(x => x[0] === ui.game) || GAMES[0];
   setTimeout(gameMount, 0);
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">' + g[1] + '</div></div>' +
     '<div class="gbar" id="gbar"></div><div id="gm"></div><div class="gmsg" id="gmsg"></div>';
 }
-function gameMount() { const el = document.getElementById('gm'); if (!el) return; ({ tet: tetMount, sol: solMount, g48: g48Mount, mines: msMount, ttt: tttMount }[ui.game] || solMount)(el); }
+function gameMount() { const el = document.getElementById('gm'); if (!el) return; ({ tet: tetMount, sol: solMount, g48: g48Mount, mines: msMount, ttt: tttMount, alias: alMount, croc: crMount, spy: spMount, tod: tdMount }[ui.game] || solMount)(el); }
 function gLoad(k) { try { return JSON.parse(localStorage.getItem('b10_g_' + k) || 'null'); } catch (e) { return null; } }
 function gSave(k, v) { try { localStorage.setItem('b10_g_' + k, JSON.stringify(v)); } catch (e) {} }
 function gMsg(t) { const m = document.getElementById('gmsg'); if (m) m.innerHTML = t || ''; }
 function gWin(t) { gMsg(t); haptic('ok'); try { xburst(innerWidth / 2, innerHeight * .4, 50); } catch (e) {} }
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 
+
+
+// =====================================================================
+//  ІГРИ ДЛЯ КОМПАНІЇ — один телефон, передаєте по колу
+// =====================================================================
+const PARTY = [
+  ['alias', 'Еліас', 'Поясни слово команді', 'Аа', 'linear-gradient(145deg,#FF8A5B,#E5484D)'],
+  ['croc', 'Крокодил', 'Покажи без слів', '🐊', 'linear-gradient(145deg,#51CF66,#2B8A3E)'],
+  ['spy', 'Шпигун', 'Хто не знає локацію?', '🕶', 'linear-gradient(145deg,#495057,#212529)'],
+  ['tod', 'Правда чи дія', 'Для теплої компанії', '?!', 'linear-gradient(145deg,#B07CFF,#6741D9)']
+];
+const W_ALIAS = ('кавун яблуко банан вишня полуниця морква картопля цибуля часник борщ вареники сало хліб сир молоко ковбаса торт морозиво шоколад кава чай сік ' +
+  'кіт собака кінь корова свиня коза вівця курка півень качка гуска лисиця вовк ведмідь заєць білка їжак миша жаба риба акула кит дельфін пінгвін слон жираф лев тигр мавпа крокодил змія черепаха метелик бджола павук комар ' +
+  'стіл стілець ліжко шафа диван дзеркало подушка ковдра лампа телевізор холодильник пралька праска пилосос чайник сковорідка каструля ложка виделка ніж тарілка чашка відро віник ' +
+  'телефон комп\'ютер ноутбук планшет навушники зарядка батарейка павербанк генератор ліхтарик свічка годинник будильник камера фотоапарат мікрофон гітара скрипка барабан піаніно ' +
+  'автобус тролейбус трамвай метро таксі велосипед самокат мотоцикл літак гелікоптер корабель човен потяг ракета світлофор міст тунель дорога ліфт сходи під\'їзд балкон дах вікно двері ключ замок домофон ' +
+  'лікар вчитель кухар пожежник поліцейський водій пілот космонавт художник співак актор футболіст програміст будівельник перукар продавець листоноша фермер ' +
+  'футбол баскетбол теніс шахи шашки лижі ковзани сноуборд басейн стадіон медаль кубок суддя ' +
+  'зима весна літо осінь сніг дощ веселка блискавка грім туман вітер сонце місяць зірка хмара море річка озеро гора ліс поле пустеля острів вулкан печера водоспад ' +
+  'Різдво ялинка подарунок кутя колядка вертеп Великдень писанка вишиванка бандура калина соняшник пшениця ' +
+  'парасолька окуляри капелюх шапка шарф рукавиці куртка пальто светр джинси сукня спідниця краватка черевики кросівки тапочки рюкзак гаманець валіза ' +
+  'книжка зошит олівець ручка ґумка лінійка рюкзак глобус карта школа університет бібліотека музей театр кінотеатр цирк зоопарк лікарня аптека пошта банк магазин ринок кафе ресторан парк пляж ' +
+  'дракон русалка відьма привид робот інопланетянин супергерой принцеса лицар пірат скарб корона чарівник казка мультфільм серіал новини реклама селфі лайк').split(' ').filter(Boolean);
+const W_CROC = {};
+W_CROC.easy = ['спати', 'плавати', 'танцювати', 'бігати', 'стрибати на скакалці', 'плакати', 'сміятися', 'їсти суп', 'чистити зуби', 'митися в душі', 'читати книжку', 'грати на гітарі', 'фотографувати', 'дзвонити по телефону',
+  'кататися на велосипеді', 'рибалити', 'ловити метелика', 'кидати сніжки', 'ліпити сніговика', 'пекти пиріг', 'пити гарячу каву', 'варити борщ', 'мити посуд', 'прасувати', 'пилососити', 'забивати цвях', 'фарбувати стіну',
+  'садити квіти', 'їхати в ліфті', 'шукати ключі', 'заряджати телефон', 'чекати на автобус', 'кіт', 'собака', 'курка', 'жаба', 'мавпа', 'слон', 'кенгуру', 'пінгвін', 'змія', 'краб', 'комар', 'павук', 'ведмідь', 'зайчик',
+  'гітара', 'піаніно', 'барабан', 'парасолька', 'ножиці', 'праска', 'телевізор', 'годинник', 'дзеркало', 'ліхтарик', 'футбол', 'теніс', 'бокс', 'плавання', 'лижі'];
+W_CROC.mid = ['застрягти в ліфті', 'вмикати генератор', 'раптово зникло світло', 'повітряна тривога', 'сусід свердлить', 'зустріч ОСББ', 'черга за водою', 'фехтування', 'серфінг', 'йога', 'балет', 'диригент', 'фокусник',
+  'жонглер', 'клоун', 'мім', 'стоматолог', 'перукар', 'офіціант', 'бармен', 'зубний біль', 'гикавка', 'морська хвороба', 'перше побачення', 'весілля', 'день народження', 'новосілля', 'похід у гори', 'ставити намет',
+  'вогнище', 'шашлик', 'робити селфі', 'відеодзвінок', 'забув пароль від Wi-Fi', 'колядувати', 'наряджати ялинку', 'феєрверк', 'чистити мандарин', 'загубив пульт', 'спізнився на потяг', 'тиснява в метро', 'йти по льоду',
+  'розбудити кота', 'кіт скинув чашку', 'бджола в кімнаті', 'миша на кухні', 'пральна машина танцює', 'носити валізу сходами', 'дивитися фільм жахів', 'перемога в лотереї', 'королева', 'пірат', 'робот', 'зомбі', 'русалка'];
+const W_SPY = ['Ліфт', 'Під\'їзд у блекаут', 'Укриття', 'Збори ОСББ', 'Кафе', 'Супермаркет', 'Аптека', 'Лікарня', 'Школа', 'Університет', 'Поліція', 'Пошта', 'Банк', 'Кінотеатр', 'Театр', 'Цирк', 'Зоопарк', 'Музей',
+  'Стадіон', 'Спортзал', 'Басейн', 'Пляж', 'Гори', 'Ліс', 'Кемпінг', 'Потяг', 'Літак', 'Корабель', 'Метро', 'Таксі', 'Аеропорт', 'Вокзал', 'Перукарня', 'Ресторан', 'Весілля', 'День народження', 'Новорічна вечірка',
+  'Космічна станція', 'Підводний човен', 'Піратський корабель', 'Замок', 'Ферма', 'Риболовля', 'Будівництво', 'Автомийка', 'Нічний клуб', 'Бібліотека', 'Ринок', 'Зимовий курорт', 'Дача'];
+const W_TRUTH = ['Яка ваша найсмішніша дитяча фотографія?', 'Що ви робили, коли востаннє зникло світло?', 'Яку пісню ви співаєте, коли ніхто не чує?', 'Чого ви найбільше боїтеся?', 'Найдивніша страва, яку ви куштували?',
+  'Яку суперсилу ви б собі обрали?', 'Хто з присутніх найкраще готує?', 'Яка ваша найбільша кулінарна невдача?', 'Найсмішніша ситуація в ліфті?', 'Що б ви зробили з мільйоном гривень?', 'Ким ви мріяли стати в дитинстві?',
+  'Яке ваше найдивніше хобі?', 'Яку звичку ви хотіли б кинути?', 'Найкращий подарунок, який ви отримували?', 'Найгірший подарунок, який ви отримували?', 'Що вас найбільше дратує в сусідах?', 'Яку книжку чи фільм ви переглядали найбільше разів?',
+  'Що ви берете з собою в укриття насамперед?', 'В якій країні ви б хотіли пожити рік?', 'Яку пораду ви б дали собі 10 років тому?', 'За що вам було найбільше соромно?', 'Яке ваше найулюбленіше свято і чому?', 'Хто ваш кумир?',
+  'Яка найбожевільніша річ, яку ви робили?', 'Що ви ніколи не їли і не будете?', 'Як звали вашу першу домашню тварину?', 'Опишіть себе трьома словами', 'Що найкраще в нашому будинку?', 'Яке ваше приховане вміння?', 'Яка ваша улюблена пісня зараз?'];
+const W_DARE = ['Заспівайте приспів будь-якої пісні', 'Станцюйте 15 секунд без музики', 'Покажіть свою найкращу гримасу', 'Говоріть наступні 2 хвилини як диктор новин', 'Зробіть комплімент кожному гравцю', 'Розкажіть анекдот',
+  'Покажіть тварину — інші вгадують', 'Пройдіться кімнатою як модель на подіумі', 'Зробіть 10 присідань', 'Наспівайте мелодію — інші вгадують пісню', 'Говоріть з акцентом до свого наступного ходу', 'Намалюйте портрет сусіда зліва за 30 секунд',
+  'Скажіть скоромовку тричі швидко: «На подвірʼї в нас трава, на траві — дрова»', 'Зобразіть, як ви шукаєте ключі в темряві', 'Покажіть, як ви вмикаєте генератор', 'Придумайте тост для компанії', 'Зробіть селфі з найсмішнішим виразом обличчя',
+  'Розкажіть історію з трьох випадкових слів, які назвуть гравці', 'Тримайте планку 20 секунд', 'Заговоріть віршем до кінця раунду', 'Зобразіть кота, що побачив огірок', 'Зіграйте на «повітряній гітарі» 15 секунд',
+  'Опишіть свій день як прогноз погоди', 'Обійміть гравця праворуч', 'Наступний хід кажіть усе пошепки', 'Вигадайте назву для нашого ЖК', 'Покажіть, як застрягли в ліфті', 'Зобразіть свого улюбленого супергероя', 'Розсмішіть будь-кого за 30 секунд', 'Зробіть масаж плечей гравцю ліворуч'];
+let PS = {};
+function beep(f, d) { try { const A = window.AudioContext || window.webkitAudioContext; if (!A) return; const ac = beep.ac || (beep.ac = new A()); ac.resume && ac.resume(); const o = ac.createOscillator(), g = ac.createGain(); o.frequency.value = f || 880; g.gain.setValueAtTime(.12, ac.currentTime); g.gain.exponentialRampToValueAtTime(.001, ac.currentTime + (d || .18)); o.connect(g); g.connect(ac.destination); o.start(); o.stop(ac.currentTime + (d || .18)); } catch (e) {} }
+function pEl() { return document.getElementById('gm'); }
+function pBar(h) { const b = document.getElementById('gbar'); if (b) b.innerHTML = h || ''; }
+function pTimer(sec, onTick, onEnd) {
+  clearInterval(PS.tm); PS.left = sec; PS.end = Date.now() + sec * 1000;
+  PS.tm = setInterval(() => {
+    if (!pEl() || route !== 'game') { clearInterval(PS.tm); return; }
+    const l = Math.max(0, Math.ceil((PS.end - Date.now()) / 1000));
+    if (l !== PS.left) { PS.left = l; if (l <= 5 && l > 0) { beep(660, .08); haptic('sel'); } onTick && onTick(l); }
+    if (l <= 0) { clearInterval(PS.tm); beep(440, .5); haptic('warn'); onEnd && onEnd(); }
+  }, 200);
+}
+const mmss = t => Math.floor(t / 60) + ':' + String(t % 60).padStart(2, '0');
+function pick(arr, used) { const free = arr.filter(w => !used.has(w)); const src = free.length ? free : (used.clear(), arr); const w = src[Math.floor(Math.random() * src.length)]; used.add(w); return w; }
+function segH(name, opts, cur) { return '<div class="pseg">' + opts.map(o => '<button class="' + (String(o[0]) === String(cur) ? 'on' : '') + '" onclick="' + name + '(' + JSON.stringify(o[0]).replace(/"/g, '&quot;') + ')">' + o[1] + '</button>').join('') + '</div>'; }
+
+// ---------- ЕЛІАС ----------
+const AL = { cfg: (gLoad('alcfg') || { teams: 2, time: 60, goal: 30, pen: 1 }), st: null, used: new Set() };
+function alMount() { if (AL.st && AL.st.phase === 'play' && !(PS.end > Date.now())) AL.st.phase = 'turn'; AL.st ? alDraw() : alSetup(); }
+function alSet(k, v) { AL.cfg[k] = v; gSave('alcfg', AL.cfg); alSetup(); }
+function alSetup() {
+  const c = AL.cfg; pBar('');
+  pEl().innerHTML = '<div class="pset"><div class="pcard pg-al" style="min-height:150px"><div class="w">Еліас</div><div class="sub">Пояснюйте слова своїй команді, не називаючи їх. Хто вгадає більше — виграє.</div></div>' +
+    '<div class="rw"><b>Команд</b>' + segH('alT', [[2, '2'], [3, '3'], [4, '4']], c.teams) + '</div>' +
+    '<div class="rw"><b>Час ходу</b>' + segH('alTi', [[30, '30с'], [60, '60с'], [90, '90с']], c.time) + '</div>' +
+    '<div class="rw"><b>До перемоги</b>' + segH('alG', [[20, '20'], [30, '30'], [50, '50']], c.goal) + '</div>' +
+    '<div class="rw"><b>Штраф за пропуск</b>' + segH('alP', [[1, 'так'], [0, 'ні']], c.pen) + '</div>' +
+    '<button class="pbig y" onclick="alStart()">Почати гру</button></div>';
+}
+function alT(v) { alSet('teams', v); } function alTi(v) { alSet('time', v); } function alG(v) { alSet('goal', v); } function alP(v) { alSet('pen', v); }
+const TEAM_N = ['Котики', 'Їжаки', 'Совенята', 'Бобри'];
+function alStart() { AL.st = { sc: Array(AL.cfg.teams).fill(0), turn: 0, moves: 0, phase: 'turn', words: [] }; alDraw(); }
+function alTeams() { return '<div class="pteams">' + AL.st.sc.map((v, i) => '<div class="pteam' + (i === AL.st.turn ? ' cur' : '') + '"><span>' + TEAM_N[i] + '</span><span class="n">' + v + '</span></div>').join('') + '</div>'; }
+function alDraw() {
+  const S = AL.st, el = pEl(); if (!el) return;
+  pBar('<button onclick="AL.st=null;clearInterval(PS.tm);alSetup()">Нова гра</button><span class="sc">' + AL.cfg.goal + '<span>очок до перемоги</span></span>');
+  if (S.phase === 'turn') el.innerHTML = '<div class="pty">' + alTeams() + '<div class="pcard pg-al in"><div class="h">Хід команди</div><div class="w">' + TEAM_N[S.turn] + '</div><div class="sub">Хтось один пояснює, решта команди вгадує. ' + AL.cfg.time + ' секунд.</div></div><button class="pbig y" onclick="alGo()">Поїхали!</button></div>';
+  else if (S.phase === 'play') {
+    el.innerHTML = '<div class="pty"><div class="ptm"><span class="t" id="ptt">' + PS.left + '</span></div><div class="pcard pg-al in" id="pc"><div class="h">' + TEAM_N[S.turn] + ' · ' + S.words.filter(w => w[1]).length + ' вгадано</div><div class="w">' + esc(S.word) + '</div></div>' +
+      '<div class="pbt"><button class="n" onclick="alAns(0)">✕ Пропуск</button><button class="y" onclick="alAns(1)">✓ Вгадали</button></div><div class="pnote">Свайп вгору — вгадали, вниз — пропуск</div></div>';
+    const pc = document.getElementById('pc'); let y0 = null;
+    pc.addEventListener('touchstart', e => { y0 = e.touches[0].clientY; }, { passive: true });
+    pc.addEventListener('touchend', e => { if (y0 == null) return; const dy = e.changedTouches[0].clientY - y0; y0 = null; if (dy < -60) alAns(1); else if (dy > 60) alAns(0); });
+  } else if (S.phase === 'last') el.innerHTML = '<div class="pty"><div class="pcard pg-al in"><div class="h">Час вийшов · останнє слово</div><div class="w">' + esc(S.word) + '</div><div class="sub">Встигли вгадати?</div></div><div class="pbt"><button class="n" onclick="alLast(0)">Ні</button><button class="y" onclick="alLast(1)">Так</button></div></div>';
+  else if (S.phase === 'sum') {
+    const pts = S.words.reduce((t, w) => t + (w[1] ? 1 : (AL.cfg.pen ? -1 : 0)), 0);
+    el.innerHTML = '<div class="pty"><div class="pcard pg-al" style="min-height:120px"><div class="h">' + TEAM_N[S.turn] + '</div><div class="w">' + (pts > 0 ? '+' : '') + pts + '</div><div class="sub">Торкніться слова, щоб виправити</div></div>' +
+      '<div class="pwl">' + (S.words.length ? S.words.map((w, i) => '<button onclick="AL.st.words[' + i + '][1]=!AL.st.words[' + i + '][1];alDraw()"><span>' + esc(w[0]) + '</span><i class="' + (w[1] ? 'y">✓' : 'n">✕') + '</i></button>').join('') : '<div class="pnote" style="padding:12px">Жодного слова</div>') + '</div>' +
+      '<button class="pbig y" onclick="alNext(' + pts + ')">Зарахувати ' + (pts > 0 ? '+' : '') + pts + '</button></div>';
+  } else if (S.phase === 'win') {
+    const mx = Math.max(...S.sc), w = S.sc.indexOf(mx);
+    el.innerHTML = '<div class="pty"><div class="pcard pg-al in"><div class="h">Перемога!</div><div class="w">' + TEAM_N[w] + '</div><div class="sub">' + mx + ' очок</div></div>' + alTeams() + '<button class="pbig y" onclick="alStart()">Ще раз</button></div>';
+  }
+}
+function alGo() { const S = AL.st; S.words = []; S.word = pick(W_ALIAS, AL.used); S.phase = 'play'; haptic('mid'); beep(880, .12);
+  pTimer(AL.cfg.time, l => { const t = document.getElementById('ptt'); if (t) { t.textContent = l; t.classList.toggle('lo', l <= 10); } }, () => { S.phase = 'last'; alDraw(); }); PS.left = AL.cfg.time; alDraw(); }
+function alAns(ok) { const S = AL.st; if (S.phase !== 'play') return; S.words.push([S.word, !!ok]); haptic(ok ? 'soft' : 'sel'); S.word = pick(W_ALIAS, AL.used);
+  const pc = document.getElementById('pc'); if (pc) { pc.querySelector('.w').textContent = S.word; pc.querySelector('.h').textContent = TEAM_N[S.turn] + ' · ' + S.words.filter(w => w[1]).length + ' вгадано'; pc.className = 'pcard pg-al ' + (ok ? 'ok' : 'no'); } }
+function alLast(ok) { const S = AL.st; S.words.push([S.word, !!ok]); S.phase = 'sum'; alDraw(); }
+function alNext(pts) {
+  const S = AL.st; S.sc[S.turn] = Math.max(0, S.sc[S.turn] + pts); S.moves++;
+  const n = S.sc.length, roundDone = S.moves % n === 0;
+  if (roundDone && Math.max(...S.sc) >= AL.cfg.goal && S.sc.filter(v => v === Math.max(...S.sc)).length === 1) { S.phase = 'win'; gWin('Перемога команди ' + TEAM_N[S.sc.indexOf(Math.max(...S.sc))] + '!'); alDraw(); return; }
+  S.turn = (S.turn + 1) % n; S.phase = 'turn'; alDraw();
+}
+
+// ---------- КРОКОДИЛ ----------
+const CR = { cfg: (gLoad('crcfg') || { time: 60, lvl: 'easy' }), used: new Set(), st: null };
+function crMount() { if (CR.st && CR.st.phase === 'play' && !(PS.end > Date.now())) CR.st.phase = 'miss'; CR.st ? crDraw() : crSetup(); }
+function crSet(k, v) { CR.cfg[k] = v; gSave('crcfg', CR.cfg); crSetup(); }
+function crTi(v) { crSet('time', v); } function crL(v) { crSet('lvl', v); }
+function crSetup() {
+  const c = CR.cfg; pBar('');
+  pEl().innerHTML = '<div class="pset"><div class="pcard pg-cr" style="min-height:150px"><div class="w">Крокодил</div><div class="sub">Покажіть слово жестами — без звуків і слів. Решта вгадує.</div></div>' +
+    '<div class="rw"><b>Складність</b>' + segH('crL', [['easy', 'легко'], ['mid', 'складніше'], ['mix', 'мікс']], c.lvl) + '</div>' +
+    '<div class="rw"><b>Час</b>' + segH('crTi', [[60, '60с'], [90, '90с'], [120, '2 хв']], c.time) + '</div>' +
+    '<button class="pbig y" onclick="crTurn()">Почати</button></div>';
+}
+function crWord() { const l = CR.cfg.lvl === 'mix' ? W_CROC.easy.concat(W_CROC.mid) : W_CROC[CR.cfg.lvl]; return pick(l, CR.used); }
+function crTurn() { CR.st = { phase: 'hide', ok: (CR.st && CR.st.ok) || 0 }; crDraw(); }
+function crDraw() {
+  const S = CR.st, el = pEl(); if (!el) return;
+  pBar('<button onclick="clearInterval(PS.tm);crSetup()">Налаштування</button><span class="sc">' + S.ok + '<span>вгадано за гру</span></span>');
+  if (S.phase === 'hide') el.innerHTML = '<div class="pty"><div class="pcard pg-cr in"><div class="h">Передайте телефон</div><div class="w">🤫</div><div class="sub">Слово побачить лише той, хто показує</div></div><button class="pbig y" onclick="crShow()">Показати слово</button></div>';
+  else if (S.phase === 'peek') el.innerHTML = '<div class="pty"><div class="pcard pg-cr in"><div class="h">Покажіть</div><div class="w">' + esc(S.word) + '</div></div><div class="pbt"><button class="n" onclick="CR.st.word=crWord();crDraw()">Інше слово</button><button class="y" onclick="crGo()">Готовий ▶</button></div></div>';
+  else if (S.phase === 'play') el.innerHTML = '<div class="pty"><div class="ptm"><span class="t' + (PS.left <= 10 ? ' lo' : '') + '" id="ptt">' + mmss(PS.left) + '</span></div><div class="pcard pg-cr"><div class="h">Показуєте</div><div class="w" style="filter:blur(' + (S.blur ? 14 : 0) + 'px)" onclick="CR.st.blur=!CR.st.blur;crDraw()">' + esc(S.word) + '</div><div class="sub">Торкніться слова, щоб сховати від інших</div></div>' +
+    '<div class="pbt"><button class="n" onclick="clearInterval(PS.tm);CR.st.phase=\'miss\';crDraw()">Здаюсь</button><button class="y" onclick="crWin()">✓ Вгадали!</button></div></div>';
+  else el.innerHTML = '<div class="pty"><div class="pcard pg-cr in"><div class="h">' + (S.phase === 'win' ? 'Вгадали!' : 'Не встигли') + '</div><div class="w">' + esc(S.word) + '</div>' + (S.phase === 'win' ? '<div class="sub">за ' + (CR.cfg.time - S.leftAt) + ' сек</div>' : '') + '</div><button class="pbig y" onclick="crTurn()">Наступний гравець</button></div>';
+}
+function crShow() { CR.st.word = crWord(); CR.st.phase = 'peek'; haptic('mid'); crDraw(); }
+function crGo() { const S = CR.st; S.phase = 'play'; S.blur = true; PS.left = CR.cfg.time; beep(880, .12); haptic('mid');
+  pTimer(CR.cfg.time, l => { const t = document.getElementById('ptt'); if (t) { t.textContent = mmss(l); t.classList.toggle('lo', l <= 10); } }, () => { S.phase = 'miss'; crDraw(); }); crDraw(); }
+function crWin() { clearInterval(PS.tm); const S = CR.st; S.leftAt = PS.left; S.ok++; S.phase = 'win'; gWin(''); crDraw(); }
+
+// ---------- ШПИГУН ----------
+const SP = { cfg: (gLoad('spcfg') || { n: 5, spies: 1, min: 6 }), st: null };
+function spMount() { SP.st ? spDraw() : spSetup(); }
+function spSet(k, v) { SP.cfg[k] = v; if (SP.cfg.spies >= SP.cfg.n - 1) SP.cfg.spies = 1; gSave('spcfg', SP.cfg); spSetup(); }
+function spN(v) { spSet('n', v); } function spS(v) { spSet('spies', v); } function spM(v) { spSet('min', v); }
+function spSetup() {
+  const c = SP.cfg; pBar('');
+  pEl().innerHTML = '<div class="pset"><div class="pcard pg-sp" style="min-height:150px"><div class="w">Шпигун</div><div class="sub">Усі знають місце, крім шпигуна. Ставте одне одному питання і знайдіть його — а шпигун має вгадати місце.</div></div>' +
+    '<div class="rw"><b>Гравців</b><div style="display:flex;align-items:center;gap:10px"><button class="iconbtn" style="width:36px;height:36px" onclick="spN(Math.max(3,SP.cfg.n-1))">−</button><b style="min-width:22px;text-align:center;font-size:18px">' + c.n + '</b><button class="iconbtn" style="width:36px;height:36px" onclick="spN(Math.min(12,SP.cfg.n+1))">+</button></div></div>' +
+    '<div class="rw"><b>Шпигунів</b>' + segH('spS', [[1, '1'], [2, '2']], c.spies) + '</div>' +
+    '<div class="rw"><b>Час обговорення</b>' + segH('spM', [[4, '4 хв'], [6, '6 хв'], [8, '8 хв']], c.min) + '</div>' +
+    '<button class="pbig y" onclick="spStart()">Роздати ролі</button></div>';
+}
+function spStart() {
+  const n = SP.cfg.n, sp = new Set(); while (sp.size < SP.cfg.spies) sp.add(Math.floor(Math.random() * n));
+  SP.st = { loc: W_SPY[Math.floor(Math.random() * W_SPY.length)], spies: sp, i: 0, show: false, phase: 'deal' }; spDraw();
+}
+function spDraw() {
+  const S = SP.st, el = pEl(); if (!el) return;
+  pBar('<button onclick="clearInterval(PS.tm);SP.st=null;spSetup()">Нова гра</button><span class="sc">' + SP.cfg.n + '<span>гравців</span></span>');
+  if (S.phase === 'deal') {
+    if (!S.show) el.innerHTML = '<div class="pty"><div class="pcard pg-sp in"><div class="h">Гравець ' + (S.i + 1) + ' з ' + SP.cfg.n + '</div><div class="w">🕶️</div><div class="sub">Візьміть телефон так, щоб ніхто не бачив</div></div><button class="pbig y" onclick="SP.st.show=true;haptic(\'mid\');spDraw()">Подивитись роль</button></div>';
+    else { const spy = S.spies.has(S.i);
+      el.innerHTML = '<div class="pty"><div class="pcard ' + (spy ? 'pg-dr' : 'pg-sp') + ' in"><div class="h">' + (spy ? 'Ваша роль' : 'Локація') + '</div><div class="w">' + (spy ? '🕵️ Ви — шпигун' : esc(S.loc)) + '</div><div class="sub">' + (spy ? 'Слухайте питання і спробуйте вгадати місце' : 'Не кажіть назву прямо — шпигун слухає') + '</div></div>' +
+        '<button class="pbig" onclick="spNextP()">' + (S.i + 1 < SP.cfg.n ? 'Сховати і передати далі' : 'Сховати · усі готові') + '</button></div>'; }
+  } else if (S.phase === 'talk') el.innerHTML = '<div class="pty"><div class="ptm"><span class="t' + (PS.left <= 30 ? ' lo' : '') + '" id="ptt">' + mmss(PS.left) + '</span></div><div class="pcard pg-sp"><div class="h">Обговорення</div><div class="w">Хто шпигун?</div><div class="sub">По черзі ставте одне одному питання про місце. Наприкінці — голосування.</div></div><button class="pbig y" onclick="clearInterval(PS.tm);SP.st.phase=\'reveal\';spDraw()">Відкрити відповідь</button></div>';
+  else el.innerHTML = '<div class="pty"><div class="pcard pg-sp in"><div class="h">Локація</div><div class="w">' + esc(S.loc) + '</div><div class="sub">' + (SP.cfg.spies > 1 ? 'Шпигуни — гравці ' : 'Шпигун — гравець ') + [...S.spies].map(x => x + 1).sort((a, b) => a - b).join(' і ') + '</div></div><button class="pbig y" onclick="spStart()">Нова роздача</button></div>';
+}
+function spNextP() { const S = SP.st; S.show = false; S.i++; if (S.i >= SP.cfg.n) { S.phase = 'talk'; PS.left = SP.cfg.min * 60; beep(880, .12);
+  pTimer(SP.cfg.min * 60, l => { const t = document.getElementById('ptt'); if (t) { t.textContent = mmss(l); t.classList.toggle('lo', l <= 30); } }, () => { haptic('err'); }); } haptic('sel'); spDraw(); }
+
+// ---------- ПРАВДА ЧИ ДІЯ ----------
+const TD = { usedT: new Set(), usedD: new Set(), cur: null, n: 0 };
+function tdMount() { tdDraw(); }
+function tdDraw(anim) {
+  const el = pEl(); if (!el) return; const C = TD.cur;
+  pBar('<span class="sc">' + TD.n + '<span>карток</span></span>');
+  el.innerHTML = '<div class="pty"><div class="pcard ' + (C ? (C[0] === 't' ? 'pg-tr' : 'pg-dr') : 'pg-td') + (anim ? ' in' : '') + '"><div class="h">' + (C ? (C[0] === 't' ? 'Правда' : 'Дія') : 'Правда чи дія') + '</div><div class="w" style="font-size:' + (C ? 'clamp(22px,6.4vw,30px)' : '') + '">' + (C ? esc(C[1]) : '?!') + '</div>' + (C ? '' : '<div class="sub">Передавайте телефон по колу. Кожен обирає: чесно відповісти чи виконати завдання.</div>') + '</div>' +
+    '<div class="pbt"><button class="y" style="background:#1971C2" onclick="tdPick(\'t\')">Правда</button><button class="y" style="background:#E8590C" onclick="tdPick(\'d\')">Дія</button></div></div>';
+}
+function tdPick(k) { TD.cur = [k, k === 't' ? pick(W_TRUTH, TD.usedT) : pick(W_DARE, TD.usedD)]; TD.n++; haptic('mid'); tdDraw(true); }
 
 // ---------- ТЕТРІС ----------
 const TP = {
@@ -2897,12 +3120,13 @@ function toggleLift(row) {
 // рядок: [назва, опис, дія (tel:/https:/viber:), колір, бейдж, тип іконки]
 const USEFUL_UK = { name: 'Ковальська-Житлосервіс', sub: 'Керуюча компанія · дільниця № 11',
   office: 'Микільсько-Слобідська, 10', hours: 'Пн–Пт 8:30–17:00 · обід 13:00–13:30',
-  links: [['tg', 'Бот для заявок', 'https://t.me/KovalskaZhytloservisBot'], ['vb', 'Viber', 'viber://chat?number=%2B380503423037'], ['web', 'Сайт', 'https://kovalska-gs.com/']] };
+  links: [['tg', 'Бот для заявок', 'https://t.me/KovalskaZhytloservisBot'], ['sec', 'Бот охорони', 'https://t.me/HavanChat_Bot'], ['vb', 'Viber', 'viber://chat?number=%2B380503423037'], ['web', 'Сайт', 'https://kovalska-gs.com/']] };
 const USEFUL_BASE = [
   ['Цілодобово', [
     ['Диспетчерська дільниці', 'аварійні питання · безкоштовно', 'tel:0800607088', 'r', '24/7'],
     ['Черговий сантехнік', 'вода, каналізація, протікання', 'tel:+380990463502', 'b', '', 'drop'],
-    ['Охорона / диспетчер', '', 'tel:+380930367981', 'g', '', 'shield']
+    ['Охорона / диспетчер', '', 'tel:+380930367981', 'g', '', 'shield'],
+    ['Бот охорони', '@HavanChat_Bot · написати в Telegram', 'https://t.me/HavanChat_Bot', 'g', '', 'chat']
   ]],
   ['Будинок', [
     ['Консьєрж', '', 'tel:+380937680751', 'y', '', 'bell'],

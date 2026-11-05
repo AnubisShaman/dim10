@@ -1070,7 +1070,7 @@ function save() { try { const c = Object.assign({}, D, { _t: Date.now() }); dele
 // ---------- навігація ----------
 function go(r) {
   if (r !== route) haptic('sel');
-  if (['new', 'useful', 'admin', 'fuel', 'osbb', 'light'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
+  if (['new', 'useful', 'admin', 'fuel', 'osbb', 'light', 'fpub', 'games', 'game'].indexOf(r) >= 0) { stack.push(route); ui.anim = 'push'; }
   else { stack = []; ui.anim = r === route ? '' : 'tab'; }
   route = r; render(); window.scrollTo(0, 0);
 }
@@ -1122,7 +1122,7 @@ function openBot() {
 }
 
 const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me', light: 'home', fpub: 'home', games: 'home', game: 'home' }[route] || route; }
+function tabCur() { if (stack.length && TAB_KEYS.indexOf(stack[0]) >= 0) return stack[0]; return { new: 'problems', admin: 'me', fuel: 'me', osbb: 'me', light: 'home', fpub: 'home', games: 'me', game: 'me', useful: 'me' }[route] || route; }
 function tabs() {
   const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
   const cur = tabCur();

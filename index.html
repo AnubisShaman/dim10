@@ -625,6 +625,55 @@ html{transition:background-color 300ms ease}
 .pod.k-lift.mine .orb{box-shadow:0 0 0 2px var(--hue)}
 .pod .bdg{position:absolute;top:8px;right:8px;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#E0453F;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;z-index:2}
 @media (prefers-reduced-motion:reduce){.pod.k-lift .orb,.pod.k-lift .au,.pod.k-lift .ad,.iconbtn.xtg svg *{animation:none!important}}
+
+/* ---------- значок на головному екрані телефону ---------- */
+.hsc{display:flex;align-items:center;gap:12px;padding:12px 12px 12px 14px;border-radius:22px;background:var(--card);box-shadow:var(--shadow-1);border:none;font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer}
+.hsc .ic{width:44px;height:44px;flex:none;border-radius:13px;display:grid;place-items:center;background:linear-gradient(145deg,#FFD54F,#F2C12E);box-shadow:0 4px 12px rgba(242,193,46,.35);color:#23262B;animation:hsbob 3s ease-in-out infinite}
+@keyframes hsbob{50%{transform:translateY(-2px)}}
+.hsc .t{font-weight:800;font-size:15px;line-height:1.2}
+.hsc .s{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.hsc .x{margin-left:auto;width:30px;height:30px;flex:none;border-radius:50%;display:grid;place-items:center;color:var(--muted);background:var(--soft)}
+.hsc .go{margin-left:auto;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.hsc .ic{animation:none}}
+
+/* ---------- прозорий збір на пальне ---------- */
+.fpc{display:flex;align-items:center;gap:14px;padding:14px;border-radius:22px;background:var(--card);box-shadow:var(--shadow-1);border:none;font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer}
+.fpc .rg{position:relative;width:52px;height:52px;flex:none}
+.fpc .rg svg,.fph .rg svg{width:100%;height:100%;transform:rotate(-90deg)}
+.fpc .rg b{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:800}
+.fpc .t{font-weight:800;font-size:15px}.fpc .s{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.rg .tr{stroke:var(--soft)}.rg .vl{stroke:var(--ok);stroke-linecap:round;transition:stroke-dashoffset 900ms var(--spring)}
+.fph{display:grid;grid-template-columns:132px 1fr;gap:16px;align-items:center;padding:18px;border-radius:26px;background:var(--card);box-shadow:var(--shadow-2)}
+.fph .rg{position:relative;width:132px;height:132px}
+.fph .rg .c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.fph .rg .c b{font-size:30px;font-weight:800;letter-spacing:-.02em;line-height:1}
+.fph .rg .c span{font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+.fph .kv{display:flex;flex-direction:column;gap:10px}
+.fph .kv div b{display:block;font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1.1}
+.fph .kv div span{font-size:12px;color:var(--muted);font-weight:600}
+.fbal{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-radius:18px;background:var(--ok-bg);color:var(--ok);font-weight:700}
+.fbal b{font-size:18px;font-weight:800}
+.ftw{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.ftw button{border:none;font:inherit;color:inherit;background:var(--card);border-radius:18px;padding:10px 7px 9px;display:flex;flex-direction:column;gap:2px;box-shadow:var(--shadow-1);cursor:pointer}
+.ftw .nm{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.04em;text-align:center;margin-bottom:4px}
+.ftw .r{height:5px;border-radius:2px;background:var(--soft);overflow:hidden}
+.ftw .r i{display:block;height:100%;background:var(--ok);border-radius:2px;transform-origin:left;animation:grow 700ms var(--spring) backwards}
+.ftw .pc{font-size:13px;font-weight:800;text-align:center;margin-top:6px}
+.fdays{display:flex;align-items:flex-end;gap:2px;height:74px;padding:0 2px}
+.fdays button{flex:1;min-width:0;border:none;padding:0;background:none;height:100%;display:flex;align-items:flex-end;cursor:pointer}
+.fdays button i{display:block;width:100%;border-radius:3px 3px 1px 1px;background:var(--ok);opacity:.85;min-height:2px;transform-origin:bottom;animation:growy 600ms var(--spring) backwards}
+.fdays button.z i{background:var(--soft);opacity:1}
+.fdays button.td i{background:var(--yellow-d)}
+@keyframes growy{from{transform:scaleY(0)}to{transform:none}}
+.fdx{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);font-weight:600;padding:0 2px}
+.frow{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.frow:last-child{border-bottom:none}
+.frow .d{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:15px;background:var(--ok-bg);color:var(--ok);font-weight:800}
+.frow.sp .d{background:var(--yel-bg,#FFF3CF);color:#B07A00}
+.frow .m{flex:1;min-width:0}.frow .m b{display:block;font-size:14px}.frow .m span{font-size:12px;color:var(--muted);font-weight:500}
+.frow .v{font-weight:800;font-size:15px;white-space:nowrap}
+.frow .del{border:none;background:var(--soft);color:var(--muted);width:28px;height:28px;border-radius:50%;flex:none}
+@media (prefers-reduced-motion:reduce){.ftw .r i,.fdays button i{animation:none}}
 </style>
 </head>
 <body>
@@ -913,7 +962,7 @@ function syncBack() {
 function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
-  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen }[route] || home;
+  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen, fpub: fpubScreen }[route] || home;
   let scr = document.getElementById('scr');
   if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
   const anim = ui.anim; ui.anim = '';
@@ -950,7 +999,7 @@ function openBot() {
 }
 
 const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me', light: 'home' }[route] || route; }
+function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me', light: 'home', fpub: 'home' }[route] || route; }
 function tabs() {
   const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
   const cur = tabCur();
@@ -1005,7 +1054,7 @@ function secLayout(sn) {
 function floorSt(sn, f) {
   const own = D.light && D.light.floors && D.light.floors[sn + ':' + f];
   const sec = (D.light && D.light.sections && D.light.sections[sn]) || { status: 'unknown' };
-  if (own) return Object.assign({ inf: false }, own);
+  if (own) return Object.assign({ inf: !!own.near }, own);
   return { status: sec.status, at: sec.at, since: sec.since, n: 0, inf: true };
 }
 function lightCounts(sn) {
@@ -1085,7 +1134,7 @@ function lightCard() {
     const x = floorSt(me.entrance, mf);
     const mine = ui.myLight || (D.light && D.light.mine);
     let sub = x.status === 'unknown' ? 'Ще ніхто не відмітився. Будьте першим!' :
-      (x.status === 'on' ? 'Світло є ' : 'Світла немає ') + sinceTxt(x.since) + (x.inf ? ' · за даними секції' : ' · підтверджено ' + ago(x.at));
+      (x.status === 'on' ? 'Світло є ' : 'Світла немає ') + sinceTxt(x.since) + (x.near ? ' · за сусідніми поверхами' : x.inf ? ' · за даними секції' : ' · підтверджено ' + ago(x.at));
     let pend = '';
     if (x.pending) {
       const pw = x.pending.dir === 'on' ? '«світло є»' : '«світла немає»';
@@ -1255,11 +1304,12 @@ function home() {
   ).sort((a, b) => b.t - a.t).slice(0, 5);
   return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">' + esc(greeting().hi) + '</div>' + (greeting().line ? '<div class="greet">' + esc(greeting().line) + '</div>' : '') + (xmasOn() ? '<div class="xchip">' + esc(xmasLine()) + '</div>' : '') + '</div>' +
     '<button class="iconbtn xtg' + (xmasOn() ? ' on' : '') + '" aria-label="Різдвяне оформлення" aria-pressed="' + xmasOn() + '" onclick="xmasToggle()">' + XTREE_IC + '</button></div>' +
-    confirmCards() + sigBlock() + xmasOffer() + fuelBanner() + lightCard() +
-    utilHtml(st) + liftCard +
+    lightCard() + fuelBanner() + xmasOffer() +
+    utilHtml(st) + liftCard + fpubCard() +
+    confirmCards() + sigBlock() +
     '<div class="row"><div style="font-size:16px;font-weight:700">Що відбувається</div>' + scopeBtn() + '</div>' +
     (feed.length ? feed.map(f => f.html).join('') : '<div class="empty">' + (xmasOn() ? 'Усе спокійно, як у Святвечір ✨' : 'Усе спокійно') + '</div>') +
-    '<button class="btn yellow" onclick="ui.nmode=\'sig\';go(\'new\')">' + ic('tool', null, 18) + 'Щось не так? Розкажіть нам</button>' +
+    '<button class="btn yellow" onclick="ui.nmode=\'sig\';go(\'new\')">' + ic('tool', null, 18) + 'Щось не так? Розкажіть нам</button>' + homeBanner() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>';
 }
 
@@ -1463,6 +1513,105 @@ function liftTap(name, bad) {
   ask('Ліфт ' + name + ' не працює?', ok => { if (!ok) return; run('signal', { type: 'lift', det: name }, '').then(r => { if (r) { toast('Дякуємо, адміністратор побачить'); haptic('ok'); } }); });
 }
 
+
+// ---------- «Додати на головний екран» (Telegram addToHomeScreen) ----------
+const HOME_IC = '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5l9-7 9 7"/><path d="M5.5 9v11h13V9"/><path d="M10 20v-5h4v5"/></svg>';
+let homeSt = 'unknown';   // unsupported | unknown | added | missing
+function homeCanAdd() { return !!(tg && tg.addToHomeScreen && tg.isVersionAtLeast && tg.isVersionAtLeast('8.0')); }
+function homeCheck() {
+  if (!homeCanAdd() || !tg.checkHomeScreenStatus) return;
+  try { tg.checkHomeScreenStatus(st => { if (st && st !== homeSt) { homeSt = st; if (route === 'home' || route === 'me') render(); } }); } catch (e) {}
+}
+function homeAdd() {
+  haptic('mid');
+  if (homeCanAdd()) { try { tg.addToHomeScreen(); return; } catch (e) {} }
+  homeHelp();
+}
+function homeHelp() {
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+  const t = ios ? 'Оновіть Telegram, а тоді натисніть ⋯ угорі застосунку → «Додати на головний екран».'
+    : 'Натисніть ⋯ угорі застосунку → «Додати на головний екран». Якщо пункту немає — оновіть Telegram.';
+  if (tg && tg.showAlert && tg.initData) tg.showAlert(t); else toast(t);
+}
+function homeHidden() { try { return localStorage.getItem('b10_hsx') === '1'; } catch (e) { return false; } }
+// на головній — один раз, доки не додали або не закрили
+function homeBanner() {
+  if (homeSt === 'added' || homeSt === 'unsupported' || homeHidden() || !D.me.apt) return '';
+  return '<button class="hsc" onclick="homeAdd()"><span class="ic">' + HOME_IC + '</span><span><span class="t" style="display:block">Додати на екран телефону</span><span class="s" style="display:block">Відкривати будинок одним дотиком</span></span>' +
+    '<span class="x" role="button" aria-label="Не зараз" onclick="event.stopPropagation();try{localStorage.setItem(\'b10_hsx\',\'1\')}catch(e){};haptic(\'sel\');render()">✕</span></button>';
+}
+// у кабінеті — завжди, поки не додано
+function homeRow() {
+  if (homeSt === 'added') return '';
+  return '<button class="hsc" onclick="homeAdd()"><span class="ic">' + HOME_IC + '</span><span><span class="t" style="display:block">Значок на екрані телефону</span><span class="s" style="display:block">Як звичайний застосунок</span></span><span class="go">' + ic('chev', null, 18) + '</span></button>';
+}
+
+
+// ---------- ПРОЗОРІСТЬ ЗБОРУ НА ПАЛЬНЕ (бачать усі, без номерів квартир) ----------
+function ring(pct, size, w) {
+  const r = (size - w) / 2, c = 2 * Math.PI * r;
+  return '<svg viewBox="0 0 ' + size + ' ' + size + '" aria-hidden="true"><circle class="tr" cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke-width="' + w + '"/>' +
+    '<circle class="vl" cx="' + size / 2 + '" cy="' + size / 2 + '" r="' + r + '" fill="none" stroke-width="' + w + '" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + (c * (1 - Math.min(1, pct / 100))).toFixed(1) + '"/></svg>';
+}
+function fpubOk() { return D.fuel && D.fuel.pub && D.fuel.public !== false; }
+function fpubM() { const P = D.fuel.pub, m = ui.fpm && P[ui.fpm] ? ui.fpm : D.fuel.month; return P[m] ? m : P.months[1]; }
+// компактна картка на головній
+function fpubCard() {
+  if (!fpubOk()) return '';
+  const x = D.fuel.pub[D.fuel.month]; if (!x) return '';
+  const pct = x.all ? Math.round(x.paid / x.all * 100) : 0;
+  return '<button class="fpc" onclick="ui.fpm=\'\';go(\'fpub\')"><span class="rg">' + ring(pct, 52, 6) + '<b>' + pct + '%</b></span><span style="min-width:0"><span class="t" style="display:block">Пальне · ' + esc(monthName(x.month)) + '</span>' +
+    '<span class="s" style="display:block">' + fmtMoney(x.total) + ' грн · ' + x.paid + ' з ' + x.all + ' кв.</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+}
+function fpubScreen() {
+  if (!fpubOk()) return '<div class="empty">Збір ще не почався</div>';
+  const P = D.fuel.pub, m = fpubM(), x = P[m], pct = x.all ? Math.round(x.paid / x.all * 100) : 0;
+  let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Збір на пальне</div></div>' +
+    '<div class="seg" role="tablist">' + P.months.map(k => '<button role="tab" aria-selected="' + (m === k) + '" class="' + (m === k ? 'on' : '') + '" onclick="ui.fpm=\'' + k + '\';haptic(\'sel\');render()">' + esc(cap(monthName(k))) + '</button>').join('') + '</div>';
+  // головне
+  h += '<div class="fph"><div class="rg">' + ring(pct, 132, 12) + '<div class="c"><b>' + pct + '%</b><span>квартир</span></div></div><div class="kv">' +
+    '<div><b>' + fmtMoney(x.total) + ' грн</b><span>зібрано за ' + esc(monthName(m)) + '</span></div>' +
+    '<div><b>' + x.paid + ' <span style="font-size:15px;color:var(--muted);font-weight:700">з ' + x.all + '</span></b><span>квартир внесли' + (x.part ? ' · ще ' + x.part + ' частково' : '') + '</span></div>' +
+    (x.spent ? '<div><b>' + fmtMoney(x.spent) + ' грн</b><span>витрачено' + (x.liters ? ' · ' + fmtMoney(x.liters) + ' л' : '') + '</span></div>' : '') + '</div></div>';
+  h += '<div class="fbal"><span>Залишок на пальне</span><b>' + fmtMoney(P.balance) + ' грн</b></div>';
+  // секції: поверхи як смужки
+  h += '<div class="label">По секціях</div><div class="ftw">' + x.bySec.map(S => {
+    const sp = S.all ? Math.round(S.paid / S.all * 100) : 0;
+    return '<button onclick="fpubSec(' + S.n + ')" aria-label="Секція ' + S.n + ': внесли ' + S.paid + ' з ' + S.all + '"><span class="nm">С' + S.n + '</span>' +
+      S.floors.map((f, i) => '<span class="r"><i style="width:' + (f[2] ? Math.round(f[1] / f[2] * 100) : 0) + '%;animation-delay:' + (i * 18) + 'ms"></i></span>').join('') +
+      '<span class="pc">' + sp + '%</span></button>';
+  }).join('') + '</div>';
+  // по днях
+  const dim = new Date(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0).getDate(), today = new Date(), isCur = m === D.fuel.month;
+  const mx = Math.max(1, ...Object.values(x.days || {}));
+  let bars = '';
+  for (let d = 1; d <= dim; d++) { const v = (x.days || {})[d] || 0; bars += '<button class="' + (v ? '' : 'z') + (isCur && d === today.getDate() ? ' td' : '') + '" onclick="fpubDay(' + d + ',' + v + ')" aria-label="' + d + ' число: ' + fmtMoney(v) + ' грн"><i style="height:' + (v ? Math.max(6, Math.round(v / mx * 100)) : 3) + '%;animation-delay:' + (d * 12) + 'ms"></i></button>'; }
+  h += '<div class="label">Надходження по днях</div><div class="card" style="gap:6px"><div class="fdays">' + bars + '</div><div class="fdx"><span>1</span><span>' + Math.round(dim / 2) + '</span><span>' + dim + '</span></div></div>';
+  // стрічка внесків
+  if (x.feed.length) h += '<div class="label">Останні внески</div><div class="card" style="gap:0;padding:4px 16px">' + x.feed.map(f =>
+    '<div class="frow"><span class="d">+</span><span class="m"><b>' + (f[2] ? 'Секція ' + f[2] : 'Внесок') + '</b><span>' + esc(ago(f[0])) + '</span></span><span class="v">' + fmtMoney(f[1]) + ' грн</span></div>').join('') + '</div>';
+  // витрати
+  const sp = (P.spend || []).filter(z => monthKeyJs(z.date) === m);
+  h += '<div class="label">Витрати' + (P.spent ? ' · усього ' + fmtMoney(P.spent) + ' грн' : '') + '</div>';
+  if (sp.length) h += '<div class="card" style="gap:0;padding:4px 16px">' + sp.map(z => '<div class="frow sp"><span class="d">⛽</span><span class="m"><b>' + esc(z.note || 'Пальне') + '</b><span>' + esc(new Date(z.date).toLocaleDateString('uk-UA', { day: 'numeric', month: 'long' })) + (z.liters ? ' · ' + fmtMoney(z.liters) + ' л' : '') + '</span></span><span class="v">−' + fmtMoney(z.sum) + ' грн</span>' +
+    (D.me.isAdmin ? '<button class="del" aria-label="Видалити" onclick="fpubDel(' + z.row + ')">✕</button>' : '') + '</div>').join('') + '</div>';
+  else h += '<div class="empty" style="padding:14px">Витрат за ' + esc(monthName(m)) + ' ще не внесено</div>';
+  if (D.me.isAdmin) h += '<div class="card" style="gap:10px"><div style="font-weight:700">Додати витрату</div><div class="grid2"><input class="input" id="spSum" inputmode="decimal" autocomplete="off" placeholder="Сума, грн"><input class="input" id="spLit" inputmode="decimal" autocomplete="off" placeholder="Літрів"></div>' +
+    '<input class="input" id="spNote" maxlength="120" autocomplete="off" placeholder="Що саме: дизель, масло, ремонт…"><input class="input" id="spDate" type="date" value="' + new Date().toISOString().slice(0, 10) + '">' +
+    '<button class="btn graph" onclick="fpubAdd()">' + ic('plus', '#F2C12E', 18) + 'Додати витрату</button></div>';
+  h += '<div class="note">Номери квартир тут не показуються. Свою оплату видно в кабінеті.</div>';
+  return h;
+}
+function monthKeyJs(t) { const d = new Date(t); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); }
+function fpubSec(n) { const x = D.fuel.pub[fpubM()].bySec[n - 1]; haptic('soft'); toast('Секція ' + n + ': внесли ' + x.paid + ' з ' + x.all + ' кв.' + (x.part ? ', частково ' + x.part : '') + ' · ' + fmtMoney(x.sum) + ' грн'); }
+function fpubDay(d, v) { haptic('sel'); toast(d + ' ' + monthName(fpubM()).replace(/ь$/, 'я') + ': ' + (v ? '+' + fmtMoney(v) + ' грн' : 'внесків немає')); }
+function fpubAdd() {
+  const v = id => (document.getElementById(id) || {}).value || '';
+  if (!v('spSum')) { toast('Вкажіть суму'); return; }
+  run('fuelSpendAdd', { sum: v('spSum'), liters: v('spLit'), note: v('spNote'), date: v('spDate') }, 'Витрату додано');
+}
+function fpubDel(row) { ask('Видалити цю витрату?', ok => { if (ok) run('fuelSpendDel', { row: row }, 'Видалено'); }); }
+
 // ---------- голосування ----------
 function polls() {
   const list = D.polls;
@@ -1624,7 +1773,7 @@ function cabinet() {
     '</div>' +
     fuelCard() +
     (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
-    flatCard() + themeCard() +
+    flatCard() + homeRow() + themeCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '<button class="chip" onclick="go(\'useful\')">' + ic('phone', null, 16) + 'Корисні контакти</button></div>' +
     '<div class="label">Мої заявки</div>' +
     (mine.length ? mine.map(p => '<div class="card"><div class="row"><div><div style="font-weight:700">' + esc(p.category) + '</div><div class="sub" style="font-weight:500">№\u00a0' + p.id + ' · ' + ago(p.created) + '</div></div><span class="tag ' + (p.status === 'Вирішено' ? 'ok' : p.status === 'В роботі' ? 'yel' : 'bad') + '">' + esc(p.status) + '</span></div></div>').join('') : '<div class="empty">Заявок ще немає</div>') +
@@ -1686,6 +1835,7 @@ function fuelCard() {
   h += '<div class="sub" style="font-weight:500;line-height:1.5">За ' + gm + ' внесли: ' + (f.sec ? 'у вашій секції ' + f.sec.n + ' — <b>' + f.sec.paid + ' з ' + f.sec.all + '</b>, ' : '') + 'у будинку — <b>' + f.paidCount + ' з ' + (f.houseAll || D.totalApts) + '</b> 💛' +
     (f.gov && f.gov !== f.month && f.curPaidCount ? '<br>За ' + monthName(f.month) + ' вже внесли ' + f.curPaidCount + ' ' + plural(f.curPaidCount, 'квартира', 'квартири', 'квартир') : '') + '</div>';
   if (f.updated) h += '<div style="font-size:11px;color:var(--muted)">Оплати оновлено ' + esc(fmtUpd(f.updated)) + '</div>';
+  if (fpubOk()) h += '<button class="btn ghost" onclick="ui.fpm=\'\';go(\'fpub\')">Куди йдуть внески ›</button>';
   return h + '</div>';
 }
 async function fuelClaim() {
@@ -2277,6 +2427,8 @@ async function start() {
   if (tg) {
     try {
       tg.ready(); tg.expand();
+      homeCheck();
+      if (tg.onEvent) { tg.onEvent('homeScreenAdded', () => { homeSt = 'added'; haptic('ok'); toast('Готово! Значок будинку на екрані телефону'); render(); }); tg.onEvent('homeScreenChecked', e => { if (e && e.status) { homeSt = e.status; render(); } }); }
       applyTheme(); tg.onEvent && tg.onEvent('themeChanged', () => { if (themePref() === 'auto') { applyTheme(); render(); } });
       tg.setBackgroundColor && tg.setBackgroundColor('#F2F3F5');
       tg.BackButton && tg.BackButton.onClick(back);
@@ -2358,6 +2510,18 @@ function demoFuelAct(db, action, d, now) {
   const mine = a.pays.filter(p => p.apt === db.me.apt).reduce((t, p) => t + p.sum, 0);
   if (db.me.apt) { db.fuel.sum = mine; if (mine >= 1500) db.fuel.key = 'on'; }
 }
+
+function demoPub(now, H) {
+  const cm = new Date().toISOString().slice(0, 7), pd = new Date(); pd.setDate(1); pd.setMonth(pd.getMonth() - 1); const pm = pd.toISOString().slice(0, 7);
+  let seed = 3; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
+  const mk = (m, k) => { const bySec = [[1, 160, 7], [2, 160, 7], [3, 160, 7], [4, 145, 5]].map(([n, all, per]) => { const fl = []; for (let f = 26; f >= 3; f--) { const t = f === 3 ? per - 1 : per; fl.push([f, Math.round(t * Math.min(1, rnd() * k * 1.6)), t]); } const paid = fl.reduce((t, x) => t + x[1], 0); return { n, all: fl.reduce((t, x) => t + x[2], 0), paid, part: Math.round(paid * .06), sum: paid * 1500, floors: fl }; });
+    const paid = bySec.reduce((t, x) => t + x.paid, 0), days = {}; const dl = m === cm ? new Date().getDate() : 30; for (let d = 1; d <= dl; d++) if (rnd() < .8) days[d] = Math.round(rnd() * 12 + (d < 6 ? 14 : 1)) * 1500;
+    return { month: m, amount: 1500, total: paid * 1500 + 2000, all: 625, paid, part: bySec.reduce((t, x) => t + x.part, 0), bySec, days, feed: [[now - 20 * 60000, 1500, 2], [now - 2 * H, 3000, 1], [now - 5 * H, 1500, 4], [now - 26 * H, 1000, 3], [now - 30 * H, 1500, 2]], spent: m === pm ? 196000 : 42000, liters: m === pm ? 3200 : 700 }; };
+  const o = { months: [pm, cm], collected: 0, spent: 238000, balance: 0, spend: [{ row: 3, date: now - 2 * 24 * H, sum: 42000, liters: 700, note: 'Дизель, 700 л' }, { row: 2, date: now - 20 * 24 * H, sum: 120000, liters: 2000, note: 'Дизель, 2000 л' }, { row: 4, date: now - 25 * 24 * H, sum: 76000, liters: 1200, note: 'Дизель + масло' }] };
+  o[pm] = mk(pm, .55); o[cm] = mk(cm, .3); o.spend.forEach(z => { if (monthKeyJs(z.date) === pm) {} });
+  o.collected = o[pm].total + o[cm].total; o.balance = o.collected - o.spent;
+  return o;
+}
 let DEMO_DB = null;
 function demoApi(action, d) {
   const now = Date.now(), H = 3600000, q = location.search;
@@ -2403,10 +2567,14 @@ function demoApi(action, d) {
         sum: /fuel=part/.test(q) ? 1000 : /fuel=on/.test(q) ? 1500 : 0, key: (q.match(/fuel=(\w+)/) || [0, 'off'])[1], lastPay: { date: now - 30 * 24 * H, sum: 1500 },
         admin: /admin=1/.test(q) ? demoFuelAdmin(now, H) : null },
       osbb: /admin=1/.test(q) ? demoOsbb() : undefined,
+      _pub: 1,
       totalApts: 624, entrances: 4, now: now
     };
   }
   const db = DEMO_DB;
+  if (db._pub === 1) { db.fuel.pub = demoPub(now, H); db._pub = 2; }
+  if (action === 'fuelSpendAdd') { db.fuel.pub.spend.unshift({ row: now, date: d.date ? new Date(d.date + 'T12:00').getTime() : now, sum: Number(d.sum) || 0, liters: Number(d.liters) || 0, note: d.note }); const x = db.fuel.pub[monthKeyJs(db.fuel.pub.spend[0].date)]; if (x) { x.spent += Number(d.sum) || 0; x.liters += Number(d.liters) || 0; } db.fuel.pub.spent += Number(d.sum) || 0; db.fuel.pub.balance -= Number(d.sum) || 0; }
+  if (action === 'fuelSpendDel') { const z = db.fuel.pub.spend.find(y => y.row === d.row); if (z) { db.fuel.pub.spend = db.fuel.pub.spend.filter(y => y !== z); db.fuel.pub.spent -= z.sum; db.fuel.pub.balance += z.sum; const x = db.fuel.pub[monthKeyJs(z.date)]; if (x) x.spent -= z.sum; } }
   if (!db.light.floors) {
     const F = {}, H = 3600e3;
     [1, 2, 3, 4].forEach(sn => { for (let f = 3; f <= 26; f++) {

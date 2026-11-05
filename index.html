@@ -724,6 +724,51 @@ a.urow:active{opacity:.6}
 .urow .ua{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--soft);color:var(--muted)}
 .urow .ua svg[stroke="#23262B"]{stroke:var(--ink)}
 .u-v{--hue:#6A52E0;--tint:rgba(106,82,224,.12)} :root[data-theme="dark"] .u-v{--hue:#A592FF}
+
+/* ---------- ІГРИ ---------- */
+.gent{display:flex;align-items:center;gap:12px;padding:12px 14px 12px 12px;border-radius:22px;background:var(--card);box-shadow:var(--shadow-1);border:none;font:inherit;color:inherit;text-align:left;width:100%;cursor:pointer}
+.gent .ic{width:46px;height:46px;flex:none;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#B07CFF,#7A4CE8 60%,#5B34C4);box-shadow:0 6px 16px rgba(122,76,232,.35),inset 0 1px 0 rgba(255,255,255,.35)}
+.gent .t{font-weight:800;font-size:15px}.gent .s{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.glist{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gcard{border:none;font:inherit;color:inherit;text-align:left;background:var(--card);border-radius:22px;padding:14px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow-1);cursor:pointer;min-height:132px}
+.gcard .gi{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-size:26px;font-weight:900}
+.gcard b{font-size:15px}.gcard span{font-size:12px;color:var(--muted);font-weight:500;line-height:1.3}
+.gbar{display:flex;gap:6px;align-items:center}
+.gbar button{height:36px;border:none;border-radius:12px;padding:0 12px;font:inherit;font-weight:700;font-size:13px;background:var(--card);color:var(--ink);box-shadow:var(--shadow-1)}
+.gbar button.on{background:var(--ink);color:var(--bg)}
+.gbar .sc{margin-left:auto;font-weight:800;font-size:14px;text-align:right;line-height:1.15}
+.gbar .sc span{display:block;font-size:11px;color:var(--muted);font-weight:600}
+#gm{position:relative;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+/* пасьянс */
+.sol{position:relative;width:100%}
+.cd{position:absolute;border-radius:7px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.22),inset 0 0 0 1px rgba(0,0,0,.08);color:#23262B;font-weight:800;overflow:hidden;transition:transform 140ms ease}
+.cd.red{color:#D23A32}
+.cd .rk{position:absolute;left:4px;top:2px;font-size:var(--fs);line-height:1;letter-spacing:-.04em}
+.cd .su{position:absolute;left:4px;top:calc(var(--fs) + 3px);font-size:calc(var(--fs) * .9);line-height:1}
+.cd .bg{position:absolute;right:3px;bottom:1px;font-size:calc(var(--fs) * 2.1);line-height:1;opacity:.9}
+.cd.dn{background:repeating-linear-gradient(45deg,#3B5BDB 0 4px,#4C6EF5 4px 8px);box-shadow:0 1px 2px rgba(0,0,0,.25),inset 0 0 0 2px #fff}
+.cd.sel{box-shadow:0 0 0 3px var(--yellow),0 4px 10px rgba(0,0,0,.25);transform:translateY(-2px)}
+.cd.hint{animation:hint 360ms ease}
+@keyframes hint{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.slot{position:absolute;border-radius:7px;border:1.5px dashed var(--line2);display:grid;place-items:center;color:var(--muted);font-size:18px;font-weight:800}
+.slot.stk{border-style:solid;background:var(--soft)}
+/* 2048 */
+.g48{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:8px;border-radius:20px;background:var(--line);touch-action:none}
+.g48 i{aspect-ratio:1;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-style:normal;font-weight:900;font-size:26px;color:#23262B}
+.g48 i.n{animation:pop 180ms var(--spring)}
+@keyframes pop{from{transform:scale(.6)}to{transform:none}}
+/* сапер */
+.gms{display:grid;grid-template-columns:repeat(9,1fr);gap:3px;padding:6px;border-radius:16px;background:var(--line)}
+.gms i{aspect-ratio:1;border-radius:6px;background:var(--card);box-shadow:inset 0 -2px 0 rgba(0,0,0,.08);display:grid;place-items:center;font-style:normal;font-weight:900;font-size:16px}
+.gms i.o{background:var(--soft);box-shadow:none}
+.gms i.bm{background:#D8433B;color:#fff}
+.gms .c1{color:#2F7FD8}.gms .c2{color:#2E9B5F}.gms .c3{color:#D8433B}.gms .c4{color:#6A52E0}.gms .c5{color:#B07A00}.gms .c6{color:#1D9BB5}.gms .c7,.gms .c8{color:var(--ink)}
+/* хрестики */
+.gtt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:0 auto;width:100%}
+.gtt button{aspect-ratio:1;border:none;border-radius:20px;background:var(--card);box-shadow:var(--shadow-1);font-size:52px;font-weight:900;color:var(--ink);display:grid;place-items:center;padding:0}
+.gtt button.x{color:#2F7FD8}.gtt button.o{color:#E0583A}
+.gtt button.w{background:var(--yel-bg,#FFF3CF)}
+.gmsg{text-align:center;font-weight:800;font-size:17px;min-height:24px}
 </style>
 </head>
 <body>
@@ -1013,7 +1058,7 @@ function syncBack() {
 function render() {
   if (!D) { $app.innerHTML = skeleton(); return; }
   if (D.me.state !== 'accepted' && !D.me.isAdmin) { $app.innerHTML = gate(); return; }
-  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen, fpub: fpubScreen }[route] || home;
+  const s = { home: home, problems: problems, polls: polls, me: cabinet, new: newProblem, useful: useful, admin: admin, fuel: fuelScreen, osbb: osbbScreen, light: lightScreen, fpub: fpubScreen, games: gamesScreen, game: gameScreen }[route] || home;
   let scr = document.getElementById('scr');
   if (!scr) { $app.innerHTML = '<div class="screen" id="scr"></div>' + tabs(); scr = document.getElementById('scr'); }
   const anim = ui.anim; ui.anim = '';
@@ -1050,7 +1095,7 @@ function openBot() {
 }
 
 const TAB_KEYS = ['home', 'problems', 'polls', 'me'];
-function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me', light: 'home', fpub: 'home' }[route] || route; }
+function tabCur() { return { new: 'problems', useful: 'home', admin: 'me', fuel: 'me', osbb: 'me', light: 'home', fpub: 'home', games: 'home', game: 'home' }[route] || route; }
 function tabs() {
   const t = [['home', 'home', 'Будинок'], ['problems', 'tool', 'Заявки'], ['polls', 'vote', 'Голосування'], ['me', 'user', 'Кабінет']];
   const cur = tabCur();
@@ -1356,7 +1401,7 @@ function home() {
   return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">' + esc(greeting().hi) + '</div>' + (xmasOn() ? '<div class="xchip">' + esc(xmasLine()) + '</div>' : '') + '</div>' +
     '<button class="iconbtn xtg' + (xmasOn() ? ' on' : '') + '" aria-label="Різдвяне оформлення" aria-pressed="' + xmasOn() + '" onclick="xmasToggle()">' + XTREE_IC + '</button></div>' +
     lightCard() + fuelBanner() + xmasOffer() +
-    utilHtml(st) + liftCard + fpubCard() + usefulEntry() +
+    utilHtml(st) + liftCard + fpubCard() + usefulEntry() + gamesEntry() +
     confirmCards() + sigBlock() +
     '<div class="row"><div style="font-size:16px;font-weight:700">Що відбувається</div>' + scopeBtn() + '</div>' +
     (feed.length ? feed.map(f => f.html).join('') : '<div class="empty">' + (xmasOn() ? 'Усе спокійно, як у Святвечір ✨' : 'Усе спокійно') + '</div>') +
@@ -1654,6 +1699,232 @@ function fpubAdd() {
   run('fuelSpendAdd', { sum: v('spSum'), liters: v('spLit'), note: v('spNote'), date: v('spDate') }, 'Витрату додано');
 }
 function fpubDel(row) { ask('Видалити цю витрату?', ok => { if (ok) run('fuelSpendDel', { row: row }, 'Видалено'); }); }
+
+
+// =====================================================================
+//  ІГРИ — працюють повністю в телефоні, інтернет не потрібен
+// =====================================================================
+const GAMES = [
+  ['sol', 'Косинка', 'Класичний пасьянс', '♠', 'linear-gradient(145deg,#2E9B5F,#1E7A4C)'],
+  ['g48', '2048', 'Зʼєднуйте плитки', '2048', 'linear-gradient(145deg,#F7D35A,#E9AE2A)'],
+  ['mines', 'Сапер', 'Знайдіть усі міни', '✹', 'linear-gradient(145deg,#6C7A89,#3F4A57)'],
+  ['ttt', 'Хрестики-нулики', 'Проти телефона', '✕○', 'linear-gradient(145deg,#5B9BFF,#2F6FD8)']
+];
+const GAME_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="#fff"/><path d="M7 10.5v4M5 12.5h4" stroke="#7A4CE8" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.3" r="1.3" fill="#FF5A4F"/><circle cx="18" cy="13.7" r="1.3" fill="#F4C542"/></svg>';
+function gamesEntry() {
+  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Косинка, 2048, сапер — працюють без інтернету</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+}
+function gamesScreen() {
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Ігри</div></div>' +
+    '<div class="glist">' + GAMES.map(g => '<button class="gcard" onclick="ui.game=\'' + g[0] + '\';go(\'game\')"><span class="gi" style="background:' + g[4] + ';color:#fff;font-size:' + (g[3].length > 2 ? '15px' : '26px') + '">' + g[3] + '</span><b>' + g[1] + '</b><span>' + g[2] + '</span></button>').join('') + '</div>' +
+    '<div class="note">Ігри зберігають прогрес на телефоні. Коли застосунок відкритий, інтернет для гри не потрібен — зручно під час відключень.</div>';
+}
+function gameScreen() {
+  const g = GAMES.find(x => x[0] === ui.game) || GAMES[0];
+  setTimeout(gameMount, 0);
+  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">' + g[1] + '</div></div>' +
+    '<div class="gbar" id="gbar"></div><div id="gm"></div><div class="gmsg" id="gmsg"></div>';
+}
+function gameMount() { const el = document.getElementById('gm'); if (!el) return; ({ sol: solMount, g48: g48Mount, mines: msMount, ttt: tttMount }[ui.game] || solMount)(el); }
+function gLoad(k) { try { return JSON.parse(localStorage.getItem('b10_g_' + k) || 'null'); } catch (e) { return null; } }
+function gSave(k, v) { try { localStorage.setItem('b10_g_' + k, JSON.stringify(v)); } catch (e) {} }
+function gMsg(t) { const m = document.getElementById('gmsg'); if (m) m.innerHTML = t || ''; }
+function gWin(t) { gMsg(t); haptic('ok'); try { xburst(innerWidth / 2, innerHeight * .4, 50); } catch (e) {} }
+function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+// ---------- КОСИНКА (Klondike, по 1 карті) ----------
+const SU = ['♠', '♥', '♦', '♣'], RK = ['', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+let SOL = null;
+function solNew() {
+  const d = []; for (let s = 0; s < 4; s++) for (let r = 1; r <= 13; r++) d.push({ s: s, r: r, up: false });
+  shuffle(d);
+  const t = []; for (let c = 0; c < 7; c++) { t.push([]); for (let k = 0; k <= c; k++) t[c].push(d.pop()); t[c][c].up = true; }
+  SOL = { stock: d, waste: [], f: [[], [], [], []], t: t, hist: [], moves: 0, won: false };
+  gSave('sol', SOL);
+}
+const red = c => c.s === 1 || c.s === 2;
+function solSnap() { SOL.hist.push(JSON.stringify({ stock: SOL.stock, waste: SOL.waste, f: SOL.f, t: SOL.t, moves: SOL.moves })); if (SOL.hist.length > 60) SOL.hist.shift(); }
+function canF(c) { for (let i = 0; i < 4; i++) { const f = SOL.f[i], top = f[f.length - 1]; if (top && top.s === c.s && top.r === c.r - 1) return i; } return c.r === 1 ? SOL.f.findIndex(f => !f.length) : -1; }
+function canT(c, col) { const t = SOL.t[col], top = t[t.length - 1]; return top ? (top.up && red(top) !== red(c) && top.r === c.r + 1) : c.r === 13; }
+function solFlip() { SOL.t.forEach(col => { const top = col[col.length - 1]; if (top && !top.up) top.up = true; }); }
+// торкання карти: найкращий хід (база → стовпчик)
+function solTap(k) {
+  if (SOL.won) return;
+  const [z, a, b] = k.split(',').map((x, i) => i ? Number(x) : x);
+  if (z === 'st') { solSnap(); if (SOL.stock.length) { const c = SOL.stock.pop(); c.up = true; SOL.waste.push(c); } else if (SOL.waste.length) { SOL.stock = SOL.waste.reverse().map(c => (c.up = false, c)); SOL.waste = []; } else { SOL.hist.pop(); return; } haptic('sel'); return solAfter(); }
+  let src, seq;
+  if (z === 'w') { if (!SOL.waste.length) return; src = SOL.waste; seq = [SOL.waste[SOL.waste.length - 1]]; }
+  else if (z === 'f') { const f = SOL.f[a]; if (!f.length) return; src = f; seq = [f[f.length - 1]]; }
+  else if (z === 't') { const col = SOL.t[a]; if (!col[b] || !col[b].up) return; src = col; seq = col.slice(b); }
+  else return;
+  const c = seq[0];
+  // у базу (лише одна карта)
+  if (seq.length === 1 && z !== 'f') { const fi = canF(c); if (fi >= 0) { solSnap(); src.pop(); SOL.f[fi].push(c); haptic('soft'); return solAfter(); } }
+  // у стовпчик: спершу непорожній, потім порожній (короля з самого низу не рухаємо в порожній)
+  const order = [0, 1, 2, 3, 4, 5, 6].filter(i => !(z === 't' && i === a)).sort((x, y) => (SOL.t[y].length ? 1 : 0) - (SOL.t[x].length ? 1 : 0));
+  for (const i of order) {
+    if (!SOL.t[i].length && z === 't' && b === 0) continue;
+    if (canT(c, i)) { solSnap(); src.splice(src.length - seq.length, seq.length); SOL.t[i].push(...seq); haptic('soft'); return solAfter(); }
+  }
+  haptic('err');
+  const el = document.querySelector('[data-k="' + k + '"]'); if (el) { el.classList.remove('hint'); void el.offsetWidth; el.classList.add('hint'); }
+}
+function solAfter() {
+  SOL.moves++; solFlip();
+  if (SOL.f.every(f => f.length === 13)) { SOL.won = true; const best = gLoad('solbest'); if (!best || SOL.moves < best) gSave('solbest', SOL.moves); setTimeout(() => gWin('Перемога! ' + SOL.moves + ' ходів'), 150); }
+  gSave('sol', SOL); solDraw();
+}
+function solAuto() {
+  const step = () => {
+    if (!SOL || SOL.won) return;
+    for (let i = 0; i < 7; i++) { const col = SOL.t[i], c = col[col.length - 1]; if (c && canF(c) >= 0) { solTap('t,' + i + ',' + (col.length - 1)); return setTimeout(step, 90); } }
+    if (SOL.waste.length && canF(SOL.waste[SOL.waste.length - 1]) >= 0) { solTap('w,0,0'); return setTimeout(step, 90); }
+  };
+  step();
+}
+function solCanAuto() { return !SOL.won && !SOL.stock.length && !SOL.waste.length && SOL.t.every(col => col.every(c => c.up)); }
+function cardHtml(c, x, y, w, h, k, fs) {
+  if (!c.up) return '<div class="cd dn" style="left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px" data-k="' + k + '"></div>';
+  return '<div class="cd' + (red(c) ? ' red' : '') + '" style="left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px;--fs:' + fs + 'px" data-k="' + k + '"><span class="rk">' + RK[c.r] + '</span><span class="su">' + SU[c.s] + '</span><span class="bg">' + SU[c.s] + '</span></div>';
+}
+function solDraw() {
+  const el = document.getElementById('gm'); if (!el) return;
+  const W = el.clientWidth, gap = 5, w = Math.floor((W - gap * 6) / 7), h = Math.round(w * 1.42), fs = Math.max(11, Math.round(w * .3));
+  const X = i => i * (w + gap);
+  let H = '<div class="slot stk" style="left:0;top:0;width:' + w + 'px;height:' + h + 'px" data-k="st,0,0">' + (SOL.stock.length ? '' : '↻') + '</div>';
+  if (SOL.stock.length) H += '<div class="cd dn" style="left:0;top:0;width:' + w + 'px;height:' + h + 'px" data-k="st,0,0"></div>';
+  H += '<div class="slot" style="left:' + X(1) + 'px;top:0;width:' + w + 'px;height:' + h + 'px"></div>';
+  if (SOL.waste.length) H += cardHtml(SOL.waste[SOL.waste.length - 1], X(1), 0, w, h, 'w,0,0', fs);
+  for (let i = 0; i < 4; i++) { const f = SOL.f[i]; H += '<div class="slot" style="left:' + X(3 + i) + 'px;top:0;width:' + w + 'px;height:' + h + 'px">A</div>'; if (f.length) H += cardHtml(f[f.length - 1], X(3 + i), 0, w, h, 'f,' + i + ',0', fs); }
+  const y0 = h + 14, maxH = Math.max(innerHeight - 330, h * 4);
+  let tallest = y0 + h;
+  SOL.t.forEach((col, ci) => {
+    H += '<div class="slot" style="left:' + X(ci) + 'px;top:' + y0 + 'px;width:' + w + 'px;height:' + h + 'px">K</div>';
+    const ups = col.filter(c => c.up).length, downs = col.length - ups;
+    let upOff = Math.round(h * .3), dnOff = Math.round(h * .12);
+    const need = downs * dnOff + Math.max(0, ups - 1) * upOff + h;
+    if (need > maxH && ups > 1) upOff = Math.max(Math.round(h * .17), Math.floor((maxH - h - downs * dnOff) / (ups - 1)));
+    let y = y0;
+    col.forEach((c, i) => { H += cardHtml(c, X(ci), y, w, h, 't,' + ci + ',' + i, fs); y += c.up ? upOff : dnOff; });
+    tallest = Math.max(tallest, y - (col.length ? (col[col.length - 1].up ? upOff : dnOff) : 0) + h);
+  });
+  el.innerHTML = '<div class="sol" style="height:' + (tallest + 8) + 'px">' + H + '</div>';
+  const best = gLoad('solbest');
+  document.getElementById('gbar').innerHTML = '<button onclick="solNew();solDraw();gMsg(\'\')">Нова гра</button><button onclick="if(SOL.hist.length){const o=JSON.parse(SOL.hist.pop());Object.assign(SOL,o);SOL.won=false;gSave(\'sol\',SOL);solDraw();haptic(\'sel\')}"' + (SOL.hist.length ? '' : ' disabled') + '>↶ Назад</button>' +
+    (solCanAuto() ? '<button class="on" onclick="solAuto()">Завершити</button>' : '') + '<span class="sc">' + SOL.moves + '<span>ходів' + (best ? ' · рекорд ' + best : '') + '</span></span>';
+}
+function solMount(el) {
+  SOL = gLoad('sol'); if (!SOL || !SOL.t) solNew();
+  el.onclick = e => { const c = e.target.closest('[data-k]'); if (c) solTap(c.dataset.k); };
+  solDraw(); if (SOL.won) gMsg('Перемога! Почніть нову гру');
+}
+
+// ---------- 2048 ----------
+let G48 = null;
+function g48New() { G48 = { b: Array(16).fill(0), sc: 0, over: false, won: false }; g48Add(); g48Add(); gSave('g48', G48); }
+function g48Add() { const e = G48.b.map((v, i) => v ? -1 : i).filter(i => i >= 0); if (!e.length) return -1; const i = e[Math.floor(Math.random() * e.length)]; G48.b[i] = Math.random() < .9 ? 2 : 4; return i; }
+function g48Move(dir) {
+  if (G48.over) return;
+  const b = G48.b, idx = (r, c) => dir === 'l' ? r * 4 + c : dir === 'r' ? r * 4 + 3 - c : dir === 'u' ? c * 4 + r : (3 - c) * 4 + r;
+  let moved = false, merged = [];
+  for (let r = 0; r < 4; r++) {
+    const line = [0, 1, 2, 3].map(c => b[idx(r, c)]).filter(Boolean), out = [];
+    for (let i = 0; i < line.length; i++) { if (line[i] === line[i + 1]) { out.push(line[i] * 2); G48.sc += line[i] * 2; if (line[i] * 2 === 2048) G48.won = true; merged.push(idx(r, out.length - 1)); i++; } else out.push(line[i]); }
+    while (out.length < 4) out.push(0);
+    out.forEach((v, c) => { if (b[idx(r, c)] !== v) moved = true; b[idx(r, c)] = v; });
+  }
+  if (!moved) return;
+  const n = g48Add(); haptic(merged.length ? 'soft' : 'sel');
+  if (!b.some(v => !v) && ![0, 1, 2, 3].some(r => [0, 1, 2].some(c => b[r * 4 + c] === b[r * 4 + c + 1] || b[c * 4 + r] === b[(c + 1) * 4 + r]))) G48.over = true;
+  const best = gLoad('g48best') || 0; if (G48.sc > best) gSave('g48best', G48.sc);
+  gSave('g48', G48); g48Draw(n, merged);
+  if (G48.won && !G48.told) { G48.told = true; gWin('2048! Можна грати далі'); }
+  if (G48.over) { gMsg('Ходів більше немає · ' + G48.sc + ' очок'); haptic('warn'); }
+}
+const T48 = { 2: '#FFFFFF', 4: '#F3E9C6', 8: '#F7C873', 16: '#F4A85C', 32: '#F28B5B', 64: '#EE6B4D', 128: '#F2D46B', 256: '#F2CC52', 512: '#F2C12E', 1024: '#E9B21F', 2048: '#2EA067' };
+function g48Draw(n, merged) {
+  const el = document.getElementById('gm'); if (!el) return;
+  el.innerHTML = '<div class="g48" id="g48">' + G48.b.map((v, i) => '<i class="' + (i === n || (merged || []).indexOf(i) >= 0 ? 'n' : '') + '" style="' + (v ? 'background:' + (T48[v] || '#23262B') + ';' + (v >= 8 ? 'color:#fff;' : '') + 'font-size:' + (v >= 1024 ? 19 : v >= 128 ? 22 : 26) + 'px' : '') + '">' + (v || '') + '</i>').join('') + '</div>';
+  document.getElementById('gbar').innerHTML = '<button onclick="g48New();g48Draw();gMsg(\'\')">Нова гра</button><span class="sc">' + G48.sc + '<span>очок · рекорд ' + (gLoad('g48best') || 0) + '</span></span>';
+}
+function g48Mount(el) {
+  G48 = gLoad('g48'); if (!G48 || !G48.b) g48New();
+  let sx = 0, sy = 0;
+  el.addEventListener('touchstart', e => { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, { passive: true });
+  el.addEventListener('touchmove', e => { e.preventDefault(); }, { passive: false });
+  el.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx, dy = e.changedTouches[0].clientY - sy; if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return; g48Move(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'r' : 'l') : (dy > 0 ? 'd' : 'u')); });
+  let mx = null; el.addEventListener('mousedown', e => { mx = [e.clientX, e.clientY]; }); el.addEventListener('mouseup', e => { if (!mx) return; const dx = e.clientX - mx[0], dy = e.clientY - mx[1]; mx = null; if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return; g48Move(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'r' : 'l') : (dy > 0 ? 'd' : 'u')); });
+  if (!window._g48k) { window._g48k = 1; addEventListener('keydown', e => { if (route !== 'game' || ui.game !== 'g48') return; const d = { ArrowLeft: 'l', ArrowRight: 'r', ArrowUp: 'u', ArrowDown: 'd' }[e.key]; if (d) { e.preventDefault(); g48Move(d); } }); }
+  g48Draw(); gMsg(G48.over ? 'Ходів більше немає' : 'Проведіть пальцем по полю');
+}
+
+// ---------- САПЕР 9×9, 10 мін ----------
+let MS = null;
+function msNew() { MS = { c: Array(81).fill(0).map(() => ({ m: 0, n: 0, o: 0, f: 0 })), start: false, over: false, won: false, flag: false }; }
+const msNb = i => { const r = Math.floor(i / 9), c = i % 9, out = []; for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) { const R = r + dr, C = c + dc; if ((dr || dc) && R >= 0 && R < 9 && C >= 0 && C < 9) out.push(R * 9 + C); } return out; };
+function msTap(i, flag) {
+  if (MS.over) return;
+  const x = MS.c[i];
+  if (flag || MS.flag) { if (!x.o) { x.f = x.f ? 0 : 1; haptic('sel'); } return msDraw(); }
+  if (x.f || x.o) return;
+  if (!MS.start) { MS.start = true; const safe = [i].concat(msNb(i)); const pool = shuffle([...Array(81).keys()].filter(k => safe.indexOf(k) < 0)).slice(0, 10); pool.forEach(k => { MS.c[k].m = 1; }); MS.c.forEach((y, k) => { y.n = msNb(k).filter(j => MS.c[j].m).length; }); }
+  if (x.m) { x.o = 1; x.boom = 1; MS.over = true; MS.c.forEach(y => { if (y.m) y.o = 1; }); haptic('err'); msDraw(); gMsg('Бум! Спробуйте ще'); return; }
+  const st = [i]; while (st.length) { const k = st.pop(), y = MS.c[k]; if (y.o || y.f) continue; y.o = 1; if (!y.n) msNb(k).forEach(j => { if (!MS.c[j].o && !MS.c[j].m) st.push(j); }); }
+  haptic('soft');
+  if (MS.c.every(y => y.m || y.o)) { MS.over = MS.won = true; const w = (gLoad('mswins') || 0) + 1; gSave('mswins', w); msDraw(); gWin('Перемога! Ви знайшли всі міни'); return; }
+  msDraw();
+}
+function msDraw() {
+  const el = document.getElementById('gm'); if (!el) return;
+  el.innerHTML = '<div class="gms">' + MS.c.map((y, i) => '<i data-i="' + i + '" class="' + (y.o ? 'o ' : '') + (y.boom ? 'bm ' : '') + (y.o && y.n && !y.m ? 'c' + y.n : '') + '">' + (y.o ? (y.m ? '✹' : (y.n || '')) : (y.f ? '🚩' : '')) + '</i>').join('') + '</div>';
+  const left = 10 - MS.c.filter(y => y.f).length;
+  document.getElementById('gbar').innerHTML = '<button onclick="msNew();msDraw();gMsg(\'\')">Нова гра</button><button class="' + (MS.flag ? 'on' : '') + '" onclick="MS.flag=!MS.flag;msDraw()">🚩 Прапорці</button><span class="sc">' + left + '<span>мін лишилось · перемог ' + (gLoad('mswins') || 0) + '</span></span>';
+}
+function msMount(el) {
+  if (!MS) msNew();
+  let t = null, lp = false;
+  el.addEventListener('pointerdown', e => { const c = e.target.closest('[data-i]'); if (!c) return; lp = false; t = setTimeout(() => { lp = true; msTap(Number(c.dataset.i), true); }, 420); });
+  el.addEventListener('pointerup', e => { clearTimeout(t); const c = e.target.closest('[data-i]'); if (c && !lp) msTap(Number(c.dataset.i)); });
+  el.addEventListener('pointerleave', () => clearTimeout(t));
+  el.addEventListener('contextmenu', e => e.preventDefault());
+  msDraw(); gMsg('Довге натискання — прапорець');
+}
+
+// ---------- ХРЕСТИКИ-НУЛИКИ ----------
+let TT = null;
+const TL = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+function ttWin(b) { for (const l of TL) if (b[l[0]] && b[l[0]] === b[l[1]] && b[l[0]] === b[l[2]]) return l; return null; }
+function ttMini(b, me) {
+  const w = ttWin(b); if (w) return b[w[0]] === 'o' ? 10 : -10; if (b.every(Boolean)) return 0;
+  const sc = []; b.forEach((v, i) => { if (!v) { b[i] = me; sc.push(ttMini(b, me === 'o' ? 'x' : 'o')); b[i] = ''; } });
+  return me === 'o' ? Math.max(...sc) : Math.min(...sc);
+}
+function ttBot() {
+  const free = TT.b.map((v, i) => v ? -1 : i).filter(i => i >= 0); if (!free.length) return;
+  let pick;
+  if (Math.random() < .22) pick = free[Math.floor(Math.random() * free.length)];   // інколи помиляється
+  else { let best = -99; free.forEach(i => { TT.b[i] = 'o'; const v = ttMini(TT.b, 'x'); TT.b[i] = ''; if (v > best) { best = v; pick = i; } }); }
+  TT.b[pick] = 'o';
+}
+function ttTap(i) {
+  if (TT.done || TT.b[i]) return;
+  TT.b[i] = 'x'; haptic('sel');
+  if (!ttEnd()) { ttBot(); ttEnd(); }
+  ttDraw();
+}
+function ttEnd() {
+  const w = ttWin(TT.b);
+  if (w) { TT.done = true; TT.line = w; const k = TT.b[w[0]] === 'x' ? 'you' : 'bot'; TT.score[k]++; gSave('ttt', TT.score); if (k === 'you') gWin('Ви виграли!'); else { gMsg('Телефон виграв'); haptic('warn'); } return true; }
+  if (TT.b.every(Boolean)) { TT.done = true; TT.score.draw++; gSave('ttt', TT.score); gMsg('Нічия'); return true; }
+  return false;
+}
+function ttDraw() {
+  const el = document.getElementById('gm'); if (!el) return;
+  el.innerHTML = '<div class="gtt">' + TT.b.map((v, i) => '<button class="' + (v || '') + ((TT.line || []).indexOf(i) >= 0 ? ' w' : '') + '" onclick="ttTap(' + i + ')" aria-label="Клітинка ' + (i + 1) + '">' + (v === 'x' ? '✕' : v === 'o' ? '○' : '') + '</button>').join('') + '</div>';
+  document.getElementById('gbar').innerHTML = '<button onclick="ttNew()">Нова гра</button><span class="sc">' + TT.score.you + ' : ' + TT.score.bot + '<span>ви : телефон · нічиїх ' + TT.score.draw + '</span></span>';
+}
+function ttNew() { TT = { b: Array(9).fill(''), done: false, line: null, score: (TT && TT.score) || gLoad('ttt') || { you: 0, bot: 0, draw: 0 }, first: !(TT && TT.first) }; if (!TT.first) ttBot(); gMsg(TT.first ? 'Ви ходите першим ✕' : 'Телефон почав'); ttDraw(); }
+function tttMount() { if (!TT) ttNew(); else ttDraw(); }
 
 // ---------- голосування ----------
 function polls() {

@@ -772,6 +772,28 @@ a.urow:active{opacity:.6}
 .fpc.ok .rg b{color:var(--ok)}
 .fpc.ok .t::after{content:" ✓";color:var(--ok)}
 .fpc .rg b svg,.fph .rg .c svg{transform:none}
+
+/* ---------- тетрис ---------- */
+.tet{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start}
+.tet .bd{position:relative;border-radius:16px;overflow:hidden;box-shadow:var(--shadow-2),inset 0 0 0 1px var(--line2);background:var(--soft);touch-action:none}
+.tet canvas{display:block}
+.tet .sd{display:flex;flex-direction:column;gap:8px;min-width:0}
+.tet .bx{background:var(--card);border-radius:14px;padding:8px;box-shadow:var(--shadow-1);display:flex;flex-direction:column;align-items:center;gap:4px}
+.tet .bx b{font-size:10.5px;letter-spacing:.08em;color:var(--muted);font-weight:800;text-transform:uppercase}
+.tet .bx .v{font-size:18px;font-weight:900;letter-spacing:-.02em;line-height:1}
+.tet .bx.hold{cursor:pointer}
+.tet .ov{position:absolute;inset:0;display:grid;place-items:center;text-align:center;background:rgba(17,19,23,.62);color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);padding:16px}
+.tet .ov b{display:block;font-size:22px;font-weight:900;margin-bottom:4px}
+.tet .ov span{font-size:13px;opacity:.85}
+.tet .ov button{margin-top:12px;height:42px;border:none;border-radius:14px;padding:0 20px;font:inherit;font-weight:800;background:var(--yellow);color:#23262B}
+.tpad{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:10px}
+.tpad button{height:54px;border:none;border-radius:16px;background:var(--card);box-shadow:var(--shadow-1);color:var(--ink);display:grid;place-items:center;font:inherit;font-size:20px;font-weight:900;touch-action:none}
+.tpad button:active{transform:scale(.94);background:var(--soft)}
+.tpad .hd{grid-column:span 5;height:48px;background:linear-gradient(135deg,#F9D867,#EDB72F);color:#23262B;font-size:15px}
+.tline{animation:tline 220ms ease}
+body.gamemode nav.tabs{transform:translateY(160%);transition:transform 300ms var(--spring)}
+body.gamemode .screen{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+body.gamemode .edge{display:none}
 </style>
 </head>
 <body>
@@ -1071,6 +1093,7 @@ function render() {
   if (anim) { void scr.offsetWidth; scr.className = 'screen in-' + anim; }
   setNav();
   syncBack();
+  document.body.classList.toggle('gamemode', route === 'game');
 }
 
 function skeleton() {
@@ -1716,6 +1739,7 @@ function fpubDel(row) { ask('Видалити цю витрату?', ok => { if 
 //  ІГРИ — працюють повністю в телефоні, інтернет не потрібен
 // =====================================================================
 const GAMES = [
+  ['tet', 'Тетріс', 'Класика з рівнями', '▦', 'linear-gradient(145deg,#FF8A5B,#E5484D)'],
   ['sol', 'Косинка', 'Класичний пасьянс', '♠', 'linear-gradient(145deg,#2E9B5F,#1E7A4C)'],
   ['g48', '2048', 'Зʼєднуйте плитки', '2048', 'linear-gradient(145deg,#F7D35A,#E9AE2A)'],
   ['mines', 'Сапер', 'Знайдіть усі міни', '✹', 'linear-gradient(145deg,#6C7A89,#3F4A57)'],
@@ -1723,7 +1747,7 @@ const GAMES = [
 ];
 const GAME_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="11" rx="5.5" fill="#fff"/><path d="M7 10.5v4M5 12.5h4" stroke="#7A4CE8" stroke-width="2" stroke-linecap="round"/><circle cx="15.5" cy="11.3" r="1.3" fill="#FF5A4F"/><circle cx="18" cy="13.7" r="1.3" fill="#F4C542"/></svg>';
 function gamesEntry() {
-  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Косинка, 2048, сапер, хрестики-нулики</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
+  return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Тетріс, косинка, 2048, сапер</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
 }
 function gamesScreen() {
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Ігри</div></div>' +
@@ -1736,12 +1760,181 @@ function gameScreen() {
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">' + g[1] + '</div></div>' +
     '<div class="gbar" id="gbar"></div><div id="gm"></div><div class="gmsg" id="gmsg"></div>';
 }
-function gameMount() { const el = document.getElementById('gm'); if (!el) return; ({ sol: solMount, g48: g48Mount, mines: msMount, ttt: tttMount }[ui.game] || solMount)(el); }
+function gameMount() { const el = document.getElementById('gm'); if (!el) return; ({ tet: tetMount, sol: solMount, g48: g48Mount, mines: msMount, ttt: tttMount }[ui.game] || solMount)(el); }
 function gLoad(k) { try { return JSON.parse(localStorage.getItem('b10_g_' + k) || 'null'); } catch (e) { return null; } }
 function gSave(k, v) { try { localStorage.setItem('b10_g_' + k, JSON.stringify(v)); } catch (e) {} }
 function gMsg(t) { const m = document.getElementById('gmsg'); if (m) m.innerHTML = t || ''; }
 function gWin(t) { gMsg(t); haptic('ok'); try { xburst(innerWidth / 2, innerHeight * .4, 50); } catch (e) {} }
 function shuffle(a) { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+
+
+// ---------- ТЕТРІС ----------
+const TP = {
+  I: [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], O: [[1, 1], [1, 1]],
+  T: [[0, 1, 0], [1, 1, 1], [0, 0, 0]], S: [[0, 1, 1], [1, 1, 0], [0, 0, 0]], Z: [[1, 1, 0], [0, 1, 1], [0, 0, 0]],
+  J: [[1, 0, 0], [1, 1, 1], [0, 0, 0]], L: [[0, 0, 1], [1, 1, 1], [0, 0, 0]]
+};
+const TC = { I: '#3BC9DB', O: '#FCC419', T: '#9775FA', S: '#51CF66', Z: '#FF6B6B', J: '#4C6EF5', L: '#FF922B' };
+// SRS: зсуви при обертанні (x вправо, y вгору)
+const KJ = { '01': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]], '10': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]], '12': [[0, 0], [1, 0], [1, -1], [0, 2], [1, 2]], '21': [[0, 0], [-1, 0], [-1, 1], [0, -2], [-1, -2]],
+  '23': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]], '32': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]], '30': [[0, 0], [-1, 0], [-1, -1], [0, 2], [-1, 2]], '03': [[0, 0], [1, 0], [1, 1], [0, -2], [1, -2]] };
+const KI = { '01': [[0, 0], [-2, 0], [1, 0], [-2, -1], [1, 2]], '10': [[0, 0], [2, 0], [-1, 0], [2, 1], [-1, -2]], '12': [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, -1]], '21': [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]],
+  '23': [[0, 0], [2, 0], [-1, 0], [2, 1], [-1, -2]], '32': [[0, 0], [-2, 0], [1, 0], [-2, -1], [1, 2]], '30': [[0, 0], [1, 0], [-2, 0], [1, -2], [-2, 1]], '03': [[0, 0], [-1, 0], [2, 0], [-1, 2], [2, -1]] };
+const rotM = (m, d) => { const n = m.length, o = m.map(r => r.slice()); for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) o[y][x] = d > 0 ? m[n - 1 - x][y] : m[x][n - 1 - y]; return o; };
+let TET = null;
+function tetNew() {
+  TET = { g: Array(22).fill(0).map(() => Array(10).fill(0)), bag: [], next: [], hold: null, held: false, cur: null, sc: 0, lines: 0, lvl: 1, over: false, pause: false, acc: 0, lock: 0, resets: 0, clearing: null, last: 0, flash: 0 };
+  for (let i = 0; i < 4; i++) TET.next.push(tetBag());
+  tetSpawn();
+}
+function tetBag() { if (!TET.bag.length) TET.bag = shuffle(['I', 'O', 'T', 'S', 'Z', 'J', 'L']); return TET.bag.pop(); }
+function tetSpawn(k) {
+  k = k || TET.next.shift(); if (TET.next.length < 4) TET.next.push(tetBag());
+  const m = TP[k].map(r => r.slice());
+  TET.cur = { k: k, m: m, r: 0, x: Math.floor((10 - m.length) / 2), y: k === 'I' ? 1 : 2 };
+  TET.lock = 0; TET.resets = 0; TET.acc = 0;
+  if (tetHit(TET.cur.m, TET.cur.x, TET.cur.y)) { TET.over = true; const b = gLoad('tetbest') || 0; if (TET.sc > b) gSave('tetbest', TET.sc); haptic('err'); }
+}
+function tetHit(m, X, Y) { for (let y = 0; y < m.length; y++) for (let x = 0; x < m.length; x++) if (m[y][x]) { const gx = X + x, gy = Y + y; if (gx < 0 || gx >= 10 || gy >= 22 || (gy >= 0 && TET.g[gy][gx])) return true; } return false; }
+function tetGround() { const c = TET.cur; return tetHit(c.m, c.x, c.y + 1); }
+function tetTouch() { if (tetGround() && TET.resets < 15) { TET.lock = 0; TET.resets++; } }
+function tetMove(dx) { const c = TET.cur; if (!tetActive()) return; if (!tetHit(c.m, c.x + dx, c.y)) { c.x += dx; tetTouch(); haptic('sel'); } }
+function tetRot(d) {
+  const c = TET.cur; if (!tetActive() || c.k === 'O') return;
+  const nr = (c.r + (d > 0 ? 1 : 3)) % 4, m = rotM(c.m, d), K = (c.k === 'I' ? KI : KJ)['' + c.r + nr];
+  for (const [kx, ky] of K) if (!tetHit(m, c.x + kx, c.y - ky)) { c.m = m; c.x += kx; c.y -= ky; c.r = nr; tetTouch(); haptic('sel'); return; }
+}
+function tetSoft() { const c = TET.cur; if (!tetActive()) return; if (!tetHit(c.m, c.x, c.y + 1)) { c.y++; TET.sc += 1; TET.acc = 0; } }
+function tetHard() { const c = TET.cur; if (!tetActive()) return; let n = 0; while (!tetHit(c.m, c.x, c.y + 1)) { c.y++; n++; } TET.sc += n * 2; TET.flash = 1; tetLock(); }
+function tetHold() {
+  if (!tetActive() || TET.held) return;
+  const k = TET.cur.k; if (TET.hold) { const h = TET.hold; TET.hold = k; tetSpawn(h); } else { TET.hold = k; tetSpawn(); }
+  TET.held = true; haptic('soft');
+}
+function tetActive() { return TET && !TET.over && !TET.pause && !TET.clearing; }
+function tetLock() {
+  const c = TET.cur;
+  for (let y = 0; y < c.m.length; y++) for (let x = 0; x < c.m.length; x++) if (c.m[y][x] && c.y + y >= 0) TET.g[c.y + y][c.x + x] = c.k;
+  const full = []; TET.g.forEach((row, i) => { if (row.every(Boolean)) full.push(i); });
+  TET.held = false;
+  if (full.length) { TET.clearing = { rows: full, t: performance.now() }; haptic(full.length >= 4 ? 'ok' : 'mid'); }
+  else { haptic('soft'); tetSpawn(); }
+}
+function tetClearDone() {
+  const n = TET.clearing.rows.length;
+  TET.g = TET.g.filter((r, i) => TET.clearing.rows.indexOf(i) < 0); while (TET.g.length < 22) TET.g.unshift(Array(10).fill(0));
+  TET.sc += [0, 100, 300, 500, 800][n] * TET.lvl; TET.lines += n;
+  const nl = Math.floor(TET.lines / 10) + 1; if (nl > TET.lvl) { TET.lvl = nl; tetToast('Рівень ' + nl); }
+  if (n === 4) tetToast('Тетріс! +' + 800 * (TET.lvl));
+  TET.clearing = null; tetSpawn(); tetSide();
+}
+function tetToast(t) { const m = document.getElementById('gmsg'); if (m) { m.textContent = t; clearTimeout(tetToast.t); tetToast.t = setTimeout(() => { if (m) m.textContent = ''; }, 1600); } }
+function tetSpeed() { return Math.max(70, 820 * Math.pow(.86, TET.lvl - 1)); }
+function tetLoop(t) {
+  const cv = document.getElementById('tcv');
+  if (!cv || route !== 'game' || ui.game !== 'tet') { TET && (TET.raf = 0); return; }
+  TET.raf = requestAnimationFrame(tetLoop);
+  const dt = Math.min(100, t - (TET.last || t)); TET.last = t;
+  if (TET.clearing) { if (t - TET.clearing.t > 220) tetClearDone(); }
+  else if (!TET.over && !TET.pause) {
+    TET.acc += dt;
+    if (tetGround()) { TET.lock += dt; if (TET.lock > 480) tetLock(); }
+    else if (TET.acc >= tetSpeed()) { TET.acc = 0; TET.cur.y++; }
+  }
+  tetDraw(cv, t);
+}
+function tetColors() { const cs = getComputedStyle(document.documentElement); return { bg: cs.getPropertyValue('--soft').trim() || '#20242B', line: cs.getPropertyValue('--line').trim() || '#2A2E36' }; }
+function tetBlock(ctx, x, y, c, k, alpha) {
+  const r = Math.max(2, c * .2), p = Math.max(1, c * .06);
+  ctx.globalAlpha = alpha == null ? 1 : alpha;
+  const g = ctx.createLinearGradient(0, y, 0, y + c); g.addColorStop(0, shade(TC[k], 22)); g.addColorStop(1, TC[k]);
+  ctx.fillStyle = g; rr(ctx, x + p, y + p, c - 2 * p, c - 2 * p, r); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.35)'; rr(ctx, x + p + c * .14, y + p + c * .1, c * .5, c * .14, c * .07); ctx.fill();
+  ctx.globalAlpha = 1;
+}
+function rr(ctx, x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+function shade(hex, p) { const n = parseInt(hex.slice(1), 16), f = v => Math.min(255, Math.max(0, v + p * 2.55)); return 'rgb(' + f(n >> 16) + ',' + f((n >> 8) & 255) + ',' + f(n & 255) + ')'; }
+function tetDraw(cv, t) {
+  const ctx = cv.getContext('2d'), c = cv._c, dpr = cv._dpr, C = tetColors();
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.fillStyle = C.bg; ctx.fillRect(0, 0, c * 10, c * 20);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 1; ctx.globalAlpha = .55;
+  for (let x = 1; x < 10; x++) { ctx.beginPath(); ctx.moveTo(x * c + .5, 0); ctx.lineTo(x * c + .5, c * 20); ctx.stroke(); }
+  for (let y = 1; y < 20; y++) { ctx.beginPath(); ctx.moveTo(0, y * c + .5); ctx.lineTo(c * 10, y * c + .5); ctx.stroke(); }
+  ctx.globalAlpha = 1;
+  for (let y = 2; y < 22; y++) for (let x = 0; x < 10; x++) { const k = TET.g[y][x]; if (k) tetBlock(ctx, x * c, (y - 2) * c, c, k); }
+  if (TET.clearing) {
+    const a = 1 - (t - TET.clearing.t) / 220;
+    ctx.fillStyle = 'rgba(255,255,255,' + Math.max(0, a).toFixed(2) + ')';
+    TET.clearing.rows.forEach(y => { if (y >= 2) ctx.fillRect(0, (y - 2) * c, c * 10, c); });
+  } else if (!TET.over) {
+    const p = TET.cur; let gy = p.y; while (!tetHit(p.m, p.x, gy + 1)) gy++;
+    // привид
+    for (let y = 0; y < p.m.length; y++) for (let x = 0; x < p.m.length; x++) if (p.m[y][x] && gy + y >= 2) { ctx.strokeStyle = TC[p.k]; ctx.globalAlpha = .55; ctx.lineWidth = 2; rr(ctx, (p.x + x) * c + 2.5, (gy + y - 2) * c + 2.5, c - 5, c - 5, c * .18); ctx.stroke(); ctx.globalAlpha = .12; ctx.fillStyle = TC[p.k]; ctx.fill(); ctx.globalAlpha = 1; }
+    const lockFade = tetGround() ? 1 - Math.min(.35, TET.lock / 480 * .35) : 1;
+    for (let y = 0; y < p.m.length; y++) for (let x = 0; x < p.m.length; x++) if (p.m[y][x] && p.y + y >= 2) tetBlock(ctx, (p.x + x) * c, (p.y + y - 2) * c, c, p.k, lockFade);
+  }
+  if (TET.flash) { TET.flash = 0; cv.parentNode.classList.remove('tline'); void cv.parentNode.offsetWidth; }
+  const ov = document.getElementById('tov');
+  if (ov) { const st = TET.over ? 'over' : TET.pause ? 'pause' : ''; if (ov.dataset.st !== st) { ov.dataset.st = st; ov.style.display = st ? 'grid' : 'none';
+    ov.innerHTML = st === 'over' ? '<div><b>Гра закінчена</b><span>' + fmtMoney(TET.sc) + ' очок · рекорд ' + fmtMoney(gLoad('tetbest') || 0) + '</span><br><button onclick="tetNew();tetSide()">Ще раз</button></div>' : '<div><b>Пауза</b><span>Торкніться, щоб продовжити</span></div>'; } }
+  if (!tetDraw.n || t - tetDraw.n > 150) { tetDraw.n = t; tetSide(); }
+}
+function tetMini(id, k) {
+  const cv = document.getElementById(id); if (!cv) return;
+  const dpr = Math.min(2, devicePixelRatio || 1), W = cv.clientWidth || 60, H = cv.clientHeight || 40;
+  if (cv.width !== W * dpr) { cv.width = W * dpr; cv.height = H * dpr; }
+  const ctx = cv.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
+  if (!k) return;
+  const m = TP[k], cells = []; m.forEach((r, y) => r.forEach((v, x) => { if (v) cells.push([x, y]); }));
+  const minx = Math.min(...cells.map(q => q[0])), maxx = Math.max(...cells.map(q => q[0])), miny = Math.min(...cells.map(q => q[1])), maxy = Math.max(...cells.map(q => q[1]));
+  const c = Math.min(W / 4.4, H / 2.6), ox = (W - (maxx - minx + 1) * c) / 2, oy = (H - (maxy - miny + 1) * c) / 2;
+  ctx.globalAlpha = id === 'thold' && TET.held ? .4 : 1;
+  cells.forEach(([x, y]) => tetBlock(ctx, ox + (x - minx) * c, oy + (y - miny) * c, c, k, id === 'thold' && TET.held ? .4 : 1));
+}
+function tetSide() {
+  if (!TET) return;
+  const set = (id, v) => { const e = document.getElementById(id); if (e && e.textContent !== String(v)) e.textContent = v; };
+  set('tsc', fmtMoney(TET.sc)); set('tlv', TET.lvl); set('tln', TET.lines);
+  tetMini('thold', TET.hold); tetMini('tn0', TET.next[0]); tetMini('tn1', TET.next[1]); tetMini('tn2', TET.next[2]);
+}
+function tetPause(on) { if (!TET || TET.over) return; TET.pause = on == null ? !TET.pause : on; TET.last = 0; }
+function tetMount(el) {
+  if (!TET || TET.over) tetNew(); else if (TET.sc || TET.lines) TET.pause = true;
+  const W = el.clientWidth, side = Math.max(78, Math.round(W * .24)), availH = Math.max(300, innerHeight - 350);
+  const c = Math.floor(Math.min((W - side - 10) / 10, availH / 20)), dpr = Math.min(2, devicePixelRatio || 1);
+  el.innerHTML = '<div class="tet"><div class="bd" id="tbd" style="width:' + c * 10 + 'px;height:' + c * 20 + 'px"><canvas id="tcv" width="' + c * 10 * dpr + '" height="' + c * 20 * dpr + '" style="width:' + c * 10 + 'px;height:' + c * 20 + 'px"></canvas><div class="ov" id="tov" style="display:none"></div></div>' +
+    '<div class="sd"><div class="bx hold" onclick="tetHold()"><b>Запас</b><canvas id="thold" style="width:100%;height:' + Math.round(c * 2.2) + 'px"></canvas></div>' +
+    '<div class="bx"><b>Далі</b><canvas id="tn0" style="width:100%;height:' + Math.round(c * 2.2) + 'px"></canvas><canvas id="tn1" style="width:80%;height:' + Math.round(c * 1.7) + 'px;opacity:.75"></canvas><canvas id="tn2" style="width:65%;height:' + Math.round(c * 1.4) + 'px;opacity:.5"></canvas></div>' +
+    '<div class="bx"><b>Очки</b><span class="v" id="tsc">0</span></div><div class="bx"><b>Рівень</b><span class="v" id="tlv">1</span></div><div class="bx"><b>Лінії</b><span class="v" id="tln">0</span></div></div></div>' +
+    '<div class="tpad"><button data-a="rl" aria-label="Повернути ліворуч">⟲</button><button data-a="l" aria-label="Ліворуч">◀</button><button data-a="d" aria-label="Вниз">▼</button><button data-a="r" aria-label="Праворуч">▶</button><button data-a="rr" aria-label="Повернути праворуч">⟳</button><button class="hd" data-a="h">Скинути вниз</button></div>';
+  const cv = document.getElementById('tcv'); cv._c = c; cv._dpr = dpr;
+  document.getElementById('gbar').innerHTML = '<button onclick="tetNew();tetSide();gMsg(\'\')">Нова гра</button><button id="tpb" onclick="tetPause();this.textContent=TET.pause?\'▶ Далі\':\'❚❚ Пауза\'">' + (TET.pause ? '▶ Далі' : '❚❚ Пауза') + '</button><span class="sc">' + fmtMoney(gLoad('tetbest') || 0) + '<span>рекорд</span></span>';
+  // кнопки з автоповтором
+  const act = { l: () => tetMove(-1), r: () => tetMove(1), d: () => tetSoft(), rl: () => tetRot(-1), rr: () => tetRot(1), h: () => tetHard() };
+  el.querySelectorAll('.tpad button').forEach(b => {
+    let t1, t2; const a = b.dataset.a, rep = a === 'l' || a === 'r' || a === 'd';
+    b.addEventListener('pointerdown', e => { e.preventDefault(); if (TET.pause) { tetPause(false); return; } act[a](); if (rep) t1 = setTimeout(() => { t2 = setInterval(act[a], a === 'd' ? 40 : 55); }, 170); });
+    const stop = () => { clearTimeout(t1); clearInterval(t2); };
+    b.addEventListener('pointerup', stop); b.addEventListener('pointerleave', stop); b.addEventListener('pointercancel', stop);
+  });
+  // жести на полі: торкання — поворот, тягнути — рух, різко вниз — скинути
+  const bd = document.getElementById('tbd'); let sx, sy, lx, ly, st, moved;
+  bd.addEventListener('pointerdown', e => { sx = lx = e.clientX; sy = ly = e.clientY; st = performance.now(); moved = false; bd.setPointerCapture(e.pointerId); });
+  bd.addEventListener('pointermove', e => { if (sx == null) return; if (TET.pause || TET.over) return;
+    while (e.clientX - lx > c) { tetMove(1); lx += c; moved = true; } while (lx - e.clientX > c) { tetMove(-1); lx -= c; moved = true; }
+    while (e.clientY - ly > c) { tetSoft(); ly += c; moved = true; } });
+  bd.addEventListener('pointerup', e => { if (sx == null) return; const dy = e.clientY - sy, dt = performance.now() - st;
+    if (TET.over) { sx = null; return; } if (TET.pause) { tetPause(false); sx = null; return; }
+    if (dy > 60 && dt < 220) tetHard(); else if (dy < -50 && dt < 260) tetHold(); else if (!moved && Math.abs(e.clientX - sx) < 10 && Math.abs(dy) < 10) tetRot(1);
+    sx = null; });
+  if (!window._tetk) { window._tetk = 1;
+    addEventListener('keydown', e => { if (route !== 'game' || ui.game !== 'tet' || !TET) return; const m = { ArrowLeft: () => tetMove(-1), ArrowRight: () => tetMove(1), ArrowDown: () => tetSoft(), ArrowUp: () => tetRot(1), z: () => tetRot(-1), x: () => tetRot(1), ' ': () => tetHard(), c: () => tetHold(), p: () => tetPause() }[e.key]; if (m) { e.preventDefault(); m(); } });
+    document.addEventListener('visibilitychange', () => { if (document.hidden) tetPause(true); }); }
+  TET.last = 0; if (!TET.raf) TET.raf = requestAnimationFrame(tetLoop);
+  tetSide(); gMsg('Торкніться поля — поворот · проведіть — рух · різко вниз — скинути');
+  setTimeout(() => gMsg(''), 4000);
+}
 
 // ---------- КОСИНКА (Klondike, по 1 карті) ----------
 const SU = ['♠', '♥', '♦', '♣'], RK = ['', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
@@ -1795,8 +1988,9 @@ function solAuto() {
 }
 function solCanAuto() { return !SOL.won && !SOL.stock.length && !SOL.waste.length && SOL.t.every(col => col.every(c => c.up)); }
 function cardHtml(c, x, y, w, h, k, fs) {
-  if (!c.up) return '<div class="cd dn" style="left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px" data-k="' + k + '"></div>';
-  return '<div class="cd' + (red(c) ? ' red' : '') + '" style="left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px;--fs:' + fs + 'px" data-k="' + k + '"><span class="rk">' + RK[c.r] + '</span><span class="su">' + SU[c.s] + '</span><span class="bg">' + SU[c.s] + '</span></div>';
+  const id = ' data-id="' + c.s + '-' + c.r + '"';
+  if (!c.up) return '<div class="cd dn"' + id + ' style="left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px" data-k="' + k + '"></div>';
+  return '<div class="cd' + (red(c) ? ' red' : '') + '"' + id + ' style="left:' + x + 'px;top:' + y + 'px;width:' + w + 'px;height:' + h + 'px;--fs:' + fs + 'px" data-k="' + k + '"><span class="rk">' + RK[c.r] + '</span><span class="su">' + SU[c.s] + '</span><span class="bg">' + SU[c.s] + '</span></div>';
 }
 function solDraw() {
   const el = document.getElementById('gm'); if (!el) return;
@@ -1819,7 +2013,11 @@ function solDraw() {
     col.forEach((c, i) => { H += cardHtml(c, X(ci), y, w, h, 't,' + ci + ',' + i, fs); y += c.up ? upOff : dnOff; });
     tallest = Math.max(tallest, y - (col.length ? (col[col.length - 1].up ? upOff : dnOff) : 0) + h);
   });
+  const before = {}; el.querySelectorAll('.cd[data-id]').forEach(n => { before[n.dataset.id] = [n.offsetLeft, n.offsetTop, n.classList.contains('dn')]; });
   el.innerHTML = '<div class="sol" style="height:' + (tallest + 8) + 'px">' + H + '</div>';
+  if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) el.querySelectorAll('.cd[data-id]').forEach(n => { const b = before[n.dataset.id]; if (!b) return; const dx = b[0] - n.offsetLeft, dy = b[1] - n.offsetTop, flip = b[2] && !n.classList.contains('dn');
+    if ((dx || dy) && n.animate) { n.style.zIndex = 5; const an = n.animate([{ transform: 'translate(' + dx + 'px,' + dy + 'px)' }, { transform: 'none' }], { duration: 230, easing: 'cubic-bezier(.2,.8,.2,1)' }); an.onfinish = () => { n.style.zIndex = ''; }; }
+    else if (flip && n.animate) n.animate([{ transform: 'scaleX(0)' }, { transform: 'none' }], { duration: 200, easing: 'ease-out' }); });
   const best = gLoad('solbest');
   document.getElementById('gbar').innerHTML = '<button onclick="solNew();solDraw();gMsg(\'\')">Нова гра</button><button onclick="if(SOL.hist.length){const o=JSON.parse(SOL.hist.pop());Object.assign(SOL,o);SOL.won=false;gSave(\'sol\',SOL);solDraw();haptic(\'sel\')}"' + (SOL.hist.length ? '' : ' disabled') + '>↶ Назад</button>' +
     (solCanAuto() ? '<button class="on" onclick="solAuto()">Завершити</button>' : '') + '<span class="sc">' + SOL.moves + '<span>ходів' + (best ? ' · рекорд ' + best : '') + '</span></span>';

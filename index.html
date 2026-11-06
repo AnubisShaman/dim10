@@ -873,6 +873,55 @@ body.gamemode .edge{display:none}
 .adhero button{margin-left:auto;flex:none;height:42px;border:none;border-radius:14px;padding:0 14px;font:inherit;font-weight:900;background:#fff;color:#D9480F}
 :root[data-theme="dark"] .adc .ft button.go{color:#111317}
 .adpick button.ad-meet{grid-column:span 3;flex-direction:row;justify-content:center;gap:10px;font-size:14px}
+
+/* ===== Дошка: паперові оголошення з відривними листочками ===== */
+:root{--paper:#FFFFFF;--paper-ink:#23262B;--paper-mut:#6B7079;--board:#E4E1DA}
+:root[data-theme="dark"]{--paper:#262A31;--paper-ink:#ECEEF1;--paper-mut:#9AA1AB;--board:#16191E}
+.brd{display:flex;flex-direction:column;gap:18px;padding:18px 12px 8px;margin:0 -4px;border-radius:26px;background:var(--board);box-shadow:inset 0 1px 3px rgba(0,0,0,.08)}
+.ntc{position:relative;background:var(--paper);color:var(--paper-ink);border-radius:4px;padding:18px 16px 0;box-shadow:0 1px 1px rgba(0,0,0,.08),0 10px 18px -10px rgba(0,0,0,.35);transform:rotate(var(--rot,0deg))}
+.ntc .tape{position:absolute;top:-9px;left:50%;width:58px;height:18px;margin-left:-29px;background:var(--hue);opacity:.55;transform:rotate(var(--trot,-2deg));border-radius:2px;mix-blend-mode:multiply}
+:root[data-theme="dark"] .ntc .tape{mix-blend-mode:normal;opacity:.75}
+.ntc .kd{font-size:12.5px;font-weight:800;color:var(--hue)}
+.ntc .ti{font-size:19px;font-weight:800;line-height:1.2;letter-spacing:-.01em;margin-top:4px;text-wrap:balance}
+.ntc .tx{font-size:14px;line-height:1.5;color:var(--paper-mut);margin-top:6px;white-space:pre-line}
+.ntc .pr{display:inline-block;margin-top:10px;font-size:17px;font-weight:900;padding:2px 10px;border-radius:6px;background:var(--tint);color:var(--paper-ink)}
+.ntc .by{font-size:12.5px;color:var(--paper-mut);font-weight:600;margin-top:12px;padding-bottom:12px}
+.ntc .mo{position:absolute;top:8px;right:8px;width:30px;height:30px;border:none;border-radius:50%;background:transparent;color:var(--paper-mut);font-size:18px;line-height:1}
+.ntc .tabs{display:flex;margin:0 -16px;border-top:1.5px dashed var(--line2);height:98px}
+.ntc .tabs a{flex:1;min-width:0;display:flex;align-items:center;justify-content:center;border-right:1.5px dashed var(--line2);text-decoration:none;color:var(--paper-ink);transform-origin:top center}
+.ntc .tabs a:last-child{border-right:none}
+.ntc .tabs span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:92px;letter-spacing:.02em}
+.ntc .tabs a.torn{visibility:hidden}
+.ntc .tabs a.rip{animation:rip 420ms cubic-bezier(.3,.7,.4,1) forwards}
+@keyframes rip{40%{transform:translateY(6px) rotate(-6deg)}100%{transform:translateY(60px) rotate(14deg);opacity:0}}
+.ntc .own{display:flex;gap:8px;border-top:1.5px dashed var(--line2);margin:0 -16px;padding:10px 16px 12px}
+.ntc .own button{height:38px;border:none;border-radius:10px;padding:0 14px;font:inherit;font-weight:800;font-size:13px;background:var(--soft);color:var(--paper-ink)}
+.bhd{display:flex;align-items:center;gap:12px}
+.bhd .h2{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:1.25rem}
+.bhd .hang{height:42px;border:none;border-radius:14px;padding:0 14px;font:inherit;font-weight:800;font-size:14px;background:var(--ink);color:var(--bg);display:inline-flex;align-items:center;gap:6px}
+.bcount{font-size:13.5px;color:var(--muted);font-weight:500;margin-top:-6px}
+.bempty{text-align:center;padding:28px 12px;color:var(--muted);font-size:14.5px;line-height:1.5}
+.bempty b{display:block;color:var(--ink);font-size:17px;margin-bottom:4px}
+.pvw{pointer-events:none;margin:4px 0 6px}
+.pvw .ntc{transform:rotate(-.6deg)}
+@media (prefers-reduced-motion:reduce){.ntc{transform:none}.ntc .tabs a.rip{animation:none}}
+/* ===== Ігри: компанія — плитки, самому — список з рекордами ===== */
+.ghd{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:4px 2px -4px}
+.ghd b{font-size:17px;font-weight:800}
+.ghd span{font-size:13px;color:var(--muted);font-weight:500}
+.gpty{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gpt{border:none;font:inherit;text-align:left;color:#fff;border-radius:24px;padding:14px;min-height:150px;display:flex;flex-direction:column;justify-content:space-between;position:relative;overflow:hidden;box-shadow:var(--shadow-2);cursor:pointer}
+.gpt .art{position:absolute;right:-6px;top:-10px;font-size:78px;line-height:1;opacity:.95;filter:drop-shadow(0 6px 10px rgba(0,0,0,.18));transform:rotate(8deg)}
+.gpt .art.tx{font-weight:900;font-size:64px;letter-spacing:-.04em;color:rgba(255,255,255,.92);top:0;right:6px}
+.gpt b{font-size:18px;font-weight:900;letter-spacing:-.01em;position:relative}
+.gpt span{font-size:12.5px;font-weight:600;opacity:.88;position:relative;display:block;margin-top:2px}
+.gsolo{background:var(--card);border-radius:22px;box-shadow:var(--shadow-1);padding:2px 14px}
+.gsolo button{display:flex;align-items:center;gap:12px;width:100%;border:none;background:none;font:inherit;color:var(--ink);text-align:left;padding:11px 0;border-bottom:1px solid var(--line);cursor:pointer}
+.gsolo button:last-child{border-bottom:none}
+.gsolo .gi{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;color:#fff;font-weight:900;flex:none}
+.gsolo .m{flex:1;min-width:0}.gsolo .m b{display:block;font-size:15.5px}.gsolo .m span{font-size:12.5px;color:var(--muted);font-weight:500}
+.gsolo .rec{font-size:13px;font-weight:800;color:var(--ink);text-align:right;white-space:nowrap}
+.gsolo .rec small{display:block;font-size:11px;color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
@@ -1828,12 +1877,25 @@ const GAME_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="tr
 function gamesEntry() {
   return '<button class="gent" onclick="go(\'games\')"><span class="ic">' + GAME_IC + '</span><span><span class="t" style="display:block">Ігри</span><span class="s" style="display:block">Еліас, крокодил, шпигун, тетріс, косинка</span></span><span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span></button>';
 }
-function gCardHtml(g) { return '<button class="gcard" onclick="ui.game=\'' + g[0] + '\';go(\'game\')"><span class="gi" style="background:' + g[4] + ';color:#fff;font-size:' + (g[3].length > 2 ? '15px' : '26px') + '">' + g[3] + '</span><b>' + g[1] + '</b><span>' + g[2] + '</span></button>'; }
+const PARTY_META = { alias: ['Аа', 'tx', '2–4 команди'], croc: ['🐊', '', 'від 3 гравців'], spy: ['🕵️', '', '3–12 гравців'], tod: ['?!', 'tx', 'будь-яка компанія'] };
+function gRecord(k) {
+  if (k === 'tet') { const b = gLoad('tetbest'); return b ? [fmtMoney(b), 'рекорд'] : null; }
+  if (k === 'sol') { const b = gLoad('solbest'); return b ? [b, 'ходів, рекорд'] : null; }
+  if (k === 'g48') { const b = gLoad('g48best'); return b ? [fmtMoney(b), 'рекорд'] : null; }
+  if (k === 'mines') { const b = gLoad('mswins'); return b ? [b, plural(b, 'перемога', 'перемоги', 'перемог')] : null; }
+  if (k === 'ttt') { const b = gLoad('ttt'); return b && (b.you + b.bot + b.draw) ? [b.you + ' : ' + b.bot, 'ви : телефон'] : null; }
+  return null;
+}
 function gamesScreen() {
+  const open = k => "ui.game='" + k + "';go('game')";
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Ігри</div></div>' +
-    '<div class="glbl">Для компанії</div><div class="glist">' + PARTY.map(gCardHtml).join('') + '</div>' +
-    '<div class="glbl">Самому</div><div class="glist">' + GAMES.map(gCardHtml).join('') + '</div>' +
-    '';
+    '<div class="ghd"><b>Для компанії</b><span>один телефон по колу</span></div>' +
+    '<div class="gpty">' + PARTY.map(g => { const m = PARTY_META[g[0]] || [g[3], '', ''];
+      return '<button class="gpt" style="background:' + g[4] + '" onclick="' + open(g[0]) + '"><span class="art' + (m[1] ? ' ' + m[1] : '') + '" aria-hidden="true">' + m[0] + '</span><span style="margin:0"></span><span><b>' + g[1] + '</b><span>' + m[2] + '</span></span></button>'; }).join('') + '</div>' +
+    '<div class="ghd" style="margin-top:8px"><b>Самому</b></div>' +
+    '<div class="gsolo">' + GAMES.map(g => { const r = gRecord(g[0]);
+      return '<button onclick="' + open(g[0]) + '"><span class="gi" style="background:' + g[4] + ';font-size:' + (g[3].length > 2 ? '13px' : '22px') + '">' + g[3] + '</span><span class="m"><b>' + g[1] + '</b><span>' + g[2] + '</span></span>' +
+        (r ? '<span class="rec">' + r[0] + '<small>' + r[1] + '</small></span>' : '<span style="color:var(--muted)">' + ic('chev', null, 18) + '</span>') + '</button>'; }).join('') + '</div>';
 }
 function gameScreen() {
   const g = GAMES.concat(PARTY).find(x => x[0] === ui.game) || GAMES[0];
@@ -2425,49 +2487,71 @@ function adContactUrl(c) {
   const d = c.replace(/[^\d+]/g, ''); if (d.length >= 9) return 'tel:' + (d[0] === '0' ? '+38' + d : d);
   return '';
 }
-function adCard(a) {
-  const C = AD_C[a.cat] || AD_C.sell, url = adContactUrl(a.contact);
-  return '<div class="adc ad-' + esc(a.cat) + '"><div class="tp"><span class="ct">' + C[1] + ' ' + C[0] + '</span><span class="tm">' + esc(ago(a.t)) + '</span></div>' +
-    '<div class="ti">' + esc(a.title) + '</div>' + (a.text ? '<div class="tx">' + esc(a.text) + '</div>' : '') + (a.price ? '<div class="pr">' + esc(a.price) + '</div>' : '') +
-    '<div class="ft"><span class="au">' + esc(a.name) + (a.sec ? ' · секція ' + a.sec : '') + (a.apt ? ' · кв. ' + esc(a.apt) : '') + (D.me.isAdmin && a.reports ? ' · 🚩' + a.reports : '') + '</span>' +
-    (a.own ? '<button onclick="adClose(' + a.id + ')">Зняти</button>'
-      : (url ? '<a style="display:contents" href="' + esc(url) + '" onclick="haptic();return uAct(this.getAttribute(\'href\'))"><button class="go">' + (/^tel:/.test(url) ? 'Подзвонити' : 'Написати') + '</button></a>' : '<span class="au" style="flex:none">' + esc(a.contact) + '</span>') +
-        '<button class="mini" aria-label="Поскаржитися" onclick="adReport(' + a.id + ')">⋯</button>') +
-    (D.me.isAdmin && !a.own ? '<button class="mini" aria-label="Видалити" onclick="adDel(' + a.id + ')">✕</button>' : '') + '</div></div>';
+function adRot(id, k) { const v = ((id * 37 + k) % 7) - 3; return (v * .28).toFixed(2) + 'deg'; }
+function adTabs(a) {
+  const url = adContactUrl(a.contact); if (!url) return '<div class="by" style="padding-top:0">' + esc(a.contact) + '</div>';
+  const lbl = /^tel:/.test(url) ? a.contact.replace(/^\+?38/, '').replace(/\D/g, '').replace(/^(\d{3})(\d{3})(\d{2})(\d{2})$/, '$1 $2 $3 $4') : a.contact, n = 6;
+  let h = '<div class="tabs">';
+  for (let i = 0; i < n; i++) h += '<a href="' + esc(url) + '" onclick="return adTear(this)" aria-label="' + (/^tel:/.test(url) ? 'Подзвонити' : 'Написати') + ' ' + esc(a.name) + '"' + (i ? ' aria-hidden="true" tabindex="-1"' : '') + '><span>' + esc(lbl) + '</span></a>';
+  return h + '</div>';
+}
+function adTear(el) {
+  haptic('mid'); el.classList.add('rip'); const h = el.getAttribute('href');
+  setTimeout(() => { el.classList.add('torn'); uAct(h); }, 360);
+  return false;
+}
+function adCard(a, preview) {
+  const C = AD_C[a.cat] || AD_C.sell;
+  return '<div class="ntc ad-' + esc(a.cat) + '" style="--rot:' + (preview ? '0deg' : adRot(a.id, 0)) + ';--trot:' + adRot(a.id, 3) + '"><i class="tape" aria-hidden="true"></i>' +
+    (!a.own && !preview ? '<button class="mo" aria-label="Поскаржитися" onclick="adReport(' + a.id + ')">⋯</button>' : '') +
+    '<div class="kd">' + C[1] + ' ' + C[0] + '</div><div class="ti">' + esc(a.title) + '</div>' + (a.text ? '<div class="tx">' + esc(a.text) + '</div>' : '') + (a.price ? '<span class="pr">' + esc(a.price) + '</span>' : '') +
+    '<div class="by">' + esc(a.name) + (a.sec ? ', секція ' + a.sec : '') + (a.apt ? ', кв. ' + esc(a.apt) : '') + ' — ' + esc(preview ? 'щойно' : ago(a.t)) + (D.me.isAdmin && a.reports ? ' · скарг: ' + a.reports : '') + '</div>' +
+    (a.own && !preview ? '<div class="own"><button onclick="adClose(' + a.id + ')">Зняти з дошки</button></div>' : adTabs(a)) +
+    (D.me.isAdmin && !a.own && !preview ? '<div class="own" style="border-top:none;padding-top:0"><button onclick="adDel(' + a.id + ')">Видалити як адмін</button></div>' : '') + '</div>';
 }
 function boardScreen() {
   try { localStorage.setItem('b10_adseen', String(Date.now())); } catch (e) {}
   const all = D.ads || [], cat = ui.adCat || 'all';
   const list = cat === 'all' ? all : cat === 'mine' ? all.filter(a => a.own) : all.filter(a => a.cat === cat);
   const cnt = k => all.filter(a => a.cat === k).length, mine = all.filter(a => a.own).length;
-  return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Дошка оголошень</div></div>' +
-    '<div class="adhero"><span style="font-size:30px">📌</span><span><b>Між сусідами</b><span>Продайте, віддайте, знайдіть компанію</span></span><button onclick="ui.ad={cat:ui.adCat&&AD_C[ui.adCat]?ui.adCat:\'sell\',title:\'\',text:\'\',price:\'\',contact:\'\',showApt:false};go(\'adnew\')">+ Додати</button></div>' +
-    '<div class="bcats"><button class="' + (cat === 'all' ? 'on' : '') + '" onclick="ui.adCat=\'all\';render()">Усі <i>' + all.length + '</i></button>' +
+  const newAd = "ui.ad={cat:ui.adCat&&AD_C[ui.adCat]?ui.adCat:'sell',title:'',text:'',price:'',contact:'',showApt:false};go('adnew')";
+  return '<div class="bhd"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Дошка оголошень</div>' +
+    '<button class="hang" onclick="' + newAd + '">' + ic('plus', null, 18) + 'Повісити</button></div>' +
+    '<div class="bcount">' + (all.length ? all.length + ' ' + plural(all.length, 'оголошення', 'оголошення', 'оголошень') + ' від сусідів' : 'Тут поки чисто') + '</div>' +
+    '<div class="bcats"><button class="' + (cat === 'all' ? 'on' : '') + '" onclick="ui.adCat=\'all\';render()">Усі</button>' +
     Object.keys(AD_C).map(k => '<button class="' + (cat === k ? 'on' : '') + '" onclick="ui.adCat=\'' + k + '\';haptic(\'sel\');render()">' + AD_C[k][1] + ' ' + AD_C[k][0] + (cnt(k) ? ' <i>' + cnt(k) + '</i>' : '') + '</button>').join('') +
     (mine ? '<button class="' + (cat === 'mine' ? 'on' : '') + '" onclick="ui.adCat=\'mine\';render()">Мої <i>' + mine + '</i></button>' : '') + '</div>' +
-    (cat === 'meet' ? '<div class="note">Розділ для дорослих сусідів: спільні прогулянки, спорт, настолки, нові знайомства. Будьте ввічливі — грубі оголошення адміністратор видаляє.</div>' : '') +
-    (list.length ? list.map(adCard).join('') : '<div class="empty">' + (cat === 'all' ? 'Оголошень ще немає — будьте першим!' : 'Тут поки порожньо') + '</div>') +
-    '<div class="note">Оголошення бачать лише мешканці будинку і зникають самі через 30 днів. Номер квартири показується, тільки якщо автор дозволив.</div>';
+    (cat === 'meet' ? '<div class="note">Для дорослих сусідів: прогулянки, спорт, настолки, нові знайомства. Грубі оголошення адміністратор знімає.</div>' : '') +
+    (list.length ? '<div class="brd">' + list.map(a => adCard(a)).join('') + '</div>'
+      : '<div class="bempty"><b>' + (cat === 'all' ? 'Дошка порожня' : 'У цьому розділі пусто') + '</b>Повісьте перше оголошення — сусіди побачать його одразу.<br><br><button class="btn yellow" onclick="' + newAd + '">Повісити оголошення</button></div>') +
+    '<div class="note">Відірвіть листочок унизу оголошення, щоб написати або подзвонити автору. Оголошення знімаються самі через 30 днів.</div>';
 }
+function adPreviewHtml() {
+  const f = ui.ad, me = D.me;
+  return adCard({ id: 7, cat: f.cat, title: f.title.trim() || AD_HINT[f.cat].replace(/^напр\.\s*/, ''), text: f.text.trim(), price: (f.cat === 'sell' || f.cat === 'buy' || f.cat === 'serv' || f.cat === 'book') ? f.price.trim() : '',
+    contact: f.contact.trim() || (me.username ? '@' + me.username : 'ваш телефон'), name: String(me.name || 'Сусід').split(' ')[0], sec: me.entrance, apt: f.showApt ? me.apt : '', own: false }, true);
+}
+function adPv() { const e = document.getElementById('adpv'); if (e) e.innerHTML = adPreviewHtml(); }
 function adNewScreen() {
   const f = ui.ad || (ui.ad = { cat: 'sell', title: '', text: '', price: '', contact: '', showApt: false });
   const hasUser = !!D.me.username, priced = f.cat === 'sell' || f.cat === 'buy' || f.cat === 'serv' || f.cat === 'book';
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Нове оголошення</div></div>' +
-    '<div class="label">Розділ</div><div class="adpick">' + Object.keys(AD_C).map(k => '<button class="ad-' + k + (f.cat === k ? ' on' : '') + '" onclick="ui.ad.cat=\'' + k + '\';haptic(\'sel\');render()"><span>' + AD_C[k][1] + '</span>' + AD_C[k][0] + '</button>').join('') + '</div>' +
-    '<label class="field">Заголовок<input class="input" maxlength="70" autocomplete="off" placeholder="' + esc(AD_HINT[f.cat]) + '" value="' + esc(f.title) + '" oninput="ui.ad.title=this.value"></label>' +
-    '<label class="field">Опис (необовʼязково)<textarea class="input" maxlength="600" placeholder="Стан, деталі, коли зручно…" oninput="ui.ad.text=this.value">' + esc(f.text) + '</textarea></label>' +
-    (priced ? '<label class="field">Ціна (необовʼязково)<input class="input" maxlength="30" autocomplete="off" placeholder="напр. 500 грн або договірна" value="' + esc(f.price) + '" oninput="ui.ad.price=this.value"></label>' : '') +
-    '<label class="field">Як звʼязатися' + (hasUser ? ' (необовʼязково)' : '') + '<input class="input" maxlength="60" autocomplete="off" placeholder="' + (hasUser ? 'за замовчуванням — ваш Telegram @' + esc(D.me.username) : 'телефон або @нік у Telegram') + '" value="' + esc(f.contact) + '" oninput="ui.ad.contact=this.value"></label>' +
-    '<label class="adtog">Показати номер квартири<input type="checkbox"' + (f.showApt ? ' checked' : '') + ' onchange="ui.ad.showApt=this.checked"></label>' +
-    '<button class="btn yellow" onclick="adSend()">Опублікувати</button>';
+    '<div class="pvw brd" id="adpv" aria-hidden="true">' + adPreviewHtml() + '</div>' +
+    '<div class="adpick">' + Object.keys(AD_C).map(k => '<button class="ad-' + k + (f.cat === k ? ' on' : '') + '" onclick="ui.ad.cat=\'' + k + '\';haptic(\'sel\');render()"><span>' + AD_C[k][1] + '</span>' + AD_C[k][0] + '</button>').join('') + '</div>' +
+    '<label class="field">Заголовок<input class="input" maxlength="70" autocomplete="off" placeholder="' + esc(AD_HINT[f.cat]) + '" value="' + esc(f.title) + '" oninput="ui.ad.title=this.value;adPv()"></label>' +
+    '<label class="field">Опис<textarea class="input" maxlength="600" placeholder="Стан, деталі, коли зручно" oninput="ui.ad.text=this.value;adPv()">' + esc(f.text) + '</textarea></label>' +
+    (priced ? '<label class="field">Ціна<input class="input" maxlength="30" autocomplete="off" placeholder="500 грн або договірна" value="' + esc(f.price) + '" oninput="ui.ad.price=this.value;adPv()"></label>' : '') +
+    '<label class="field">Контакт на листочках<input class="input" maxlength="60" autocomplete="off" placeholder="' + (hasUser ? 'ваш Telegram @' + esc(D.me.username) : 'телефон або @нік у Telegram') + '" value="' + esc(f.contact) + '" oninput="ui.ad.contact=this.value;adPv()"></label>' +
+    '<label class="adtog">Показати номер квартири<input type="checkbox"' + (f.showApt ? ' checked' : '') + ' onchange="ui.ad.showApt=this.checked;adPv()"></label>' +
+    '<button class="btn yellow" onclick="adSend()">Повісити на дошку</button>';
 }
 async function adSend() {
   const f = ui.ad;
   if (!f.title.trim()) { toast('Додайте заголовок'); return; }
   if (!D.me.username && !f.contact.trim()) { toast('Вкажіть телефон або @нік для звʼязку'); return; }
-  if (await run('adNew', f, 'Оголошення опубліковано')) { ui.adCat = f.cat; ui.ad = null; back(); }
+  if (await run('adNew', f, 'Оголошення висить на дошці')) { ui.adCat = f.cat; ui.ad = null; back(); }
 }
-function adClose(id) { ask('Зняти оголошення?', ok => { if (ok) run('adClose', { id: id }, 'Знято'); }); }
+function adClose(id) { ask('Зняти оголошення з дошки?', ok => { if (ok) run('adClose', { id: id }, 'Знято з дошки'); }); }
 function adDel(id) { ask('Видалити оголошення як адміністратор?', ok => { if (ok) run('adDel', { id: id }, 'Видалено'); }); }
 function adReport(id) { ask('Поскаржитися на це оголошення? Адміністратор перевірить.', ok => { if (ok) run('adReport', { id: id }, 'Дякуємо, передано адміністратору'); }); }
 

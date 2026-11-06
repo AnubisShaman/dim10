@@ -922,11 +922,58 @@ body.gamemode .edge{display:none}
 .gsolo .m{flex:1;min-width:0}.gsolo .m b{display:block;font-size:15.5px}.gsolo .m span{font-size:12.5px;color:var(--muted);font-weight:500}
 .gsolo .rec{font-size:13px;font-weight:800;color:var(--ink);text-align:right;white-space:nowrap}
 .gsolo .rec small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+
+/* ===== Тема «Стихії»: вогонь, вода, земля і повітря разом ===== */
+:root[data-el]{--bg:#0E1120;--card:#171B2D;--soft:#1E2338;--line:#262C45;--line2:#323A58;--graph:#323A58;--ink:#EEF0FF;--muted:#A2A8C6;--yellow:#F2A65A;--yellow-d:#E58A3A;
+  --ok:#7EDBB4;--ok-bg:#16302B;--info-bg:#1E2338;--glass:rgba(23,27,45,.8);--fac1:#161A2C;--fac2:#10131F;--tw1:#232943;--tw2:#1B2036;--twbase:#2E3553;--twtxt:#B9BEDB;--twcnt:#EEF0FF;--sky-end:#161A2C;
+  --el-grad:linear-gradient(115deg,#FF7A35 0%,#FFB45E 22%,#3CC8E8 46%,#8FCB3B 72%,#CFE3F7 100%)}
+:root[data-el] body{background:radial-gradient(60% 45% at 0% 100%,rgba(255,110,40,.22),transparent 70%) fixed,radial-gradient(60% 45% at 100% 100%,rgba(190,220,250,.14),transparent 70%) fixed,radial-gradient(70% 50% at 35% -10%,rgba(40,180,220,.2),transparent 70%) fixed,radial-gradient(60% 45% at 75% -5%,rgba(140,200,60,.12),transparent 70%) fixed,var(--bg)}
+:root[data-el] .btn.yellow{background:var(--el-grad);color:#121526;box-shadow:0 8px 22px -8px rgba(60,200,232,.45),0 6px 16px -10px rgba(255,122,53,.5)}
+:root[data-el] nav.tabs .pill{background:var(--el-grad);box-shadow:0 0 20px rgba(60,200,232,.3)}
+:root[data-el] nav.tabs button.on{color:#121526}
+:root[data-el] .card,:root[data-el] .lightc{box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 12px 30px -20px rgba(0,0,0,.6)}
+:root[data-el] .lightc{background:linear-gradient(var(--card),var(--card)) padding-box,var(--el-grad) border-box;border:1.5px solid transparent}
+:root[data-el] .toast{background:var(--card);color:var(--ink);box-shadow:var(--shadow-3),inset 0 0 0 1px var(--line2)}
+/* кожна секція — своя стихія */
+:root[data-el] .tower{position:relative}
+:root[data-el] .tower::after{content:"";position:absolute;left:8px;right:8px;top:0;height:3px;border-radius:0 0 3px 3px;background:var(--elc)}
+:root[data-el] .lfac .tower:nth-child(1){--elc:#FF7A35}:root[data-el] .lfac .tower:nth-child(2){--elc:#3CC8E8}:root[data-el] .lfac .tower:nth-child(3){--elc:#8FCB3B}:root[data-el] .lfac .tower:nth-child(4){--elc:#CFE3F7}
+:root[data-el] .h1{background:linear-gradient(100deg,#FFD9BF,#EEF0FF 45%,#D8F6FF);-webkit-background-clip:text;background-clip:text;color:transparent}
+.elchip{display:inline-flex;gap:4px;margin-top:8px;padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.06);box-shadow:inset 0 0 0 1px var(--line2);font-size:13px;font-weight:700;color:var(--muted)}
+#elfx{display:none}
+:root[data-el] #elfx{display:block;position:fixed;inset:0;width:100%;height:100%;z-index:4;pointer-events:none}
+#eldeco{display:none}
+:root[data-el] #eldeco{display:block;position:fixed;left:0;right:0;bottom:0;height:160px;z-index:-1;pointer-events:none;opacity:.55}
+#eldeco svg{position:absolute;left:0;bottom:0;width:200%;height:100%}
+:root[data-el] #eldeco svg.wv{animation:wv 14s linear infinite}
+:root[data-el] #eldeco svg.wv.b{animation-duration:22s;opacity:.6}
+@keyframes wv{to{transform:translateX(-50%)}}
+/* вибір теми */
+.thx{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:2px 16px 4px}
+.thx::-webkit-scrollbar{display:none}
+.thx button{flex:none;width:92px;height:96px;border:none;border-radius:20px;padding:10px;display:flex;flex-direction:column;justify-content:space-between;text-align:left;font:inherit;font-weight:800;font-size:13px;color:#fff;position:relative;overflow:hidden;box-shadow:var(--shadow-1)}
+.thx button i{font-style:normal;font-size:26px;line-height:1}
+.thx button.on{box-shadow:0 0 0 2.5px var(--ink),var(--shadow-2)}
+.thx button.on::after{content:"✓";position:absolute;right:9px;top:8px;width:20px;height:20px;border-radius:50%;background:#fff;color:#111;display:grid;place-items:center;font-size:12px}
+.th-xmas{background:linear-gradient(150deg,#1F4A3A,#0B181B 70%)}
+.th-elem{background:radial-gradient(70% 70% at 0% 100%,#FF7A35,transparent 70%),radial-gradient(70% 70% at 100% 0%,#3CC8E8,transparent 70%),radial-gradient(70% 70% at 0% 0%,#8FCB3B,transparent 70%),radial-gradient(70% 70% at 100% 100%,#CFE3F7,transparent 70%),#0E1120;width:120px!important}
+.themesw.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (prefers-reduced-motion:reduce){:root[data-el] #elfx{display:none}#eldeco svg{animation:none!important}}
+
+.elsym{display:inline-grid;place-items:center;margin-top:8px}
+.elsym svg{width:34px;height:34px;animation:elspin 40s linear infinite;filter:drop-shadow(0 0 8px rgba(60,200,232,.35))}
+@keyframes elspin{to{transform:rotate(360deg)}}
+.iconbtn.amb{position:relative}
+.iconbtn.amb.on{background:var(--el-grad,var(--yellow));color:#121526}
+.iconbtn.amb.on::after{content:"";position:absolute;inset:-4px;border-radius:18px;border:2px solid rgba(60,200,232,.5);animation:ambp 2.4s ease-out infinite}
+@keyframes ambp{0%{opacity:.8;transform:scale(.92)}100%{opacity:0;transform:scale(1.18)}}
+.hbtns{display:flex;gap:8px;align-items:center}
+@media (prefers-reduced-motion:reduce){.elsym svg,.iconbtn.amb.on::after{animation:none}}
 </style>
 </head>
 <body>
 <div class="app" id="app"></div>
-<div id="toast" role="status" aria-live="polite"></div><div id="xgar" aria-hidden="true"></div><canvas id="xsnow" aria-hidden="true"></canvas>
+<div id="toast" role="status" aria-live="polite"></div><div id="xgar" aria-hidden="true"></div><canvas id="xsnow" aria-hidden="true"></canvas><canvas id="elfx" aria-hidden="true"></canvas><div id="eldeco" aria-hidden="true"></div>
 <div class="scrim2" id="scrim2"></div>
 <div class="sheet" id="fsheet" role="dialog" aria-modal="true" aria-labelledby="fshT"><div class="grab"></div><div id="fshBody" style="display:flex;flex-direction:column;gap:10px"></div></div>
 <div class="edge" aria-hidden="true"></div>
@@ -1005,6 +1052,8 @@ function themeResolved() {
   const p = themePref();
   if (p === 'light' || p === 'dark') return p;
   if (p === 'xmas') return 'dark';
+  if (p === 'fire' || p === 'water' || p === 'earth' || p === 'air') { try { localStorage.setItem('b10_theme', 'elem'); } catch (e) {} return 'dark'; }
+  if (ELEMS[p]) return 'dark';
   if (tg && tg.colorScheme) return tg.colorScheme === 'dark' ? 'dark' : 'light';
   return window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
@@ -1014,13 +1063,150 @@ function applyTheme() {
   const xm = xmasOn();
   if (xm) document.documentElement.setAttribute('data-xmas', '1'); else document.documentElement.removeAttribute('data-xmas');
   xmasFx(xm);
-  const bg = xm ? '#0B181B' : t === 'dark' ? '#111317' : '#F2F3F5';
+  const el = ELEMS[themePref()] ? 'all' : '';
+  if (el) document.documentElement.setAttribute('data-el', el); else document.documentElement.removeAttribute('data-el');
+  elFx(el);
+  const bg = el ? '#0E1120' : xm ? '#0B181B' : t === 'dark' ? '#111317' : '#F2F3F5';
   try { tg && tg.setHeaderColor && tg.setHeaderColor(bg); tg && tg.setBackgroundColor && tg.setBackgroundColor(bg); tg && tg.setBottomBarColor && tg.setBottomBarColor(bg); } catch (e) {}
 }
-function setTheme(p) { const was = xmasOn(); try { localStorage.setItem('b10_theme', p); } catch (e) {} applyTheme(); haptic('sel'); render(); if (p === 'xmas' && !was) setTimeout(() => { xburst(innerWidth / 2, innerHeight * .4, 46); jingle(); toast('Святковий настрій увімкнено'); }, 120); }
+function setTheme(p) { if (p !== 'elem' && typeof AMB !== 'undefined' && AMB.on) ambToggle(); const was = xmasOn(); try { localStorage.setItem('b10_theme', p); } catch (e) {} applyTheme(); haptic('sel'); render(); if (p === 'xmas' && !was) setTimeout(() => { xburst(innerWidth / 2, innerHeight * .4, 46); jingle(); toast('Святковий настрій увімкнено'); }, 120); }
 function themeCard() {
-  const p = themePref(), o = [['light', 'Світла', 'sun'], ['dark', 'Темна', 'moon'], ['xmas', '🎄 Різдвяна', ''], ['auto', 'Як у Telegram', '']];
-  return '<div class="label">Оформлення</div><div class="themesw t4" role="radiogroup" aria-label="Тема">' + o.map(x => '<button role="radio" aria-checked="' + (p === x[0]) + '" class="' + (p === x[0] ? 'on' : '') + (x[0] === 'xmas' ? ' xm' : '') + '" onclick="setTheme(\'' + x[0] + '\')">' + x[1] + '</button>').join('') + '</div>';
+  const p = themePref(), base = [['light', 'Світла'], ['dark', 'Темна'], ['auto', 'Як у Telegram']];
+  const sp = [['xmas', 'Різдвяна', '🎄'], ['elem', 'Стихії', 'SYM']];
+  return '<div class="label">Оформлення</div><div class="themesw t3" role="radiogroup" aria-label="Тема">' + base.map(x => '<button role="radio" aria-checked="' + (p === x[0]) + '" class="' + (p === x[0] ? 'on' : '') + '" onclick="setTheme(\'' + x[0] + '\')">' + x[1] + '</button>').join('') + '</div>' +
+    '<div class="thx" role="radiogroup" aria-label="Особливі теми">' + sp.map(x => '<button role="radio" aria-checked="' + (p === x[0]) + '" class="th-' + x[0] + (p === x[0] ? ' on' : '') + '" onclick="setTheme(\'' + x[0] + '\')"><i' + (x[0] === 'elem' ? ' style="width:34px;height:34px;display:block"' : '') + '>' + (x[2] === 'SYM' ? EL_SYM : x[2]) + '</i>' + x[1] + '</button>').join('') + '</div>';
+}
+
+
+
+// ---------- Фонова медитативна музика (генерується в телефоні, без файлів) ----------
+const MUS_OFF = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></svg>';
+const MUS_ON = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M5 10v4M9 7v10M13 4v16M17 8v8M21 11v2"/></svg>';
+const AMB = { on: false, ac: null, t: [], chord: 0 };
+const AMB_CH = [[146.83, 220, 261.63, 329.63], [130.81, 196, 246.94, 293.66], [116.54, 174.61, 220, 261.63], [110, 164.81, 196, 261.63]];
+const AMB_PENTA = [587.33, 698.46, 783.99, 880, 1046.5, 1174.66];
+function ambBuild() {
+  const A = window.AudioContext || window.webkitAudioContext; if (!A) return null;
+  const ac = new A(), master = ac.createGain(); master.gain.value = 0;
+  const lp = ac.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 1500;
+  // штучна «зала» (реверберація з шуму)
+  const len = ac.sampleRate * 3.5, ir = ac.createBuffer(2, len, ac.sampleRate);
+  for (let c = 0; c < 2; c++) { const d = ir.getChannelData(c); for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 2.6); }
+  const rev = ac.createConvolver(); rev.buffer = ir; const wet = ac.createGain(); wet.gain.value = .55;
+  lp.connect(master); lp.connect(rev); rev.connect(wet); wet.connect(master); master.connect(ac.destination);
+  // шум вітру / води, що повільно «дихає»
+  const nb = ac.createBuffer(1, ac.sampleRate * 4, ac.sampleRate), nd = nb.getChannelData(0); for (let i = 0; i < nd.length; i++) nd[i] = Math.random() * 2 - 1;
+  const ns = ac.createBufferSource(); ns.buffer = nb; ns.loop = true;
+  const bp = ac.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 520; bp.Q.value = .7;
+  const ng = ac.createGain(); ng.gain.value = .018;
+  const lfo = ac.createOscillator(), lg = ac.createGain(); lfo.frequency.value = .07; lg.gain.value = .012; lfo.connect(lg); lg.connect(ng.gain);
+  const lfo2 = ac.createOscillator(), lg2 = ac.createGain(); lfo2.frequency.value = .05; lg2.gain.value = 260; lfo2.connect(lg2); lg2.connect(bp.frequency);
+  ns.connect(bp); bp.connect(ng); ng.connect(lp); ns.start(); lfo.start(); lfo2.start();
+  return { ac: ac, master: master, out: lp };
+}
+function ambPad() {
+  const A = AMB.ac; if (!A || !AMB.on) return;
+  const ac = A.ac, t0 = ac.currentTime + .05, ch = AMB_CH[AMB.chord++ % AMB_CH.length];
+  ch.forEach((f, i) => [0, 1].forEach(k => {
+    const o = ac.createOscillator(), g = ac.createGain();
+    o.type = k ? 'triangle' : 'sine'; o.frequency.value = f * (k ? 1.003 : 1); o.detune.value = (i - 1.5) * 3;
+    g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(k ? .012 : .028, t0 + 3.5); g.gain.setValueAtTime(k ? .012 : .028, t0 + 7); g.gain.linearRampToValueAtTime(0, t0 + 11.5);
+    o.connect(g); g.connect(A.out); o.start(t0); o.stop(t0 + 12);
+  }));
+  AMB.t.push(setTimeout(ambPad, 8000));
+}
+function ambBell() {
+  const A = AMB.ac; if (!A || !AMB.on) return;
+  const ac = A.ac, t0 = ac.currentTime + .02, f = AMB_PENTA[Math.floor(Math.random() * AMB_PENTA.length)];
+  [1, 2.01, 3.02].forEach((h, k) => {
+    const o = ac.createOscillator(), g = ac.createGain(); o.type = 'sine'; o.frequency.value = f * h;
+    g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime([.022, .008, .004][k], t0 + .02); g.gain.exponentialRampToValueAtTime(.0001, t0 + 3.2 - k * .6);
+    o.connect(g); g.connect(A.out); o.start(t0); o.stop(t0 + 3.4);
+  });
+  AMB.t.push(setTimeout(ambBell, 2600 + Math.random() * 4200));
+}
+function ambToggle() {
+  haptic('soft');
+  if (AMB.on) {
+    AMB.on = false; AMB.t.forEach(clearTimeout); AMB.t = [];
+    if (AMB.ac) { const g = AMB.ac.master.gain, n = AMB.ac.ac.currentTime; g.cancelScheduledValues(n); g.setValueAtTime(g.value, n); g.linearRampToValueAtTime(0, n + 1.2); setTimeout(() => { if (!AMB.on && AMB.ac) AMB.ac.ac.suspend(); }, 1300); }
+  } else {
+    if (!AMB.ac) AMB.ac = ambBuild(); if (!AMB.ac) { toast('Цей телефон не підтримує звук у застосунку'); return; }
+    AMB.on = true; AMB.ac.ac.resume();
+    const g = AMB.ac.master.gain, n = AMB.ac.ac.currentTime; g.cancelScheduledValues(n); g.setValueAtTime(g.value, n); g.linearRampToValueAtTime(.9, n + 3);
+    ambPad(); AMB.t.push(setTimeout(ambBell, 1500));
+    toast('Фонова музика · якщо не чути, вимкніть беззвучний режим');
+  }
+  render();
+}
+document.addEventListener('visibilitychange', () => { if (!AMB.ac) return; if (document.hidden) AMB.ac.ac.suspend(); else if (AMB.on) AMB.ac.ac.resume(); });
+
+// ---------- Стихії: живий фон ----------
+const EL_SYM = '<svg viewBox="0 0 40 40" aria-hidden="true"><defs><linearGradient id="esg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB45E"/><stop offset=".35" stop-color="#3CC8E8"/><stop offset=".7" stop-color="#8FCB3B"/><stop offset="1" stop-color="#CFE3F7"/></linearGradient></defs>' +
+  '<g transform="translate(20 20)"><path d="M0-17C6-11 6-5 0 0-6-5-6-11 0-17Z" fill="#FF7A35"/><path d="M17 0C11 6 5 6 0 0 5-6 11-6 17 0Z" fill="#3CC8E8"/><path d="M0 17C-6 11-6 5 0 0 6 5 6 11 0 17Z" fill="#8FCB3B"/><path d="M-17 0C-11-6-5-6 0 0-5 6-11 6-17 0Z" fill="#CFE3F7"/>' +
+  '<circle r="13.5" fill="none" stroke="url(#esg)" stroke-width="1.2" opacity=".7"/><circle r="2.6" fill="#0E1120" stroke="#fff" stroke-width="1"/></g></svg>';
+const ELEMS = { elem: { bg: '#0E1120' } };
+const EL = { on: '', raf: 0, p: [] };
+// низ екрана: жар ліворуч, хвилі, пагорби, хмари праворуч
+const ELDECO_ALL = '<svg viewBox="0 0 1200 160" preserveAspectRatio="none" style="width:100%"><defs><radialGradient id="eg1" cx="0%" cy="100%" r="60%"><stop offset="0" stop-color="#FF7A35" stop-opacity=".6"/><stop offset="1" stop-color="#FF7A35" stop-opacity="0"/></radialGradient></defs><rect width="1200" height="160" fill="url(#eg1)"/>' +
+  '<path d="M520 125 C640 90 720 115 820 102 S960 80 1060 108 V160 H520Z" fill="#2B3A1A"/><g fill="#DCEBFA" opacity=".35"><ellipse cx="1080" cy="135" rx="170" ry="40"/><ellipse cx="900" cy="150" rx="150" ry="30"/></g></svg>' +
+  '<svg class="wv" viewBox="0 0 1200 160" preserveAspectRatio="none"><path d="M0 128 Q150 108 300 128 T600 128 T900 128 T1200 128 V160 H0Z" fill="#0F5A73" opacity=".7"/></svg>' +
+  '<svg class="wv b" viewBox="0 0 1200 160" preserveAspectRatio="none"><path d="M0 140 Q150 124 300 140 T600 140 T900 140 T1200 140 V160 H0Z" fill="#127A96" opacity=".7"/></svg>';
+function elFx(kind) {
+  const cv = document.getElementById('elfx'), deco = document.getElementById('eldeco');
+  if (deco) deco.innerHTML = kind ? ELDECO_ALL : '';
+  if (!cv) return;
+  const rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!kind || rm) { EL.on = ''; cancelAnimationFrame(EL.raf); const c = cv.getContext && cv.getContext('2d'); c && c.clearRect(0, 0, cv.width, cv.height); return; }
+  if (EL.on === kind) return;
+  cancelAnimationFrame(EL.raf); EL.on = kind;
+  const ctx = cv.getContext && cv.getContext('2d'); if (!ctx) return;
+  const dpr = Math.min(2, window.devicePixelRatio || 1), size = () => { cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; };
+  size(); if (!EL.rs) { EL.rs = 1; addEventListener('resize', size); }
+  const R = Math.random, KINDS = [].concat(Array(14).fill('fire'), Array(10).fill('water'), Array(8).fill('earth'), Array(7).fill('air'));
+  const ZONE = { fire: 0, water: .25, earth: .5, air: .75 };
+  const mk = k => ({ k: k, x: k === 'air' ? -.2 : ZONE[k] + R() * .25, y: k === 'earth' ? -R() * .2 : k === 'air' ? R() : 1 + R() * .2, s: R(), v: .3 + R() * .7, ph: R() * 6.28, rot: R() * 6.28 });
+  EL.p = KINDS.map(k => { const o = mk(k); o.y = R(); if (k === 'air') o.x = R(); return o; });
+  const COL = { fire: ['#FFB25E', '#FF7A2F', '#FFD27A'], earth: ['#8DB322', '#C2A14A', '#6E8A1E'] };
+  let last = 0;
+  const tick = t => {
+    if (EL.on !== kind) return;
+    EL.raf = requestAnimationFrame(tick);
+    if (document.hidden || t - last < 33) return; last = t;
+    const W = cv.width, H = cv.height; ctx.clearRect(0, 0, W, H);
+    EL.p.forEach((f, i) => {
+      f.ph += .03;
+      const kind = f.k;
+      if (kind === 'fire') {
+        f.y -= f.v * .0035; f.x += Math.sin(f.ph * 1.7) * .0012;
+        const a = Math.max(0, Math.min(1, f.y * 1.4)) * (.55 + .45 * Math.sin(f.ph * 3 + i));
+        ctx.globalAlpha = a; ctx.fillStyle = COL.fire[i % 3]; ctx.shadowColor = '#FF7A2F'; ctx.shadowBlur = 10 * dpr;
+        ctx.beginPath(); ctx.arc(f.x * W, f.y * H, (1 + f.s * 2.2) * dpr, 0, 6.283); ctx.fill(); ctx.shadowBlur = 0;
+        if (f.y < -.05) Object.assign(f, mk(kind));
+      } else if (kind === 'water') {
+        f.y -= f.v * .0016; f.x += Math.sin(f.ph) * .0007;
+        ctx.globalAlpha = .25 + f.s * .35; ctx.strokeStyle = '#8FE6FA'; ctx.lineWidth = 1.2 * dpr;
+        const r = (2 + f.s * 6) * dpr; ctx.beginPath(); ctx.arc(f.x * W, f.y * H, r, 0, 6.283); ctx.stroke();
+        ctx.globalAlpha *= .8; ctx.beginPath(); ctx.arc(f.x * W - r * .35, f.y * H - r * .35, r * .22, 0, 6.283); ctx.fillStyle = '#E3F8FD'; ctx.fill();
+        if (f.y < -.05) Object.assign(f, mk(kind));
+      } else if (kind === 'earth') {
+        f.y += f.v * .0016; f.x += Math.sin(f.ph) * .0014; f.rot += .02;
+        const x = f.x * W, y = f.y * H, sz = (5 + f.s * 6) * dpr;
+        ctx.save(); ctx.translate(x, y); ctx.rotate(f.rot + Math.sin(f.ph) * .6); ctx.globalAlpha = .55 + f.s * .3; ctx.fillStyle = COL.earth[i % 3];
+        ctx.beginPath(); ctx.moveTo(0, -sz); ctx.quadraticCurveTo(sz * .8, 0, 0, sz); ctx.quadraticCurveTo(-sz * .8, 0, 0, -sz); ctx.fill();
+        ctx.strokeStyle = 'rgba(0,0,0,.25)'; ctx.lineWidth = .8 * dpr; ctx.beginPath(); ctx.moveTo(0, -sz * .8); ctx.lineTo(0, sz * .8); ctx.stroke(); ctx.restore();
+        if (f.y > 1.05) Object.assign(f, mk(kind));
+      } else {
+        f.x += f.v * .0042; const y = f.y * H + Math.sin(f.ph + f.x * 6) * 10 * dpr, len = (40 + f.s * 90) * dpr;
+        const g = ctx.createLinearGradient(f.x * W - len, 0, f.x * W, 0); g.addColorStop(0, 'rgba(207,227,247,0)'); g.addColorStop(1, 'rgba(207,227,247,.5)');
+        ctx.globalAlpha = 1; ctx.strokeStyle = g; ctx.lineWidth = (1 + f.s * 1.4) * dpr; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(f.x * W - len, y + 6 * dpr); ctx.quadraticCurveTo(f.x * W - len / 2, y - 8 * dpr, f.x * W, y); ctx.stroke();
+        if (f.x > 1.3) Object.assign(f, mk(kind));
+      }
+    });
+    ctx.globalAlpha = 1;
+  };
+  EL.raf = requestAnimationFrame(tick);
 }
 
 // ---------- Різдво ----------
@@ -1553,8 +1739,9 @@ function home() {
     D.news.filter(n => visible(n.entrance)).map(n => ({ t: n.time, html: '<div class="card" style="gap:6px"><div class="row"><span class="tag ' + (n.entrance ? 'soft' : 'yel') + '">' + (n.entrance ? entName(n.entrance) : 'Оголошення') + '</span><span class="sub" style="font-weight:500">' + ago(n.time) + '</span></div><div style="font-weight:700;white-space:pre-line">' + esc(n.text) + '</div></div>' })),
     D.problems.filter(p => p.status !== 'Вирішено' && visible(p.entrance)).map(p => ({ t: p.created, html: '<div class="card" style="gap:6px" role="button" tabindex="0" onkeydown="if(event.keyCode===13||event.keyCode===32){this.click();return false}" onclick="go(\'problems\')"><div class="row"><span class="tag ' + (p.entrance === me.entrance && p.entrance ? 'info' : p.entrance ? 'soft' : 'bad') + '">' + entName(p.entrance) + '</span><span class="sub" style="font-weight:500">' + ago(p.created) + '</span></div><div style="font-weight:700">' + esc(p.category) + ': ' + esc(p.text) + '</div><div class="sub" style="font-weight:500">' + p.count + ' ' + plural(p.count, 'квартира', 'квартири', 'квартир') + ' · ' + esc(String(p.status).toLowerCase()) + '</div></div>' }))
   ).sort((a, b) => b.t - a.t).slice(0, 5);
-  return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">' + esc(greeting().hi) + '</div>' + (xmasOn() ? '<div class="xchip">' + esc(xmasLine()) + '</div>' : '') + '</div>' +
-    '<button class="iconbtn xtg' + (xmasOn() ? ' on' : '') + '" aria-label="Різдвяне оформлення" aria-pressed="' + xmasOn() + '" onclick="xmasToggle()">' + XTREE_IC + '</button></div>' +
+  return '<div class="row"><div><div class="sub">' + (me.entrance ? 'Секція ' + me.entrance + ' · ' : '') + (me.apt ? 'кв.\u00a0' + esc(me.apt) : 'адміністратор') + '</div><div class="h1" role="heading" aria-level="1">' + esc(greeting().hi) + '</div>' + (xmasOn() ? '<div class="xchip">' + esc(xmasLine()) + '</div>' : '') + (themePref() === 'elem' ? '<div class="elsym">' + EL_SYM + '</div>' : '') + '</div>' +
+    '<div class="hbtns">' + (themePref() === 'elem' ? '<button class="iconbtn amb' + (AMB.on ? ' on' : '') + '" aria-label="Фонова музика" aria-pressed="' + AMB.on + '" onclick="ambToggle()">' + (AMB.on ? MUS_ON : MUS_OFF) + '</button>' : '') +
+    '<button class="iconbtn xtg' + (xmasOn() ? ' on' : '') + '" aria-label="Різдвяне оформлення" aria-pressed="' + xmasOn() + '" onclick="xmasToggle()">' + XTREE_IC + '</button></div></div>' +
     lightCard() + fuelBanner() + xmasOffer() +
     utilHtml(st) + liftCard + fpubCard() + usefulEntry() +
     confirmCards() + sigBlock() +

@@ -859,6 +859,7 @@ body.gamemode .edge{display:none}
 .adc .ft button.go{background:var(--hue);color:#fff}
 .adc .ft .mini{width:36px;padding:0;color:var(--muted)}
 .ad-sell{--hue:#2E9B5F;--tint:rgba(46,155,95,.13)} .ad-buy{--hue:#2F7FD8;--tint:rgba(47,127,216,.13)} .ad-free{--hue:#D9731A;--tint:rgba(242,140,40,.15)}
+.ad-book{--hue:#C2255C;--tint:rgba(194,37,92,.12)} :root[data-theme="dark"] .ad-book{--hue:#F783AC}
 .ad-serv{--hue:#6A52E0;--tint:rgba(106,82,224,.12)} .ad-lost{--hue:#1D9BB5;--tint:rgba(29,155,181,.14)} .ad-meet{--hue:#E64980;--tint:rgba(230,73,128,.13)}
 :root[data-theme="dark"] .ad-sell{--hue:#6FD3A0} :root[data-theme="dark"] .ad-buy{--hue:#74B4FF} :root[data-theme="dark"] .ad-free{--hue:#FFB15A} :root[data-theme="dark"] .ad-serv{--hue:#A592FF} :root[data-theme="dark"] .ad-lost{--hue:#5FD0E6} :root[data-theme="dark"] .ad-meet{--hue:#FF8CB4}
 .adpick{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
@@ -871,6 +872,7 @@ body.gamemode .edge{display:none}
 .adhero b{display:block;font-size:17px;font-weight:900}.adhero span{font-size:13px;opacity:.85}
 .adhero button{margin-left:auto;flex:none;height:42px;border:none;border-radius:14px;padding:0 14px;font:inherit;font-weight:900;background:#fff;color:#D9480F}
 :root[data-theme="dark"] .adc .ft button.go{color:#111317}
+.adpick button.ad-meet{grid-column:span 3;flex-direction:row;justify-content:center;gap:10px;font-size:14px}
 </style>
 </head>
 <body>
@@ -2407,13 +2409,13 @@ function fuelSkip(on) {
 }
 
 // ---------- ДОШКА ОГОЛОШЕНЬ ----------
-const AD_C = { sell: ['Продам', '🏷️'], buy: ['Куплю', '🛒'], free: ['Віддам', '🎁'], serv: ['Послуги', '🛠️'], lost: ['Загубив / знайшов', '🔎'], meet: ['Познайомлюсь', '💬'] };
-const AD_HINT = { sell: 'напр. Дитячий візок, майже новий', buy: 'напр. Шукаю павербанк 20 000', free: 'напр. Віддам книжки для дітей', serv: 'напр. Ремонт техніки, манікюр, репетитор', lost: 'напр. Знайдено ключі біля 2 секції', meet: 'напр. Шукаю компанію для пробіжок зранку' };
+const AD_C = { sell: ['Продам', '🏷️'], buy: ['Куплю', '🛒'], free: ['Віддам', '🎁'], book: ['Книжки та іграшки', '📚'], serv: ['Послуги', '🛠️'], lost: ['Загубив / знайшов', '🔎'], meet: ['Познайомлюсь', '💬'] };
+const AD_HINT = { sell: 'напр. Дитячий візок, майже новий', buy: 'напр. Шукаю павербанк 20 000', free: 'напр. Віддам дитячий одяг 2–3 роки', book: 'напр. Обміняю LEGO, віддам казки для малечі', serv: 'напр. Ремонт техніки, манікюр, репетитор', lost: 'напр. Знайдено ключі біля 2 секції', meet: 'напр. Шукаю компанію для пробіжок зранку' };
 const BOARD_IC = '<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="15" rx="3.5" fill="#fff"/><rect x="6" y="7.5" width="6" height="4" rx="1.2" fill="#F76707"/><rect x="13.5" y="7.5" width="4.5" height="1.6" rx=".8" fill="#FFB561"/><rect x="13.5" y="10" width="3.5" height="1.6" rx=".8" fill="#FFB561"/><rect x="6" y="13.5" width="12" height="1.6" rx=".8" fill="#E9ECEF"/><circle cx="19" cy="5" r="2.6" fill="#E64980" stroke="#fff" stroke-width="1.2"/></svg>';
 function boardSeen() { try { return Number(localStorage.getItem('b10_adseen') || 0); } catch (e) { return 0; } }
 function boardEntry() {
   const fresh = (D.ads || []).filter(a => !a.own && a.t > boardSeen()).length, n = (D.ads || []).length;
-  return '<button class="bent" onclick="go(\'board\')"><span class="ic">' + BOARD_IC + '</span><span style="min-width:0"><span class="t" style="display:block">Дошка оголошень</span><span class="s" style="display:block">Продам, куплю, віддам, познайомлюсь' + (n ? ' · ' + n : '') + '</span></span>' +
+  return '<button class="bent" onclick="go(\'board\')"><span class="ic">' + BOARD_IC + '</span><span style="min-width:0"><span class="t" style="display:block">Дошка оголошень</span><span class="s" style="display:block">Продам, куплю, книжки та іграшки, познайомлюсь' + (n ? ' · ' + n : '') + '</span></span>' +
     (fresh ? '<span class="nw">+' + fresh + '</span>' : '<span style="margin-left:auto;color:var(--muted)">' + ic('chev', null, 18) + '</span>') + '</button>';
 }
 function adContactUrl(c) {
@@ -2449,7 +2451,7 @@ function boardScreen() {
 }
 function adNewScreen() {
   const f = ui.ad || (ui.ad = { cat: 'sell', title: '', text: '', price: '', contact: '', showApt: false });
-  const hasUser = !!D.me.username, priced = f.cat === 'sell' || f.cat === 'buy' || f.cat === 'serv';
+  const hasUser = !!D.me.username, priced = f.cat === 'sell' || f.cat === 'buy' || f.cat === 'serv' || f.cat === 'book';
   return '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Нове оголошення</div></div>' +
     '<div class="label">Розділ</div><div class="adpick">' + Object.keys(AD_C).map(k => '<button class="ad-' + k + (f.cat === k ? ' on' : '') + '" onclick="ui.ad.cat=\'' + k + '\';haptic(\'sel\');render()"><span>' + AD_C[k][1] + '</span>' + AD_C[k][0] + '</button>').join('') + '</div>' +
     '<label class="field">Заголовок<input class="input" maxlength="70" autocomplete="off" placeholder="' + esc(AD_HINT[f.cat]) + '" value="' + esc(f.title) + '" oninput="ui.ad.title=this.value"></label>' +
@@ -3493,7 +3495,7 @@ function demoApi(action, d) {
       ],
       ads: [
         { id: 4, t: now - 2 * H, cat: 'meet', title: 'Шукаю компанію для ранкових пробіжок', text: 'Бігаю по набережній о 7:00, 5 км, спокійний темп. Буду рада компанії!', price: '', contact: '@olena_run', name: 'Оксана', sec: 3, own: false, apt: '' },
-        { id: 3, t: now - 20 * H, cat: 'free', title: 'Віддам дитячі книжки', text: 'Близько 30 книжок для 3–7 років, у гарному стані.', price: '', contact: '+380671112233', name: 'Ігор', sec: 2, own: false, apt: '305' },
+        { id: 3, t: now - 20 * H, cat: 'book', title: 'Віддам дитячі книжки', text: 'Близько 30 книжок для 3–7 років, у гарному стані.', price: '', contact: '+380671112233', name: 'Ігор', sec: 2, own: false, apt: '305' },
         { id: 2, t: now - 40 * H, cat: 'sell', title: 'Павербанк 30 000 мА·год', text: 'Користувався місяць, повний комплект.', price: '900 грн', contact: '@olena_k', name: 'Олена', sec: 2, own: true, apt: '317-1' },
         { id: 1, t: now - 72 * H, cat: 'serv', title: 'Репетитор з англійської', text: 'Школярі 5–11 клас, онлайн або у вас вдома.', price: '400 грн / год', contact: '@eng_teacher', name: 'Марина', sec: 1, own: false, apt: '' }
       ],

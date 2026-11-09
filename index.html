@@ -1002,6 +1002,22 @@ body.gamemode .edge{display:none}
 .hadm{display:flex;gap:6px;margin-top:6px}.hadm .btn{height:34px;font-size:12px;padding:0 10px}
 .mark .btn.pwarm{background:linear-gradient(180deg,#FFB07A,#F2803F);color:#2A1406} .mark .btn.pcold{background:linear-gradient(180deg,#CBEBFF,#8FCBFF);color:#0E3557}
 @media (prefers-reduced-motion:reduce){.frw.hc .w,.hz .sf,.hz.warm .hv{animation:none}.hz .sf{opacity:.8;top:30%}}
+
+
+/* ===== Ліфт: простий вибір «працює / не працює» ===== */
+.lq{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:24px;background:rgba(10,12,16,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);animation:lqf 160ms ease}
+.lq .bx{width:100%;max-width:340px;background:var(--card);border-radius:24px;padding:20px 16px 12px;display:flex;flex-direction:column;align-items:center;gap:12px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.3);animation:lqs 220ms var(--spring,ease)}
+.lq .li{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;background:var(--soft);color:var(--ink)}
+.lq .li svg{width:32px;height:32px}
+.lq b{font-size:18px} .lq .q{font-size:14px;color:var(--muted);font-weight:600;margin-top:-6px}
+.lq .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.lq .two button{border:none;font:inherit;font-size:16px;font-weight:800;height:64px;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer}
+.lq .two button small{font-size:11px;font-weight:600;opacity:.85}
+.lq .gw{background:#DDEEE3;color:#2F6E4C} .lq .rd{background:#F4DEDA;color:#9A3B2F}
+:root[data-theme="dark"] .lq .gw{background:#1F3A2C;color:#8FD0AC} :root[data-theme="dark"] .lq .rd{background:#432520;color:#F0A496}
+.lq .two button:active{transform:scale(.97)}
+.lq .cx{border:none;background:none;font:inherit;font-size:14px;font-weight:700;color:var(--muted);padding:8px 16px;cursor:pointer}
+@keyframes lqf{from{opacity:0}} @keyframes lqs{from{opacity:0;transform:translateY(12px) scale(.96)}}
 </style>
 </head>
 <body>
@@ -2052,7 +2068,23 @@ function liftTap(name, bad) {
   }
   if (bad) { toast('Адміністратор уже знає'); return; }
   if (g && (g.own || g.too)) { toast('Ви вже позначили, дякуємо'); return; }
-  ask('Ліфт ' + name + ' не працює?', ok => { if (!ok) return; run('signal', { type: 'lift', det: name }, '').then(r => { if (r) { toast('Дякуємо, адміністратор побачить'); haptic('ok'); } }); });
+  liftAsk(name);
+}
+function liftAsk(name) {
+  liftAskClose();
+  const d = document.createElement('div'); d.className = 'lq'; d.id = 'lq'; d.setAttribute('role', 'dialog'); d.setAttribute('aria-modal', 'true');
+  d.innerHTML = '<div class="bx"><span class="li" aria-hidden="true"><svg viewBox="0 0 24 24">' + LIFT_IC + '</svg></span><b>Ліфт ' + esc(name) + '</b><div class="q">Що з ним зараз?</div>' +
+    '<div class="two"><button class="gw" onclick="liftAns(1)">✓ Працює<small>все добре</small></button><button class="rd" onclick="liftAns(0)">✕ Не працює<small>повідомити</small></button></div>' +
+    '<button class="cx" onclick="liftAskClose()">Скасувати</button></div>';
+  d.onclick = e => { if (e.target === d) liftAskClose(); };
+  d.dataset.name = name; document.body.appendChild(d);
+}
+function liftAskClose() { const d = document.getElementById('lq'); if (d) d.remove(); }
+function liftAns(ok) {
+  const d = document.getElementById('lq'), name = d ? d.dataset.name : ''; liftAskClose();
+  if (ok) { haptic('soft'); toast('Дякуємо! Ліфт ' + name + ' працює'); return; }
+  haptic('mid');
+  run('signal', { type: 'lift', det: name }, '').then(r => { if (r) { toast('Дякуємо, адміністратор побачить'); haptic('ok'); } });
 }
 
 
@@ -3607,7 +3639,10 @@ const USEFUL_BASE = [
     ['Бот охорони', '@HavanChat_Bot · написати в Telegram', 'https://t.me/HavanChat_Bot', 'g', '', 'chat']
   ]],
   ['Будинок', [
-    ['Консьєрж', '', 'tel:+380937680751', 'y', '', 'bell'],
+    ['Консьєрж · секція 1', '', 'tel:+380937680799', 'y', '', 'bell'],
+    ['Консьєрж · секція 2', '', 'tel:+380937680714', 'y', '', 'bell'],
+    ['Консьєрж · секція 3', '', 'tel:+380937680751', 'y', '', 'bell'],
+    ['Консьєрж · секція 4', '', 'tel:+380937680769', 'y', '', 'bell'],
     ['Старший менеджер дільниці', 'дільниця № 11', 'tel:+380663678256', 'v', '', 'user'],
     ['Менеджер дільниці', 'дільниця № 11 · Telegram-канал будинку — через нього', 'tel:+380506007095', 'v', '', 'user'],
     ['Клінінг-сервіс', 'менеджер з прибирання', 'tel:+380938031185', 'g', '', 'broom'],
@@ -3669,6 +3704,8 @@ function useful() {
   // свої записи з листа «Корисне» (крім незаповнених шаблонів і того, що тут не потрібно)
   const own = (D.useful || []).filter(u => u.name && !/\[/.test(String(u.desc) + String(u.phone)) && !/^(Укриття|Ліфти при відключенні|Пункт незламності|Аварійна служба УК|Ліфтова служба|Гаряча лінія міста)$/.test(u.name));
   const secs = USEFUL_BASE.map(x => [x[0], x[1].slice()]);
+  { const b = secs.find(x => x[0] === 'Будинок'), e = D.me && D.me.entrance, i = b && e ? b[1].findIndex(u => u[0] === 'Консьєрж · секція ' + e) : -1;
+    if (i >= 0) { const u = b[1].splice(i, 1)[0].slice(); u[1] = 'ваша секція'; b[1].unshift(u); } }
   own.forEach(u => { const k = u.section || 'Будинок'; let sx = secs.find(x => x[0] === k); if (!sx) { sx = [k, []]; secs.splice(2, 0, sx); }
     const ph = String(u.phone || ''); sx[1].push([u.name, u.desc, /^https?:/.test(ph) ? ph : 'tel:' + ph.replace(/[^\d+]/g, ''), 'g', '', 'phone']); });
   const K = USEFUL_UK;

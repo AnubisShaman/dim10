@@ -1023,6 +1023,20 @@ body.gamemode .edge{display:none}
 .onl i{width:6px;height:6px;border-radius:50%;background:#4CAF7D;box-shadow:0 0 0 0 rgba(76,175,125,.5);animation:onlp 2.6s ease-out infinite}
 @keyframes onlp{0%{box-shadow:0 0 0 0 rgba(76,175,125,.45)}70%,100%{box-shadow:0 0 0 5px rgba(76,175,125,0)}}
 @media (prefers-reduced-motion:reduce){.onl i{animation:none}}
+
+.segx{overflow-x:auto;scrollbar-width:none}.segx::-webkit-scrollbar{display:none}.segx button{flex:1 0 auto;padding:0 12px}
+.fmr{display:flex;align-items:center;gap:6px;border-radius:16px;padding:4px}
+.fmr+.fmr{border-top:1px solid var(--line)}
+.fmr.on{background:var(--bg);border-top-color:transparent}.fmr.on+.fmr{border-top-color:transparent}
+.fmb{flex:1;min-width:0;border:none;background:none;font:inherit;color:inherit;text-align:left;display:flex;align-items:center;gap:10px;padding:8px 6px;cursor:pointer}
+.fmi{width:38px;height:38px;border-radius:12px;background:var(--soft);display:grid;place-items:center;font-size:18px;flex:none}
+.fmr.on .fmi{background:var(--yellow)}
+.fmt{min-width:0;display:flex;flex-direction:column;gap:2px}.fmt b{font-size:15px}.fmt span{font-size:12px;color:var(--muted);font-weight:600}
+.fmu{display:inline-flex;align-items:center;gap:4px;height:34px;padding:0 10px;border-radius:12px;background:var(--soft);font-size:12px;font-weight:700;cursor:pointer;flex:none}
+.fhist{display:flex;flex-direction:column;gap:6px;background:#fff;border-radius:14px;padding:10px 12px}
+:root[data-theme="dark"] .fhist{background:var(--card)}
+.fh{display:flex;justify-content:space-between;font-size:14px}.fh b{font-weight:800}
+.fh b.ok{color:var(--ok)}.fh b.pt{color:var(--yel-ink)}.fh b.no{color:var(--muted)}.fh b.sk{color:var(--muted);font-weight:600}
 </style>
 </head>
 <body>
@@ -2169,11 +2183,12 @@ function fpubScreen() {
   if (!fpubOk()) return '<div class="empty">Збір ще не почався</div>';
   const P = D.fuel.pub, m = fpubM(), x = P[m], pct = x.all ? Math.round(x.paid / x.all * 100) : 0;
   let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Збір на пальне</div></div>' +
-    '<div class="seg" role="tablist">' + P.months.map(k => '<button role="tab" aria-selected="' + (m === k) + '" class="' + (m === k ? 'on' : '') + '" onclick="ui.fpm=\'' + k + '\';haptic(\'sel\');render()">' + esc(cap(monthName(k))) + '</button>').join('') + '</div>';
+    '<div class="seg segx" role="tablist">' + P.months.map(k => '<button role="tab" aria-selected="' + (m === k) + '" class="' + (m === k ? 'on' : '') + '" onclick="ui.fpm=\'' + k + '\';haptic(\'sel\');render()">' + esc(cap(monthName(k))) + '</button>').join('') + '</div>';
+  const pm0 = P.months[Math.max(0, P.months.indexOf(m) - 1)];
   if ((P.skip || {})[m]) return h + '<div class="fph"><div class="rg">' + ring(100, 132, 12) + '<div class="c"><b style="color:var(--ok)">' + ic('check', null, 40) + '</b><span>достатньо</span></div></div><div class="kv">' +
     '<div><b style="font-size:20px">Коштів достатньо</b><span>за ' + esc(monthName(m)) + ' вносити не потрібно</span></div>' +
-    '<div><span style="font-size:13px;line-height:1.45">Ключ від ліфта працює в тих, хто вніс за ' + esc(monthName(P.months[0])) + '. Коли знову знадобиться збір, тут зʼявиться оголошення.</span></div></div></div>' +
-    '<button class="btn ghost" onclick="ui.fpm=\'' + P.months[0] + '\';render()">Подивитись ' + esc(monthName(P.months[0])) + ' ›</button>';
+    '<div><span style="font-size:13px;line-height:1.45">Ключ від ліфта працює в тих, хто вніс за ' + esc(monthName(pm0)) + '. Коли знову знадобиться збір, тут зʼявиться оголошення.</span></div></div></div>' +
+    '<button class="btn ghost" onclick="ui.fpm=\'' + pm0 + '\';render()">Подивитись ' + esc(monthName(pm0)) + ' ›</button>';
   // головне
   h += '<div class="fph"><div class="rg">' + ring(pct, 132, 12) + '<div class="c"><b>' + pct + '%</b><span>квартир</span></div></div><div class="kv">' +
     '<div><b>' + fmtMoney(x.total) + ' грн</b><span>зібрано за ' + esc(monthName(m)) + '</span></div>' +
@@ -3063,7 +3078,7 @@ function cabinet() {
       '<div style="display:flex;align-items:center;gap:8px;background:var(--ok-bg);color:var(--ok);border-radius:12px;padding:10px 12px;font-size:13px;font-weight:600">' + ic('shield', '#1E6B4A', 18) + (me.family ? 'Додано мешканцем квартири' : 'Підтверджено адміністратором') + '</div>' : '') +
     '</div>' +
     fuelCard() +
-    (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">Пальне: оплати' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
+    (me.isAdmin ? '<button class="btn graph" onclick="go(\'admin\')">Панель адміністратора</button>' + (D.fuel && D.fuel.admin ? '<button class="btn ghost" onclick="go(\'fuel\')">⛽ Внесок на генератор' + ((D.fuel.admin.unknown || []).length ? ' · без квартири ' + D.fuel.admin.unknown.length : '') + '</button>' : '') : '') +
     flatCard() + boardEntry() + usefulEntry() + gamesEntry() + homeRow() + themeCard() +
     '<div class="chips">' + chatBtn('general', 'Чат будинку') + '</div>' +
     '<div class="label">Мої заявки</div>' +
@@ -3127,6 +3142,7 @@ function fuelCard() {
   const gm = monthName(f.gov || f.month);
   h += '<div class="sub" style="font-weight:500;line-height:1.5">За ' + gm + ' внесли: ' + (f.sec ? 'у вашій секції ' + f.sec.n + ' — <b>' + f.sec.paid + ' з ' + f.sec.all + '</b>, ' : '') + 'у будинку — <b>' + f.paidCount + ' з ' + (f.houseAll || D.totalApts) + '</b> 💛' +
     (f.gov && f.gov !== f.month && f.curPaidCount && !(f.skip || {})[f.month] ? '<br>За ' + monthName(f.month) + ' вже внесли ' + f.curPaidCount + ' ' + plural(f.curPaidCount, 'квартира', 'квартири', 'квартир') : '') + '</div>';
+  h += fuelHistHtml();
   if (f.updated) h += '<div style="font-size:11px;color:var(--muted)">Оплати оновлено ' + esc(fmtUpd(f.updated)) + '</div>';
   if (fpubOk()) h += '<button class="btn ghost" onclick="ui.fpm=\'\';go(\'fpub\')">Куди йдуть внески ›</button>';
   return h + '</div>';
@@ -3300,8 +3316,8 @@ function fuelScreen() {
   const f = D.fuel, a = f.admin, list = fuelApts(), allN = list.length || 1;
   const paid = list.filter(o => o.st === 'paid' || o.st === 'over').length, pct = Math.round(paid / allN * 100);
   const part = list.filter(o => o.st === 'part').length;
-  let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Пальне · ' + esc(monthName(fMon())) + '</div></div>' +
-    (a.months ? '<div class="seg" role="tablist">' + a.months.map(m => '<button role="tab" aria-selected="' + (fMon() === m) + '" class="' + (fMon() === m ? 'on' : '') + '" onclick="fuelMonth(\'' + m + '\')">' + esc(cap(monthName(m))) + '</button>').join('') + '</div>' : '');
+  let h = '<div class="row" style="justify-content:flex-start"><button class="iconbtn" aria-label="Назад" onclick="back()">' + ic('back', '#23262B', 20) + '</button><div class="h2" role="heading" aria-level="2">Внесок на генератор</div></div>' + fuelMonthsCard(a) +
+    '<div class="label">Паливо · ' + esc(monthName(fMon())) + '</div>';
   h += '<div class="card" style="gap:10px"><div class="grid3">' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + fmtMoney(a.total) + '</span><span class="k">грн зібрано</span></div>' +
     '<div class="tile" style="background:var(--bg)"><span class="v" style="font-size:20px">' + paid + '</span><span class="k">з ' + allN + ' кв.</span></div>' +
@@ -3385,6 +3401,33 @@ function fuelEditor(o) {
   if (o.pays.length) h += '<div style="font-weight:700">З чого складається</div>' + o.pays.map(p => '<div class="hint" style="background:var(--card);color:var(--ink)"><span>' + fmtMoney(p.sum) + ' грн · ' + esc(p.source === 'таблиця' ? 'таблиця' : (p.sender || p.comment || p.source || 'платіж')) + ' · ' + esc(payDate(p.date)) + '</span>' +
     '<button class="btn sm ghost" style="color:var(--bad)" data-t="' + esc(p.tx) + '" onclick="fuelDelete(this.dataset.t,\'' + (p.source === 'таблиця' ? 'суму з таблиці' : 'цей платіж') + '\')">Видалити</button></div>').join('');
   return h + '<button class="cmtlink" onclick="ui.fSel=\'\';render()">Закрити</button></div>';
+}
+
+// ---------- «Внесок на генератор»: усі місяці збору, таблиця для кожного ----------
+function fuelMonthsCard(a) {
+  const ov = a.overview || (a.months || []).slice().reverse().map(m => ({ m: m }));
+  return '<div class="card fmon" style="gap:0;padding:6px 6px">' + ov.map(o => {
+    const on = o.m === fMon();
+    const sub = o.skip ? 'пауза · коштів достатньо' : (o.paid !== undefined ? o.paid + ' кв. · ' + fmtMoney(o.total) + ' грн' : '') +
+      (o.tAt ? ' · таблиця ' + new Date(o.tAt).toLocaleDateString('uk-UA', { day: 'numeric', month: 'numeric' }) : ' · таблиці ще немає');
+    return '<div class="fmr' + (on ? ' on' : '') + '"><button class="fmb" onclick="fuelMonth(\'' + o.m + '\')" aria-pressed="' + on + '"><span class="fmi" aria-hidden="true">⛽</span><span class="fmt"><b>Паливо · ' + esc(monthName(o.m)) + '</b><span>' + esc(sub) + '</span></span></button>' +
+      '<label class="fmu" title="Завантажити таблицю за ' + esc(monthName(o.m)) + '" aria-label="Завантажити таблицю за ' + esc(monthName(o.m)) + '">' + ic('plus', null, 16) + '<span>Таблиця</span><input type="file" accept=".xlsx,.xls,.csv" style="display:none" onchange="fuelTableFor(\'' + o.m + '\',this)"></label></div>';
+  }).join('') + '<div class="sub" style="font-weight:500;line-height:1.45;padding:8px 10px 6px">Натисніть місяць, щоб побачити квартири. «Таблиця» — завантажити свіжу або виправлену таблицю саме за цей місяць: вона замінить попередню, інші місяці не зміняться.</div></div>';
+}
+function fuelTableFor(m, input) {
+  const file = input.files && input.files[0]; if (!file) return;
+  const go2 = () => { ui.fMonth = m; ui.fSel = ''; fuelTableFile(input); };
+  if (m === fMon()) { go2(); return; }
+  ask('Завантажити таблицю за ' + monthName(m) + '? Таблиця за ' + monthName(m) + ' заміниться новою.', ok => { if (ok) go2(); else input.value = ''; });
+}
+// ---------- кабінет мешканця: мої внески по місяцях ----------
+function fuelHistHtml() {
+  const H = (D.fuel && D.fuel.hist) || [];
+  if (H.length < 2) return '';
+  return '<div class="fhist"><div class="sub" style="font-weight:700">Мої внески</div>' + H.map(x => {
+    const st = x.skip ? ['sk', 'пауза'] : x.paid ? ['ok', '✓ ' + fmtMoney(x.sum) + ' грн'] : x.sum > 0 ? ['pt', fmtMoney(x.sum) + ' з ' + fmtMoney(x.amount)] : ['no', '—'];
+    return '<div class="fh"><span>' + esc(cap(monthName(x.m))) + '</span><b class="' + st[0] + '">' + esc(st[1]) + '</b></div>';
+  }).join('') + '</div>';
 }
 async function fuelMonth(m) { if (m === fMon()) return; ui.fMonth = m; ui.fSel = ''; haptic(); await run('load'); }
 async function fuelSaveCfg() {
@@ -3629,7 +3672,7 @@ function fuelTableFile(input) {
       if (!rows.length) { toast('У таблиці не знайдено квартир'); return; }
       if (await run('fuelTable', { rows: rows })) {
         const t = D.tableResult || {};
-        toast('Таблиця: ' + t.rows + ' кв. на ' + fmtMoney(t.sum) + ' грн');
+        toast('Таблиця за ' + monthName(fMon()) + ': ' + t.rows + ' кв. на ' + fmtMoney(t.sum) + ' грн');
         ui.fSel = ''; haptic('ok'); render();
       }
     } catch (e) { toast(e.message || 'Не вдалося розібрати таблицю'); }
@@ -3852,7 +3895,9 @@ function demoFuelAdmin(now, H) {
   const unknown = [pay('u1', '', 1470, 9, 'Kuliba Mihaylo', '', 'виписка'), pay('u2', '', 1500, 4, 'Kulyba Mykhailo', '', 'виписка'), pay('u3', '', 1500, 30, 'Наталія Черненко', 'Поповнення рахунку Банки', 'виписка'),
     pay('u4', '', 3000, 120, 'Андрій Варченко', 'Поповнення рахунку Банки', 'виписка'), pay('u5', '', 1000, 170, '', 'Нежитлове приміщення 639', 'виписка'), pay('u6', '', 1000, 190, 'Оксана Моспан', 'Поповнення рахунку Банки', 'виписка')];
   const cm = monthKeyJs(Date.now()), pd = new Date(); pd.setDate(1); pd.setMonth(pd.getMonth() - 1);
-  const a = { month: cm, months: [monthKeyJs(pd), cm], amount: 1500, cfg: { prevDay: 4, curDay: 16 }, regCount: 0, total: 0, lastImport: { at: now - 3 * H, added: 270, known: 199, unknown: 71 }, reg: ['12', '45', '101', '158-1', '204', '248', '276', '289', '317-1', '319', '389', '402', '448', '475-1', '477-1', '494', '512', '593-2'],
+  const pm = monthKeyJs(pd), ms = ['2026-10', '2026-11', '2026-12', '2027-01'].filter(k => k <= cm);
+  const ov = ms.map(k => k === cm ? { m: k, paid: 137, total: 207500, amount: 1500, tAt: now - 26 * H, tRows: 131 } : k === pm ? { m: k, paid: 320, total: 483004, amount: 1500, tAt: now - 17 * 24 * H, tRows: 320 } : { m: k, paid: 301, total: 455000, amount: 1500, tAt: now - 40 * 24 * H, tRows: 301 }).reverse();
+  const a = { month: cm, months: ms, overview: ov, amount: 1500, cfg: { prevDay: 4, curDay: 16 }, regCount: 0, total: 0, lastImport: { at: now - 3 * H, added: 270, known: 199, unknown: 71 }, reg: ['12', '45', '101', '158-1', '204', '248', '276', '289', '317-1', '319', '389', '402', '448', '475-1', '477-1', '494', '512', '593-2'],
     pays: pays, unknown: unknown, ignored: [], claims: [{ apt: '204' }], unpaid: [], partial: [] };
   demoFuelRecalc({ fuel: { amount: 1500, admin: a } });
   return a;
@@ -3954,7 +3999,7 @@ function demoApi(action, d) {
         { section: 'Контакти', name: 'Аварійна служба УК', desc: 'цілодобово', phone: '[номер]' },
         { section: 'Контакти', name: 'Гаряча лінія міста', desc: 'скарги на комунальні служби', phone: '1551' }
       ],
-      fuel: { month: new Date().toISOString().slice(0, 7), prev: '2026-10', gov: '2026-10', keyMonth: '2026-10', until: '15 листопада', dueCur: '15 листопада', need: '2026-10', needAmount: 1500, curPaidCount: 12, houseAll: 625, sec: { n: 2, paid: 82, all: 167 }, amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
+      fuel: { hist: [{ m: '2026-11', sum: 0, amount: 1500, paid: false }, { m: '2026-10', sum: 1500, amount: 1500, paid: true }], month: new Date().toISOString().slice(0, 7), prev: '2026-10', gov: '2026-10', keyMonth: '2026-10', until: '15 листопада', dueCur: '15 листопада', need: '2026-10', needAmount: 1500, curPaidCount: 12, houseAll: 625, sec: { n: 2, paid: 82, all: 167 }, amount: 1500, due: 5, link: 'https://send.monobank.ua/jar/5qGUSbpiwY', card: '5375 4112 0893 6794', paidCount: 190, updated: now - 3 * H,
         sum: /fuel=part/.test(q) ? 1000 : /fuel=on/.test(q) ? 1500 : 0, key: (q.match(/fuel=(\w+)/) || [0, 'off'])[1], lastPay: { date: now - 30 * 24 * H, sum: 1500 },
         admin: /admin=1/.test(q) ? demoFuelAdmin(now, H) : null },
       osbb: /admin=1/.test(q) ? demoOsbb() : undefined,
@@ -4018,6 +4063,7 @@ function demoApi(action, d) {
   if (action === 'closePoll') db.polls.find(x => x.id === d.id).open = false;
   if (action === 'deletePoll') db.polls = db.polls.filter(x => x.id !== d.id);
   const f = db.me.flat;
+  if (db.fuel && db.fuel.admin && ui.fMonth) { db.fuel.admin.month = ui.fMonth; if (action === 'fuelTable') { const o = (db.fuel.admin.overview || []).find(x => x.m === ui.fMonth); if (o) { o.tAt = now; o.tRows = d.rows.length; } } }
   if (db.fuel && db.fuel.admin && /^fuel(Manual|Assign|Unassign|Ignore|Unmark|Table|InTable|TableClear|Delete|SetApt|Settings|Skip)$/.test(action)) demoFuelAct(db, action, d, now);
   if (action === 'fuelClaim') db.fuel.key = 'claimed';
   if (action === 'importCsv') { db.importResult = { added: 12, known: 10, unknown: 2 }; db.fuel.admin.lastImport = { at: now, added: 12 }; }

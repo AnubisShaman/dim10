@@ -2223,7 +2223,7 @@ function fpubAdd() {
   if (!v('spSum')) { toast('Вкажіть суму'); return; }
   run('fuelSpendAdd', { sum: v('spSum'), liters: v('spLit'), note: v('spNote'), date: v('spDate') }, 'Витрату додано');
 }
-function fpubDel(row) { ask('Видалити цю витрату?', ok => { if (ok) run('fuelSpendDel', { row: row }, 'Видалено'); }); }
+function fpubDel(row) { const z = ((D.fuel && D.fuel.pub && D.fuel.pub.spend) || []).find(y => y.row === row) || {}; ask('Видалити цю витрату?', ok => { if (ok) run('fuelSpendDel', { row: row, sum: z.sum, date: z.date }, 'Видалено'); }); }
 
 
 // =====================================================================
@@ -3833,7 +3833,7 @@ function admin() {
 }
 async function sendUrgent() {
   if (!ui.urgent.text.trim()) { toast('Напишіть текст'); return; }
-  if (await run('urgent', { text: ui.urgent.text, entrance: ui.urgent.ent }, 'Надіслано')) { ui.urgent.text = ''; render(); }
+  if (await run('urgent', { text: ui.urgent.text, entrance: ui.urgent.ent }, 'Опубліковано, розсилаємо в особисті')) { ui.urgent.text = ''; render(); }
 }
 async function sendPoll() {
   const opts = ui.poll.opts.split('\n').map(s => s.trim()).filter(Boolean);
